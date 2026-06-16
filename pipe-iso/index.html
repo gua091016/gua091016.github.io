@@ -107,28 +107,72 @@
       gap: 14px;
     }
 
-    .lang-switch {
-      display: inline-flex;
-      overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.28);
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.72);
+    .language-menu {
+      position: relative;
       flex: 0 0 auto;
     }
 
-    .lang-switch button {
-      min-width: 44px;
-      height: 30px;
-      border: 0;
+    .language-button {
+      min-height: 34px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.72);
       color: #cbd5e1;
-      background: transparent;
       font: inherit;
       font-size: 12px;
       font-weight: 900;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
     }
 
-    .lang-switch button.active {
+    .language-current {
+      color: #02111f;
+      background: var(--accent);
+      border-radius: 999px;
+      padding: 4px 8px;
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .language-options {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      min-width: 190px;
+      padding: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 12px;
+      background: rgba(2, 6, 23, 0.96);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+      display: none;
+      z-index: 20;
+    }
+
+    .language-menu.open .language-options {
+      display: grid;
+      gap: 4px;
+    }
+
+    .language-options button {
+      width: 100%;
+      min-height: 34px;
+      border: 0;
+      border-radius: 8px;
+      color: #cbd5e1;
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: left;
+      padding: 0 10px;
+    }
+
+    .language-options button.active,
+    .language-options button:hover {
       color: #02111f;
       background: var(--accent);
     }
@@ -249,7 +293,7 @@
     }
 
     .preview-card:before {
-      content: "PDF 출력 미리보기";
+      content: attr(data-preview-label);
       position: absolute;
       left: 28px;
       top: -14px;
@@ -260,10 +304,6 @@
       padding: 6px 12px;
       font-size: 12px;
       font-weight: 900;
-    }
-
-    html[data-page-lang="en"] .preview-card:before {
-      content: "PDF Output Preview";
     }
 
     .pdf-window {
@@ -473,10 +513,22 @@
           <a href="#tools" data-i18n="navTools">전문 계산</a>
           <a href="#privacy" data-i18n="navDocs">문서</a>
         </div>
-        <span class="lang-switch" aria-label="Language switch">
-          <button type="button" data-set-lang="ko">KO</button>
-          <button type="button" data-set-lang="en">EN</button>
-        </span>
+        <div class="language-menu" data-language-menu>
+          <button class="language-button" type="button" aria-haspopup="listbox" aria-expanded="false" data-language-toggle>
+            <span data-i18n="languageLabel">언어</span>
+            <span class="language-current" data-language-current>KO</span>
+          </button>
+          <div class="language-options" role="listbox" aria-label="Language">
+            <button type="button" role="option" data-set-lang="ko">한국어</button>
+            <button type="button" role="option" data-set-lang="en">English</button>
+            <button type="button" role="option" data-set-lang="es">Español</button>
+            <button type="button" role="option" data-set-lang="pt-BR">Português BR</button>
+            <button type="button" role="option" data-set-lang="ja">日本語</button>
+            <button type="button" role="option" data-set-lang="de">Deutsch</button>
+            <button type="button" role="option" data-set-lang="fr">Français</button>
+            <button type="button" role="option" data-set-lang="zh-CN">简体中文</button>
+          </div>
+        </div>
       </div>
     </nav>
   </header>
@@ -500,7 +552,7 @@
         </div>
       </div>
 
-      <div class="preview-card">
+      <div class="preview-card" data-preview-label="PDF 출력 미리보기">
         <div class="pdf-window">
           <div class="mock-toolbar">
             <span class="dot"></span>
@@ -598,6 +650,8 @@
         navFeatures: '주요 기능',
         navTools: '전문 계산',
         navDocs: '문서',
+        languageLabel: '언어',
+        previewLabel: 'PDF 출력 미리보기',
         heroBadge: '배관 ISO 스케치 · 커팅 리스트 · 3D 계산 · 마이타 계산',
         heroTitle: '현장 스케치를<br><span class="accent-text">계산서와 출력물로 정리</span>',
         heroSubtitle: '배관 ISO 스케치, 구간별 CL/CUT 치수, CUT 최종수량, 피팅 수량, 용접 POINT, 파이프 총 CUT, 3D 오프셋과 엘보 마이타 계산까지 한 번에 확인합니다.',
@@ -638,6 +692,8 @@
         navFeatures: 'Features',
         navTools: 'Pro Tools',
         navDocs: 'Docs',
+        languageLabel: 'Language',
+        previewLabel: 'PDF Output Preview',
         heroBadge: 'Pipe ISO sketch · cut list · 3D calculation · miter calculation',
         heroTitle: 'Turn field sketches into<br><span class="accent-text">calculation sheets and output</span>',
         heroSubtitle: 'Create pipe ISO sketches, check CL/CUT dimensions by segment, final cut quantities, fitting counts, weld points, total pipe cut length, 3D offsets, and elbow miter calculations in one place.',
@@ -670,32 +726,384 @@
         purposeBody: 'This app is designed to help field workers create simple pipe ISO sketches and quickly check fitting dimensions and cut lengths. Before fabrication or installation, always confirm project drawings, specifications, applicable codes, material catalogs, and supervisor review.',
         footerText: '© 2026 Koreafitter · Pipe ISO Calculator',
         privacyLink: 'Privacy Policy'
+      },
+      es: {
+        title: 'Calculadora ISO de Tuberías | Herramienta de campo',
+        brandName: 'Calculadora ISO de Tuberías',
+        maker: 'por Koreafitter',
+        navFeatures: 'Funciones',
+        navTools: 'Cálculos pro',
+        navDocs: 'Documentos',
+        languageLabel: 'Idioma',
+        previewLabel: 'Vista previa de PDF',
+        heroBadge: 'Croquis ISO de tuberías · lista de corte · cálculo 3D · cálculo de miter',
+        heroTitle: 'Convierte croquis de campo en<br><span class="accent-text">hojas de cálculo y salidas</span>',
+        heroSubtitle: 'Crea croquis ISO de tuberías y revisa CL/CUT por tramo, cantidades finales de corte, cantidades de fittings, puntos de soldadura, longitud total de corte, offsets 3D y cálculos de miter de codo en un solo lugar.',
+        pointPdf: 'Muestra croquis ISO, tablas de dimensiones y CUTTING SUMMARY en la salida PDF',
+        point3d: 'Comprueba offsets, tramos rectos y resultados CUT en la pantalla ISO 3D',
+        pointMiter: 'Revisa dimensiones de back-side y throat-side en la pantalla de miter de codo',
+        playButton: 'Ver en Google Play',
+        featureButton: 'Ver pantallas de funciones',
+        toolsTitle: 'Herramientas de cálculo de campo',
+        toolsLead: 'La salida PDF junto con las pantallas de offset 3D y miter de codo presenta el trabajo de forma más profesional.',
+        iso3dTitle: 'Cálculo de offset ISO 3D',
+        iso3dBody: 'Introduce ángulo de roll, offset y tramo recto para comprobar la geometría 3D de la tubería y los resultados CUT por tramo.',
+        miterTitle: 'Cálculo de miter de codo',
+        miterBody: 'Comprueba visualmente las referencias de corte del codo y usa las dimensiones back-side y throat-side como estándar de corte en campo.',
+        featuresTitle: 'Funciones principales',
+        featuresLead: 'Revisa croquis ISO de tuberías, listas de corte, offsets 3D y cálculos de miter de codo mediante salidas y pantallas reales.',
+        cardSketchTitle: 'Croquis ISO',
+        cardSketch1: 'Coloca líneas de tubería y fittings',
+        cardSketch2: 'Muestra etiquetas de dimensión y fittings',
+        cardSketch3: 'Visualiza puntos de soldadura',
+        cardCutTitle: 'Lista de corte',
+        cardCut1: 'Organiza SIZE, CL y CUT por tramo',
+        cardCut2: 'Suma automáticamente las cantidades finales de CUT',
+        cardCut3: 'Comprueba la longitud total de corte de tubería',
+        cardToolsTitle: 'Cálculos pro',
+        cardTools1: 'Cálculo de offset ISO 3D',
+        cardTools2: 'Cálculo de corte miter de codo',
+        cardTools3: 'Guardar y compartir PDF',
+        purposeTitle: 'Propósito',
+        purposeBody: 'Esta app ayuda a trabajadores de campo a crear croquis ISO de tuberías simples y comprobar rápidamente dimensiones de fittings y longitudes de corte. Antes de fabricar o instalar, confirma siempre planos del proyecto, especificaciones, códigos aplicables, catálogos de materiales y revisión del supervisor.',
+        footerText: '© 2026 Koreafitter · Calculadora ISO de Tuberías',
+        privacyLink: 'Política de privacidad'
+      },
+      'pt-BR': {
+        title: 'Calculadora ISO de Tubulação | Ferramenta de campo',
+        brandName: 'Calculadora ISO de Tubulação',
+        maker: 'por Koreafitter',
+        navFeatures: 'Recursos',
+        navTools: 'Cálculos pro',
+        navDocs: 'Documentos',
+        languageLabel: 'Idioma',
+        previewLabel: 'Prévia da saída PDF',
+        heroBadge: 'Esboço ISO de tubulação · lista de corte · cálculo 3D · cálculo de miter',
+        heroTitle: 'Transforme esboços de campo em<br><span class="accent-text">planilhas de cálculo e saída</span>',
+        heroSubtitle: 'Crie esboços ISO de tubulação e confira CL/CUT por trecho, quantidades finais de corte, quantidades de fittings, pontos de solda, comprimento total de corte, offsets 3D e cálculos de miter de cotovelo em um só lugar.',
+        pointPdf: 'Mostra esboços ISO, tabelas de dimensão e CUTTING SUMMARY na saída PDF',
+        point3d: 'Confira offsets, trechos retos e resultados CUT na tela ISO 3D',
+        pointMiter: 'Revise dimensões back-side e throat-side na tela de miter de cotovelo',
+        playButton: 'Ver no Google Play',
+        featureButton: 'Ver telas de recursos',
+        toolsTitle: 'Ferramentas de cálculo de campo',
+        toolsLead: 'A saída PDF junto com as telas de offset 3D e miter de cotovelo deixa o trabalho mais profissional.',
+        iso3dTitle: 'Cálculo de offset ISO 3D',
+        iso3dBody: 'Insira ângulo de roll, offset e trecho reto para conferir a geometria 3D da tubulação e os resultados CUT por trecho.',
+        miterTitle: 'Cálculo de miter de cotovelo',
+        miterBody: 'Confira visualmente as referências de corte do cotovelo e use as dimensões back-side e throat-side como padrão de corte em campo.',
+        featuresTitle: 'Principais recursos',
+        featuresLead: 'Revise esboços ISO de tubulação, listas de corte, offsets 3D e cálculos de miter de cotovelo com saídas e telas reais.',
+        cardSketchTitle: 'Esboço ISO',
+        cardSketch1: 'Posicione linhas de tubulação e fittings',
+        cardSketch2: 'Mostre etiquetas de dimensão e fittings',
+        cardSketch3: 'Visualize pontos de solda',
+        cardCutTitle: 'Lista de corte',
+        cardCut1: 'Organize SIZE, CL e CUT por trecho',
+        cardCut2: 'Some automaticamente as quantidades finais de CUT',
+        cardCut3: 'Confira o comprimento total de corte da tubulação',
+        cardToolsTitle: 'Cálculos pro',
+        cardTools1: 'Cálculo de offset ISO 3D',
+        cardTools2: 'Cálculo de corte miter de cotovelo',
+        cardTools3: 'Salvar e compartilhar PDF',
+        purposeTitle: 'Finalidade',
+        purposeBody: 'Este app ajuda trabalhadores de campo a criar esboços ISO de tubulação simples e conferir rapidamente dimensões de fittings e comprimentos de corte. Antes da fabricação ou instalação, confirme sempre desenhos do projeto, especificações, códigos aplicáveis, catálogos de materiais e revisão do supervisor.',
+        footerText: '© 2026 Koreafitter · Calculadora ISO de Tubulação',
+        privacyLink: 'Política de privacidade'
+      },
+      ja: {
+        title: '配管ISO計算機 | 現場向け配管ISOツール',
+        brandName: '配管ISO計算機',
+        maker: 'by Koreafitter',
+        navFeatures: '主な機能',
+        navTools: '専門計算',
+        navDocs: '資料',
+        languageLabel: '言語',
+        previewLabel: 'PDF出力プレビュー',
+        heroBadge: '配管ISOスケッチ · カットリスト · 3D計算 · マイター計算',
+        heroTitle: '現場スケッチを<br><span class="accent-text">計算書と出力物に整理</span>',
+        heroSubtitle: '配管ISOスケッチ、区間別CL/CUT寸法、最終CUT数量、フィッティング数量、溶接ポイント、配管総CUT長、3Dオフセット、エルボマイター計算をまとめて確認できます。',
+        pointPdf: 'PDF出力にISOスケッチ、寸法表、CUTTING SUMMARYを表示',
+        point3d: 'ISO 3D画面でオフセット、直管、CUT結果を確認',
+        pointMiter: 'エルボマイター画面で背側・喉側寸法と切断基準を確認',
+        playButton: 'Google Playで見る',
+        featureButton: '機能画面を見る',
+        toolsTitle: '現場計算機能',
+        toolsLead: 'PDF出力に加えて3Dオフセット計算とエルボマイター計算画面を見せることで、より専門的に確認できます。',
+        iso3dTitle: 'ISO 3Dオフセット計算',
+        iso3dBody: 'ロール角度、オフセット、直管Run値を入力し、3D配管形状と区間別CUT結果を確認します。',
+        miterTitle: 'エルボマイター計算',
+        miterBody: 'エルボ切断基準を視覚的に確認し、背側・喉側寸法を現場切断基準として活用します。',
+        featuresTitle: '主な機能',
+        featuresLead: '実際の出力物と計算画面で、配管ISOスケッチ、カットリスト、3Dオフセット、エルボマイター計算を確認できます。',
+        cardSketchTitle: 'ISOスケッチ',
+        cardSketch1: '配管ラインとフィッティングを配置',
+        cardSketch2: '寸法ラベルとフィッティングラベルを表示',
+        cardSketch3: '溶接ポイントを可視化',
+        cardCutTitle: 'カットリスト',
+        cardCut1: 'P別にSIZE、CL、CUTを整理',
+        cardCut2: '最終CUT数量を自動集計',
+        cardCut3: '配管総CUT長を確認',
+        cardToolsTitle: '専門計算',
+        cardTools1: 'ISO 3Dオフセット計算',
+        cardTools2: 'エルボマイター切断計算',
+        cardTools3: 'PDF保存と共有',
+        purposeTitle: '使用目的',
+        purposeBody: 'このアプリは、現場作業者が簡単な配管ISOスケッチを作成し、フィッティング寸法と切断長を素早く確認できるように設計されています。製作または施工前には、必ずプロジェクト図面、仕様書、適用コード、材料カタログ、監督者の確認内容を確認してください。',
+        footerText: '© 2026 Koreafitter · 配管ISO計算機',
+        privacyLink: 'プライバシーポリシー'
+      },
+      de: {
+        title: 'Rohrleitungs-ISO-Rechner | Feldwerkzeug',
+        brandName: 'Rohrleitungs-ISO-Rechner',
+        maker: 'von Koreafitter',
+        navFeatures: 'Funktionen',
+        navTools: 'Pro-Berechnung',
+        navDocs: 'Dokumente',
+        languageLabel: 'Sprache',
+        previewLabel: 'PDF-Ausgabevorschau',
+        heroBadge: 'Rohrleitungs-ISO-Skizze · Zuschnittliste · 3D-Berechnung · Miter-Berechnung',
+        heroTitle: 'Feldskizzen in<br><span class="accent-text">Berechnungsblätter und Ausgaben umwandeln</span>',
+        heroSubtitle: 'Erstellen Sie Rohrleitungs-ISO-Skizzen und prüfen Sie CL/CUT-Maße je Segment, finale Zuschnittmengen, Fitting-Mengen, Schweißpunkte, gesamte Rohrschnittlänge, 3D-Offsets und Ellbogen-Miter-Berechnungen an einem Ort.',
+        pointPdf: 'ISO-Skizzen, Maßtabellen und CUTTING SUMMARY in der PDF-Ausgabe anzeigen',
+        point3d: 'Offsets, gerade Läufe und CUT-Ergebnisse im ISO-3D-Bildschirm prüfen',
+        pointMiter: 'Back-side- und throat-side-Maße im Ellbogen-Miter-Bildschirm prüfen',
+        playButton: 'Bei Google Play ansehen',
+        featureButton: 'Funktionsbildschirme ansehen',
+        toolsTitle: 'Feldberechnungswerkzeuge',
+        toolsLead: 'PDF-Ausgabe zusammen mit 3D-Offset- und Ellbogen-Miter-Bildschirmen wirkt deutlich professioneller.',
+        iso3dTitle: 'ISO-3D-Offset-Berechnung',
+        iso3dBody: 'Rollwinkel, Offset und geraden Run eingeben, um 3D-Rohrgeometrie und CUT-Ergebnisse je Segment zu prüfen.',
+        miterTitle: 'Ellbogen-Miter-Berechnung',
+        miterBody: 'Schnittreferenzen am Ellbogen visuell prüfen und back-side- sowie throat-side-Maße als Feldschnittstandard nutzen.',
+        featuresTitle: 'Hauptfunktionen',
+        featuresLead: 'Rohrleitungs-ISO-Skizzen, Zuschnittlisten, 3D-Offsets und Ellbogen-Miter-Berechnungen anhand echter Ausgaben und Berechnungsbildschirme prüfen.',
+        cardSketchTitle: 'ISO-Skizze',
+        cardSketch1: 'Rohrleitungen und Fittings platzieren',
+        cardSketch2: 'Maß- und Fitting-Labels anzeigen',
+        cardSketch3: 'Schweißpunkte visualisieren',
+        cardCutTitle: 'Zuschnittliste',
+        cardCut1: 'SIZE, CL und CUT je Segment organisieren',
+        cardCut2: 'Finale CUT-Mengen automatisch summieren',
+        cardCut3: 'Gesamte Rohrschnittlänge prüfen',
+        cardToolsTitle: 'Pro-Berechnung',
+        cardTools1: 'ISO-3D-Offset-Berechnung',
+        cardTools2: 'Ellbogen-Miter-Schnittberechnung',
+        cardTools3: 'PDF speichern und teilen',
+        purposeTitle: 'Zweck',
+        purposeBody: 'Diese App hilft Feldarbeitern, einfache Rohrleitungs-ISO-Skizzen zu erstellen und Fitting-Maße sowie Schnittlängen schnell zu prüfen. Vor Fertigung oder Montage müssen immer Projektzeichnungen, Spezifikationen, anwendbare Codes, Materialkataloge und die Prüfung durch den Supervisor bestätigt werden.',
+        footerText: '© 2026 Koreafitter · Rohrleitungs-ISO-Rechner',
+        privacyLink: 'Datenschutzerklärung'
+      },
+      fr: {
+        title: 'Calculateur ISO de Tuyauterie | Outil de terrain',
+        brandName: 'Calculateur ISO de Tuyauterie',
+        maker: 'par Koreafitter',
+        navFeatures: 'Fonctions',
+        navTools: 'Calculs pro',
+        navDocs: 'Documents',
+        languageLabel: 'Langue',
+        previewLabel: 'Aperçu de sortie PDF',
+        heroBadge: 'Croquis ISO de tuyauterie · liste de coupe · calcul 3D · calcul miter',
+        heroTitle: 'Transformez les croquis terrain en<br><span class="accent-text">feuilles de calcul et sorties</span>',
+        heroSubtitle: 'Créez des croquis ISO de tuyauterie et vérifiez les dimensions CL/CUT par segment, les quantités finales de coupe, les quantités de fittings, les points de soudure, la longueur totale de coupe, les offsets 3D et les calculs de miter de coude au même endroit.',
+        pointPdf: 'Affiche les croquis ISO, les tableaux de dimensions et le CUTTING SUMMARY dans la sortie PDF',
+        point3d: 'Vérifie les offsets, les longueurs droites et les résultats CUT sur l’écran ISO 3D',
+        pointMiter: 'Vérifie les dimensions back-side et throat-side sur l’écran de miter de coude',
+        playButton: 'Voir sur Google Play',
+        featureButton: 'Voir les écrans de fonctions',
+        toolsTitle: 'Outils de calcul terrain',
+        toolsLead: 'La sortie PDF avec les écrans offset 3D et miter de coude donne une présentation plus professionnelle.',
+        iso3dTitle: 'Calcul d’offset ISO 3D',
+        iso3dBody: 'Saisissez l’angle de roll, l’offset et la longueur droite pour vérifier la géométrie 3D de la tuyauterie et les résultats CUT par segment.',
+        miterTitle: 'Calcul miter de coude',
+        miterBody: 'Vérifiez visuellement les références de coupe du coude et utilisez les dimensions back-side et throat-side comme standards de coupe terrain.',
+        featuresTitle: 'Fonctions principales',
+        featuresLead: 'Vérifiez les croquis ISO de tuyauterie, listes de coupe, offsets 3D et calculs de miter de coude avec des sorties et écrans réels.',
+        cardSketchTitle: 'Croquis ISO',
+        cardSketch1: 'Place les lignes de tuyauterie et les fittings',
+        cardSketch2: 'Affiche les étiquettes de dimension et de fittings',
+        cardSketch3: 'Visualise les points de soudure',
+        cardCutTitle: 'Liste de coupe',
+        cardCut1: 'Organise SIZE, CL et CUT par segment',
+        cardCut2: 'Totalise automatiquement les quantités finales de CUT',
+        cardCut3: 'Vérifie la longueur totale de coupe de tuyauterie',
+        cardToolsTitle: 'Calculs pro',
+        cardTools1: 'Calcul d’offset ISO 3D',
+        cardTools2: 'Calcul de coupe miter de coude',
+        cardTools3: 'Enregistrer et partager le PDF',
+        purposeTitle: 'Objectif',
+        purposeBody: 'Cette app aide les travailleurs de terrain à créer des croquis ISO de tuyauterie simples et à vérifier rapidement les dimensions de fittings et les longueurs de coupe. Avant fabrication ou installation, confirmez toujours les plans du projet, les spécifications, les codes applicables, les catalogues de matériaux et la revue du superviseur.',
+        footerText: '© 2026 Koreafitter · Calculateur ISO de Tuyauterie',
+        privacyLink: 'Politique de confidentialité'
+      },
+      'zh-CN': {
+        title: '管道 ISO 计算器 | 现场管道 ISO 工具',
+        brandName: '管道 ISO 计算器',
+        maker: 'by Koreafitter',
+        navFeatures: '主要功能',
+        navTools: '专业计算',
+        navDocs: '文档',
+        languageLabel: '语言',
+        previewLabel: 'PDF 输出预览',
+        heroBadge: '管道 ISO 草图 · 切割清单 · 3D 计算 · 弯头 miter 计算',
+        heroTitle: '将现场草图整理为<br><span class="accent-text">计算表和输出文件</span>',
+        heroSubtitle: '在一个位置创建管道 ISO 草图，并查看各段 CL/CUT 尺寸、最终切割数量、fitting 数量、焊点、管道总切割长度、3D offset 和弯头 miter 计算。',
+        pointPdf: '在 PDF 输出中显示 ISO 草图、尺寸表和 CUTTING SUMMARY',
+        point3d: '在 ISO 3D 画面中检查 offset、直管段和 CUT 结果',
+        pointMiter: '在弯头 miter 画面中检查 back-side、throat-side 尺寸和切割基准',
+        playButton: '在 Google Play 查看',
+        featureButton: '查看功能画面',
+        toolsTitle: '现场计算工具',
+        toolsLead: 'PDF 输出配合 3D offset 和弯头 miter 画面，可更专业地呈现计算结果。',
+        iso3dTitle: 'ISO 3D Offset 计算',
+        iso3dBody: '输入 roll 角、offset 和直管 Run 值，检查 3D 管道形状以及各段 CUT 结果。',
+        miterTitle: '弯头 Miter 计算',
+        miterBody: '可视化检查弯头切割基准，并将 back-side 和 throat-side 尺寸作为现场切割标准使用。',
+        featuresTitle: '主要功能',
+        featuresLead: '通过实际输出和计算画面，查看管道 ISO 草图、切割清单、3D offset 和弯头 miter 计算。',
+        cardSketchTitle: 'ISO 草图',
+        cardSketch1: '布置管道线和 fittings',
+        cardSketch2: '显示尺寸标签和 fitting 标签',
+        cardSketch3: '可视化焊点',
+        cardCutTitle: '切割清单',
+        cardCut1: '按 P 段整理 SIZE、CL、CUT',
+        cardCut2: '自动汇总最终 CUT 数量',
+        cardCut3: '检查管道总切割长度',
+        cardToolsTitle: '专业计算',
+        cardTools1: 'ISO 3D offset 计算',
+        cardTools2: '弯头 miter 切割计算',
+        cardTools3: '保存并分享 PDF',
+        purposeTitle: '用途',
+        purposeBody: '本应用帮助现场作业人员创建简单的管道 ISO 草图，并快速查看 fitting 尺寸和切割长度。制作或安装前，请务必确认项目图纸、规格书、适用规范、材料目录以及主管审核内容。',
+        footerText: '© 2026 Koreafitter · 管道 ISO 计算器',
+        privacyLink: '隐私政策'
       }
     };
 
-    const supportedLanguages = new Set(['ko', 'en']);
-    const storedLanguage = localStorage.getItem('pipeIsoLandingLanguage');
-    const browserLanguage = navigator.language.toLowerCase().startsWith('ko') ? 'ko' : 'en';
-    const initialLanguage = supportedLanguages.has(storedLanguage) ? storedLanguage : browserLanguage;
+    const languageLabels = {
+      ko: { short: 'KO' },
+      en: { short: 'EN' },
+      es: { short: 'ES' },
+      'pt-BR': { short: 'PT' },
+      ja: { short: 'JA' },
+      de: { short: 'DE' },
+      fr: { short: 'FR' },
+      'zh-CN': { short: 'ZH' }
+    };
+
+    const supportedLanguageCodes = Object.keys(translations);
+    const supportedLanguages = new Set(supportedLanguageCodes);
+    const storageKey = 'pipeIsoLandingLanguage';
+
+    function normalizeLanguage(language) {
+      const code = String(language || '').toLowerCase();
+      if (code === 'ko' || code.startsWith('ko-')) return 'ko';
+      if (code === 'en' || code.startsWith('en-')) return 'en';
+      if (code === 'es' || code.startsWith('es-')) return 'es';
+      if (code === 'pt' || code.startsWith('pt-')) return 'pt-BR';
+      if (code === 'ja' || code.startsWith('ja-')) return 'ja';
+      if (code === 'de' || code.startsWith('de-')) return 'de';
+      if (code === 'fr' || code.startsWith('fr-')) return 'fr';
+      if (code === 'zh' || code.startsWith('zh-')) return 'zh-CN';
+      return 'en';
+    }
+
+    function getStoredLanguage() {
+      try {
+        return localStorage.getItem(storageKey);
+      } catch {
+        return null;
+      }
+    }
+
+    function storeLanguage(language) {
+      try {
+        localStorage.setItem(storageKey, language);
+      } catch {
+        // Ignore storage restrictions.
+      }
+    }
+
+    function detectBrowserLanguage() {
+      const browserLanguages = navigator.languages && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language];
+      for (const language of browserLanguages) {
+        const raw = String(language || '').toLowerCase();
+        const normalized = normalizeLanguage(raw);
+        if (normalized !== 'en' || raw === 'en' || raw.startsWith('en-')) {
+          return normalized;
+        }
+      }
+      return 'en';
+    }
+
+    const storedLanguage = getStoredLanguage();
+    const initialLanguage = supportedLanguages.has(storedLanguage)
+      ? storedLanguage
+      : detectBrowserLanguage();
 
     function setLanguage(language) {
       const nextLanguage = supportedLanguages.has(language) ? language : 'en';
-      const dictionary = translations[nextLanguage];
+      const dictionary = translations[nextLanguage] || translations.en;
       document.documentElement.lang = nextLanguage;
       document.documentElement.dataset.pageLang = nextLanguage;
-      document.title = dictionary.title;
-      localStorage.setItem('pipeIsoLandingLanguage', nextLanguage);
+      document.title = dictionary.title || translations.en.title;
+      storeLanguage(nextLanguage);
       document.querySelectorAll('[data-i18n]').forEach((element) => {
         const key = element.dataset.i18n;
-        if (dictionary[key]) element.innerHTML = dictionary[key];
+        const value = dictionary[key] || translations.en[key];
+        if (value) element.innerHTML = value;
       });
+      const previewCard = document.querySelector('.preview-card');
+      if (previewCard) {
+        previewCard.dataset.previewLabel = dictionary.previewLabel || translations.en.previewLabel;
+      }
+      const currentLanguage = document.querySelector('[data-language-current]');
+      if (currentLanguage) {
+        currentLanguage.textContent = languageLabels[nextLanguage].short;
+      }
       document.querySelectorAll('[data-set-lang]').forEach((button) => {
-        button.classList.toggle('active', button.dataset.setLang === nextLanguage);
+        const active = button.dataset.setLang === nextLanguage;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    const languageMenu = document.querySelector('[data-language-menu]');
+    const languageToggle = document.querySelector('[data-language-toggle]');
+
+    function closeLanguageMenu() {
+      if (!languageMenu || !languageToggle) return;
+      languageMenu.classList.remove('open');
+      languageToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    if (languageToggle && languageMenu) {
+      languageToggle.addEventListener('click', () => {
+        const open = languageMenu.classList.toggle('open');
+        languageToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
     }
 
     document.querySelectorAll('[data-set-lang]').forEach((button) => {
-      button.addEventListener('click', () => setLanguage(button.dataset.setLang));
+      button.addEventListener('click', () => {
+        setLanguage(button.dataset.setLang);
+        closeLanguageMenu();
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (languageMenu && !languageMenu.contains(event.target)) {
+        closeLanguageMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeLanguageMenu();
+      }
     });
 
     setLanguage(initialLanguage);
