@@ -5,704 +5,519 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pipe ISO 3D Viewer</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background:#070b14; color:#c8d8f0;
-  font-family:'Segoe UI',system-ui,sans-serif;
-  overflow:hidden; height:100vh;
-}
-
-#header {
-  position:fixed; top:0; left:0; right:0; height:50px;
-  background:rgba(7,11,20,.93);
-  border-bottom:1px solid rgba(80,140,220,.18);
-  display:flex; align-items:center; padding:0 14px; gap:10px;
-  z-index:100; backdrop-filter:blur(12px);
-}
-.hlogo {
-  width:28px; height:28px;
-  background:linear-gradient(135deg,#3a8eff,#004dcc);
-  border-radius:6px; display:flex; align-items:center;
-  justify-content:center; font-size:14px; font-weight:800; color:#fff;
-}
-.htitle { font-size:14px; font-weight:700; color:#ddeeff; }
-.hspace { flex:1; }
-.hbtn {
-  padding:5px 11px; border-radius:7px;
-  border:1px solid rgba(80,140,220,.25);
-  background:rgba(25,45,100,.4); color:#90b8f0;
-  font-size:12px; cursor:pointer;
-}
-.hbtn:active { opacity:.7; }
-
-#canvas-wrap { position:fixed; inset:0; top:50px; }
-#c { width:100%; height:100%; display:block; }
-
-/* Upload overlay */
-#uov {
-  position:fixed; inset:0; top:50px;
-  background:rgba(7,11,20,.97);
-  display:flex; align-items:center; justify-content:center;
-  z-index:80; transition:opacity .5s;
-}
-#uov.gone { opacity:0; pointer-events:none; }
-.ucard {
-  background:rgba(10,16,32,.9);
-  border:1.5px dashed rgba(70,130,255,.3);
-  border-radius:20px; padding:40px 52px;
-  text-align:center; max-width:400px; width:92%;
-  cursor:pointer; transition:transform .3s, border-color .3s;
-}
-.ucard:hover { border-color:rgba(80,160,255,.6); transform:translateY(-4px); }
-.uico { font-size:42px; margin-bottom:16px; }
-.utitle { font-size:20px; font-weight:700; color:#d0e4ff; margin-bottom:8px; }
-.udesc { font-size:13px; color:#4a6a9a; line-height:1.6; margin-bottom:20px; }
-.uhint {
-  display:inline-block; background:rgba(35,70,160,.28);
-  border:1px solid rgba(70,130,210,.2); border-radius:7px;
-  padding:6px 13px; font-size:11.5px; color:#5a7aaa;
-}
-.demo-row { margin-top:16px; font-size:12px; color:#3a5270; }
-.demo-btn {
-  background:none; border:1px solid rgba(60,100,180,.3);
-  color:#5a80b0; border-radius:6px; padding:3px 9px;
-  cursor:pointer; font-size:12px; margin-left:6px;
-}
-#fi { display:none; }
-
-/* Loading */
-#lov {
-  position:fixed; inset:0; top:50px;
-  background:rgba(7,11,20,.92);
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  z-index:90; opacity:0; pointer-events:none; transition:opacity .25s;
-}
-#lov.show { opacity:1; pointer-events:all; }
-.lring {
-  width:50px; height:50px;
-  border:3px solid rgba(70,130,255,.15);
-  border-top-color:#3a8eff; border-radius:50%;
-  animation:spin .75s linear infinite; margin-bottom:14px;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
-#ltxt { font-size:13px; color:#4a6a9a; }
-
-/* Controls */
-#ctrl {
-  position:fixed; top:62px; right:12px;
-  background:rgba(9,14,26,.9);
-  border:1px solid rgba(55,95,175,.18);
-  border-radius:12px; padding:12px; width:190px;
-  backdrop-filter:blur(14px); z-index:50; display:none;
-}
-#ctrl.show { display:block; }
-.csec { margin-bottom:12px; }
-.csec:last-child { margin-bottom:0; }
-.clb {
-  font-size:9px; font-weight:700; letter-spacing:.1em;
-  text-transform:uppercase; color:#2a4a7a; margin-bottom:7px;
-}
-.cr {
-  display:flex; align-items:center;
-  justify-content:space-between;
-  font-size:11px; color:#607898; margin-bottom:6px;
-}
-.cr:last-child { margin-bottom:0; }
-input[type=range] {
-  -webkit-appearance:none; width:90px; height:3px;
-  background:rgba(55,100,180,.28); border-radius:3px;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:13px; height:13px;
-  border-radius:50%; background:#3a8eff; cursor:pointer;
-}
-input[type=color] {
-  width:28px; height:19px;
-  border:1px solid rgba(55,100,180,.28);
-  border-radius:4px; background:none; padding:1px;
-}
-
-#infobar {
-  position:fixed; bottom:12px; left:50%; transform:translateX(-50%);
-  background:rgba(9,14,26,.82); border:1px solid rgba(55,95,175,.18);
-  border-radius:18px; padding:6px 16px; font-size:11px; color:#3a5a8a;
-  backdrop-filter:blur(8px); pointer-events:none; white-space:nowrap;
-  opacity:0; transition:opacity .4s; z-index:50;
-}
-#infobar.show { opacity:1; }
-
-#stats {
-  position:fixed; bottom:12px; left:12px;
-  background:rgba(9,14,26,.82); border:1px solid rgba(55,95,175,.18);
-  border-radius:9px; padding:6px 10px; font-size:11px; color:#2a4a6a;
-  backdrop-filter:blur(8px); line-height:1.7;
-  opacity:0; transition:opacity .4s; z-index:50;
-}
-#stats.show { opacity:1; }
-
-#errmsg {
-  position:fixed; top:70px; left:50%; transform:translateX(-50%);
-  background:rgba(80,20,20,.9); border:1px solid rgba(200,80,80,.4);
-  border-radius:10px; padding:10px 18px; font-size:12px; color:#ffaaaa;
-  z-index:200; display:none; max-width:90%;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#070b14;color:#c8d8f0;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;}
+#hdr{position:fixed;top:0;left:0;right:0;height:50px;background:rgba(7,11,20,.93);border-bottom:1px solid rgba(80,140,220,.18);display:flex;align-items:center;padding:0 14px;gap:10px;z-index:100;backdrop-filter:blur(12px);}
+.hl{width:28px;height:28px;background:linear-gradient(135deg,#3a8eff,#004dcc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;}
+.ht{font-size:14px;font-weight:700;color:#ddeeff;}
+.hs{flex:1;}
+.hb{padding:5px 11px;border-radius:7px;border:1px solid rgba(80,140,220,.25);background:rgba(25,45,100,.4);color:#90b8f0;font-size:12px;cursor:pointer;}
+.hb:active{opacity:.7;}
+#cw{position:fixed;inset:0;top:50px;}
+#cv{width:100%;height:100%;display:block;}
+#uov{position:fixed;inset:0;top:50px;background:rgba(7,11,20,.97);display:flex;align-items:center;justify-content:center;z-index:80;transition:opacity .5s;}
+#uov.gone{opacity:0;pointer-events:none;}
+.uc{background:rgba(10,16,32,.9);border:1.5px dashed rgba(70,130,255,.3);border-radius:20px;padding:38px 50px;text-align:center;max-width:400px;width:92%;cursor:pointer;transition:transform .3s,border-color .3s;}
+.uc:hover{border-color:rgba(80,160,255,.6);transform:translateY(-4px);}
+.ui{font-size:40px;margin-bottom:14px;}
+.ut{font-size:20px;font-weight:700;color:#d0e4ff;margin-bottom:8px;}
+.ud{font-size:13px;color:#4a6a9a;line-height:1.6;margin-bottom:18px;}
+.uh{display:inline-block;background:rgba(35,70,160,.28);border:1px solid rgba(70,130,210,.2);border-radius:7px;padding:6px 13px;font-size:11.5px;color:#5a7aaa;}
+.dr{margin-top:14px;font-size:12px;color:#3a5270;}
+.db{background:none;border:1px solid rgba(60,100,180,.3);color:#5a80b0;border-radius:6px;padding:3px 9px;cursor:pointer;font-size:12px;margin-left:6px;}
+#fi{display:none;}
+#lov{position:fixed;inset:0;top:50px;background:rgba(7,11,20,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:90;opacity:0;pointer-events:none;transition:opacity .25s;}
+#lov.on{opacity:1;pointer-events:all;}
+.lr{width:50px;height:50px;border:3px solid rgba(70,130,255,.15);border-top-color:#3a8eff;border-radius:50%;animation:sp .75s linear infinite;margin-bottom:14px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+#lt{font-size:13px;color:#4a6a9a;}
+#cp{position:fixed;top:62px;right:12px;background:rgba(9,14,26,.9);border:1px solid rgba(55,95,175,.18);border-radius:12px;padding:12px;width:190px;backdrop-filter:blur(14px);z-index:50;display:none;}
+#cp.on{display:block;}
+.cs{margin-bottom:12px;}.cs:last-child{margin-bottom:0;}
+.cl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2a4a7a;margin-bottom:7px;}
+.cr{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#607898;margin-bottom:6px;}
+.cr:last-child{margin-bottom:0;}
+input[type=range]{-webkit-appearance:none;width:90px;height:3px;background:rgba(55,100,180,.28);border-radius:3px;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:#3a8eff;cursor:pointer;}
+input[type=color]{width:28px;height:19px;border:1px solid rgba(55,100,180,.28);border-radius:4px;background:none;padding:1px;}
+#ib{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(9,14,26,.82);border:1px solid rgba(55,95,175,.18);border-radius:18px;padding:6px 16px;font-size:11px;color:#3a5a8a;backdrop-filter:blur(8px);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .4s;z-index:50;}
+#ib.on{opacity:1;}
+#sb{position:fixed;bottom:12px;left:12px;background:rgba(9,14,26,.82);border:1px solid rgba(55,95,175,.18);border-radius:9px;padding:6px 10px;font-size:11px;color:#2a4a6a;backdrop-filter:blur(8px);line-height:1.7;opacity:0;transition:opacity .4s;z-index:50;}
+#sb.on{opacity:1;}
+#em{position:fixed;top:58px;left:50%;transform:translateX(-50%);background:rgba(80,20,20,.92);border:1px solid rgba(200,80,80,.4);border-radius:10px;padding:10px 18px;font-size:12px;color:#ffaaaa;z-index:200;display:none;max-width:88%;text-align:center;}
 </style>
 </head>
 <body>
-
-<div id="header">
-  <div class="hlogo">P</div>
-  <span class="htitle">Pipe ISO 3D</span>
-  <div class="hspace"></div>
-  <button class="hbtn" id="btn-reset" onclick="resetCam()" style="display:none">카메라 리셋</button>
-  <button class="hbtn" id="btn-open"  onclick="openFile()"  style="display:none">PDF 열기</button>
+<div id="hdr">
+  <div class="hl">P</div><span class="ht">Pipe ISO 3D</span>
+  <div class="hs"></div>
+  <button class="hb" id="br" onclick="resetCam()" style="display:none">카메라 리셋</button>
+  <button class="hb" id="bo" onclick="openFile()" style="display:none">PDF 열기</button>
 </div>
-
-<div id="canvas-wrap"><canvas id="c"></canvas></div>
+<div id="cw"><canvas id="cv"></canvas></div>
 
 <div id="uov">
-  <div class="ucard" onclick="openFile()">
-    <div class="uico">📐</div>
-    <div class="utitle">Pipe ISO 3D Viewer</div>
-    <div class="udesc">Pipe ISO 앱에서 내보낸 PDF를<br>클릭하거나 드래그해서 열어주세요</div>
-    <div class="uhint">📄 ISO 스케치 PDF 지원</div>
-    <div class="demo-row">
-      샘플 없으시면 →
-      <button class="demo-btn" onclick="event.stopPropagation();runDemo()">데모 보기</button>
-    </div>
+  <div class="uc" onclick="openFile()">
+    <div class="ui">📐</div>
+    <div class="ut">Pipe ISO 3D Viewer</div>
+    <div class="ud">Pipe ISO 앱에서 내보낸 PDF를<br>클릭하거나 드래그해서 열어주세요</div>
+    <div class="uh">📄 ISO 스케치 PDF 지원</div>
+    <div class="dr">샘플 없으면 → <button class="db" onclick="event.stopPropagation();runDemo()">데모 보기</button></div>
   </div>
   <input type="file" id="fi" accept=".pdf">
 </div>
 
-<div id="lov"><div class="lring"></div><div id="ltxt">처리 중...</div></div>
-<div id="errmsg"></div>
+<div id="lov"><div class="lr"></div><div id="lt">처리 중...</div></div>
+<div id="em"></div>
 
-<div id="ctrl">
-  <div class="csec">
-    <div class="clb">파이프</div>
-    <div class="cr"><span>두께</span><input type="range" min=".4" max="4" step=".1" value="1" oninput="onRadius(this.value)"></div>
-    <div class="cr"><span>색상</span><input type="color" value="#8fa8be" oninput="onColor(this.value)"></div>
-    <div class="cr"><span>광택</span><input type="range" min="10" max="200" step="5" value="80" oninput="onShiny(this.value)"></div>
+<div id="cp">
+  <div class="cs">
+    <div class="cl">파이프</div>
+    <div class="cr"><span>두께</span><input type="range" min=".4" max="4" step=".1" value="1" oninput="onR(this.value)"></div>
+    <div class="cr"><span>색상</span><input type="color" value="#8fa8be" oninput="onC(this.value)"></div>
+    <div class="cr"><span>광택</span><input type="range" min="10" max="200" step="5" value="80" oninput="onS(this.value)"></div>
   </div>
-  <div class="csec">
-    <div class="clb">씬</div>
+  <div class="cs">
+    <div class="cl">씬</div>
     <div class="cr"><span>배경</span><input type="color" value="#070b14" oninput="onBg(this.value)"></div>
-    <div class="cr"><span>조명</span><input type="range" min=".2" max="3" step=".1" value="1" oninput="onLight(this.value)"></div>
-    <div class="cr"><span>그리드</span><input type="range" min="0" max="1" step="1" value="1" oninput="onGrid(this.value)"></div>
+    <div class="cr"><span>조명</span><input type="range" min=".2" max="3" step=".1" value="1" oninput="onL(this.value)"></div>
+    <div class="cr"><span>그리드</span><input type="range" min="0" max="1" step="1" value="1" oninput="onG(this.value)"></div>
   </div>
 </div>
+<div id="ib">드래그: 회전 · 스크롤: 줌 · 우클릭: 이동</div>
+<div id="sb"></div>
 
-<div id="infobar">드래그: 회전 · 스크롤: 줌 · 우클릭: 이동</div>
-<div id="stats"></div>
-
-<!-- Global scripts – no importmap needed, works on any mobile browser -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 <script>
-(function() {
+(function(){
 'use strict';
 
-// ── Error display ──
-function showErr(msg) {
-  var el = document.getElementById('errmsg');
-  el.textContent = msg;
-  el.style.display = 'block';
-  setTimeout(function(){ el.style.display='none'; }, 6000);
+/* ── Error helper ── */
+function showErr(m){
+  var e=document.getElementById('em');
+  e.textContent=m; e.style.display='block';
+  setTimeout(function(){e.style.display='none';},7000);
 }
+if(typeof THREE==='undefined'){showErr('Three.js 로딩 실패');return;}
+if(typeof pako==='undefined'){showErr('pako 로딩 실패');return;}
 
-// ── Verify libraries loaded ──
-if (typeof THREE === 'undefined') { showErr('Three.js 로딩 실패'); return; }
-if (typeof pdfjsLib === 'undefined') { showErr('PDF.js 로딩 실패'); return; }
+/* ════════════════════════════════
+   THREE.JS SETUP
+════════════════════════════════ */
+var cv=document.getElementById('cv');
+var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+var scene=new THREE.Scene();
+scene.background=new THREE.Color(0x070b14);
 
-// ═══════════════════════════════════════
-// THREE.JS SETUP
-// ═══════════════════════════════════════
-var canvas   = document.getElementById('c');
-var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled  = true;
-renderer.shadowMap.type     = THREE.PCFSoftShadowMap;
-renderer.physicallyCorrectLights = true;
+var camera=new THREE.PerspectiveCamera(48,1,.01,10000);
+camera.position.set(40,28,60);
 
-var scene = new THREE.Scene();
-scene.background = new THREE.Color(0x070b14);
+var ctrl=new THREE.OrbitControls(camera,cv);
+ctrl.enableDamping=true; ctrl.dampingFactor=.07;
+ctrl.minDistance=.5; ctrl.maxDistance=3000;
 
-var camera = new THREE.PerspectiveCamera(48, 1, 0.01, 10000);
-camera.position.set(40, 28, 60);
+var ambL=new THREE.AmbientLight(0x304060,1.0); scene.add(ambL);
+var keyL=new THREE.DirectionalLight(0xd8eeff,2.0);
+keyL.position.set(60,90,70); keyL.castShadow=true;
+keyL.shadow.mapSize.set(1024,1024);
+keyL.shadow.camera.near=.5; keyL.shadow.camera.far=500;
+keyL.shadow.camera.left=-80; keyL.shadow.camera.right=80;
+keyL.shadow.camera.top=80; keyL.shadow.camera.bottom=-80;
+scene.add(keyL);
+var fillL=new THREE.DirectionalLight(0x405080,.8); fillL.position.set(-60,20,-50); scene.add(fillL);
+var rimL=new THREE.DirectionalLight(0x7090c0,.5); rimL.position.set(0,-40,-80); scene.add(rimL);
 
-var controls = new THREE.OrbitControls(camera, canvas);
-controls.enableDamping  = true;
-controls.dampingFactor  = 0.07;
-controls.minDistance    = 0.5;
-controls.maxDistance    = 3000;
+var grid=new THREE.GridHelper(300,50,0x112235,0x0a1525); scene.add(grid);
+var flr=new THREE.Mesh(new THREE.PlaneGeometry(400,400),new THREE.ShadowMaterial({opacity:.2}));
+flr.rotation.x=-Math.PI/2; flr.receiveShadow=true; scene.add(flr);
 
-// Lights
-var ambLight = new THREE.AmbientLight(0x304060, 1.0);
-scene.add(ambLight);
+var pMat=new THREE.MeshPhongMaterial({color:new THREE.Color(0x8fa8be),specular:new THREE.Color(0x88b8d8),shininess:80});
+var jMat=new THREE.MeshPhongMaterial({color:new THREE.Color(0x7a98ae),specular:new THREE.Color(0x99c0dc),shininess:100});
+var cMat=new THREE.MeshPhongMaterial({color:new THREE.Color(0x6a8090),specular:new THREE.Color(0x80a0b8),shininess:70});
 
-var keyLight = new THREE.DirectionalLight(0xd8eeff, 2.0);
-keyLight.position.set(60, 90, 70);
-keyLight.castShadow = true;
-keyLight.shadow.mapSize.set(1024, 1024);
-keyLight.shadow.camera.near   = 0.5;
-keyLight.shadow.camera.far    = 500;
-keyLight.shadow.camera.left   = -80;
-keyLight.shadow.camera.right  =  80;
-keyLight.shadow.camera.top    =  80;
-keyLight.shadow.camera.bottom = -80;
-scene.add(keyLight);
+var pg=new THREE.Group(); scene.add(pg);
+var baseR=1.0, rScale=1.0;
 
-var fillLight = new THREE.DirectionalLight(0x405080, 0.8);
-fillLight.position.set(-60, 20, -50);
-scene.add(fillLight);
-
-var rimLight = new THREE.DirectionalLight(0x7090c0, 0.5);
-rimLight.position.set(0, -40, -80);
-scene.add(rimLight);
-
-// Grid
-var grid = new THREE.GridHelper(300, 50, 0x112235, 0x0a1525);
-scene.add(grid);
-
-// Shadow floor
-var floorMesh = new THREE.Mesh(
-  new THREE.PlaneGeometry(400, 400),
-  new THREE.ShadowMaterial({ opacity: 0.2 })
-);
-floorMesh.rotation.x = -Math.PI / 2;
-floorMesh.receiveShadow = true;
-scene.add(floorMesh);
-
-// Materials
-var pipeMat = new THREE.MeshPhongMaterial({
-  color:    new THREE.Color(0x8fa8be),
-  specular: new THREE.Color(0x88b8d8),
-  shininess: 80,
-});
-var jntMat = new THREE.MeshPhongMaterial({
-  color:    new THREE.Color(0x7a98ae),
-  specular: new THREE.Color(0x99c0dc),
-  shininess: 100,
-});
-var capMat = new THREE.MeshPhongMaterial({
-  color:    new THREE.Color(0x6a8090),
-  specular: new THREE.Color(0x80a0b8),
-  shininess: 70,
-});
-
-var pipeGroup = new THREE.Group();
-scene.add(pipeGroup);
-var baseR = 1.0, radiusScale = 1.0;
-
-// Resize
-function resize() {
-  var w = canvas.clientWidth, h = canvas.clientHeight || 1;
-  if (canvas.width !== w || canvas.height !== h) {
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
+function resize(){
+  var w=cv.clientWidth,h=cv.clientHeight||1;
+  if(cv.width!==w||cv.height!==h){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
 }
+(function loop(){requestAnimationFrame(loop);resize();ctrl.update();renderer.render(scene,camera);})();
 
-// Render loop
-(function loop() {
-  requestAnimationFrame(loop);
-  resize();
-  controls.update();
-  renderer.render(scene, camera);
-})();
+/* ════════════════════════════════
+   PDF 직접 파싱 (Python 검증 로직 포트)
+════════════════════════════════ */
+function parsePDFBuffer(buf){
+  /* buf = ArrayBuffer */
+  var bytes=new Uint8Array(buf);
 
-// ═══════════════════════════════════════
-// PDF PARSING
-// ═══════════════════════════════════════
-var OPS = pdfjsLib.OPS;
+  /* Latin-1 decode (PDF binary safe) */
+  var str='';
+  for(var i=0;i<bytes.length;i++) str+=String.fromCharCode(bytes[i]);
 
-function extractLines(opList) {
-  var segs = [];
-  var fns  = opList.fnArray;
-  var args = opList.argsArray;
-  var ctm  = [1,0,0,1,0,0];
-  var stk  = [];
-  var cx=0, cy=0, sx=0, sy=0, lw=1;
-
-  function tp(x,y) {
-    return [ctm[0]*x+ctm[2]*y+ctm[4], ctm[1]*x+ctm[3]*y+ctm[5]];
+  /* Find all stream...endstream regions */
+  var results=[];
+  var pos=0;
+  while(true){
+    var si=str.indexOf('stream',pos);
+    if(si<0) break;
+    /* skip \r\n or \n after 'stream' */
+    var ds=si+6;
+    if(str[ds]==='\r') ds++;
+    if(str[ds]==='\n') ds++;
+    var ei=str.indexOf('endstream',ds);
+    if(ei<0) break;
+    results.push({start:ds,end:ei,data:bytes.slice(ds,ei)});
+    pos=ei+9;
   }
-  function mul(a,b,c,d,e,f) {
-    var a0=ctm[0],b0=ctm[1],c0=ctm[2],d0=ctm[3],e0=ctm[4],f0=ctm[5];
-    ctm=[a0*a+c0*b, b0*a+d0*b, a0*c+c0*d, b0*c+d0*d, a0*e+c0*f+e0, b0*e+d0*f+f0];
-  }
 
-  for (var i=0; i<fns.length; i++) {
-    var fn=fns[i], a=args[i];
-    if      (fn===OPS.save)         { stk.push(ctm.slice()); }
-    else if (fn===OPS.restore)      { if(stk.length) ctm=stk.pop(); }
-    else if (fn===OPS.transform)    { mul(a[0],a[1],a[2],a[3],a[4],a[5]); }
-    else if (fn===OPS.setLineWidth) { lw=a[0]; }
-    else if (fn===OPS.moveTo)       { var p=tp(a[0],a[1]); cx=p[0]; cy=p[1]; sx=cx; sy=cy; }
-    else if (fn===OPS.lineTo) {
-      var p=tp(a[0],a[1]);
-      segs.push({x1:cx,y1:cy,x2:p[0],y2:p[1],lw:lw});
-      cx=p[0]; cy=p[1];
+  /* Try each stream: decompress and parse */
+  var allSegs=[];
+  for(var r=0;r<results.length;r++){
+    var raw=results[r].data;
+    var decoded=null;
+    try{ decoded=pako.inflate(raw); }catch(e1){
+      try{ decoded=pako.inflateRaw(raw); }catch(e2){ continue; }
     }
-    else if (fn===OPS.closePath) {
-      if(Math.hypot(cx-sx,cy-sy)>0.1) segs.push({x1:cx,y1:cy,x2:sx,y2:sy,lw:lw});
-      cx=sx; cy=sy;
+    var text='';
+    for(var i=0;i<decoded.length;i++) text+=String.fromCharCode(decoded[i]);
+    /* Check if this looks like a drawing content stream */
+    if(text.indexOf(' m ')>=0||text.indexOf('\nm ')>=0){
+      var segs=parseContentStream(text);
+      if(segs.length>0){ allSegs=allSegs.concat(segs); }
+    }
+  }
+  return allSegs;
+}
+
+function parseContentStream(text){
+  var tokens=text.split(/[\s]+/);
+  var segs=[];
+  var ctm=[1,0,0,1,0,0], stk=[];
+  var cx=0,cy=0,sx=0,sy=0,lw=0;
+  var vals=[];
+
+  function tp(x,y){return[ctm[0]*x+ctm[2]*y+ctm[4],ctm[1]*x+ctm[3]*y+ctm[5]];}
+  function mul(a,b,c,d,e,f){
+    var a0=ctm[0],b0=ctm[1],c0=ctm[2],d0=ctm[3],e0=ctm[4],f0=ctm[5];
+    ctm=[a0*a+c0*b,b0*a+d0*b,a0*c+c0*d,b0*c+d0*d,a0*e+c0*f+e0,b0*e+d0*f+f0];
+  }
+
+  for(var i=0;i<tokens.length;i++){
+    var t=tokens[i];
+    if(t==='') continue;
+    var n=parseFloat(t);
+    if(t!=='' && !isNaN(n) && isFinite(n)){vals.push(n);continue;}
+
+    switch(t){
+      case 'q':  stk.push(ctm.slice()); vals=[]; break;
+      case 'Q':  if(stk.length) ctm=stk.pop(); vals=[]; break;
+      case 'cm': if(vals.length>=6) mul(vals[0],vals[1],vals[2],vals[3],vals[4],vals[5]); vals=[]; break;
+      case 'w':  if(vals.length>=1) lw=vals[vals.length-1]; vals=[]; break;
+      case 'm':
+        if(vals.length>=2){var p=tp(vals[vals.length-2],vals[vals.length-1]);cx=p[0];cy=p[1];sx=cx;sy=cy;}
+        vals=[]; break;
+      case 'l':
+        if(vals.length>=2){
+          var p=tp(vals[vals.length-2],vals[vals.length-1]);
+          segs.push({x1:cx,y1:cy,x2:p[0],y2:p[1],lw:lw});
+          cx=p[0];cy=p[1];
+        }
+        vals=[]; break;
+      case 'h':
+        if(Math.hypot(cx-sx,cy-sy)>0.1) segs.push({x1:cx,y1:cy,x2:sx,y2:sy,lw:lw});
+        cx=sx;cy=sy; vals=[]; break;
+      default: vals=[]; break;
     }
   }
   return segs;
 }
 
-var ISO_TOL = 9;
-function isoAxis(x1,y1,x2,y2) {
-  var deg = Math.atan2(y2-y1,x2-x1)*180/Math.PI;
-  deg = ((deg%180)+180)%180;
-  if(Math.abs(deg-90) <ISO_TOL) return 'Y';
-  if(Math.abs(deg-30) <ISO_TOL) return 'X';
-  if(Math.abs(deg-150)<ISO_TOL) return 'Z';
+/* ── ISO angle classifier ── */
+var ITOL=9;
+function isoAxis(x1,y1,x2,y2){
+  var deg=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
+  deg=((deg%180)+180)%180;
+  if(Math.abs(deg-90)<ITOL) return 'Y';
+  if(Math.abs(deg-30)<ITOL) return 'X';
+  if(Math.abs(deg-150)<ITOL) return 'Z';
   return null;
 }
-function slen(s){ return Math.hypot(s.x2-s.x1,s.y2-s.y1); }
+function sl(s){return Math.hypot(s.x2-s.x1,s.y2-s.y1);}
 
-function mergeSegs(segs, eps) {
-  eps = eps || 3.5;
-  var used=new Set(), out=[];
+function mergeSegs(segs,eps){
+  eps=eps||3.5;
+  var used=new Array(segs.length).fill(false), out=[];
   for(var i=0;i<segs.length;i++){
-    if(used.has(i)) continue;
+    if(used[i]) continue;
     var s=Object.assign({},segs[i]);
-    var changed=true;
-    while(changed){
-      changed=false;
+    var chg=true;
+    while(chg){
+      chg=false;
       for(var j=0;j<segs.length;j++){
-        if(used.has(j)||j===i) continue;
+        if(used[j]||j===i) continue;
         var t=segs[j];
         if(t.axis!==s.axis) continue;
-        if(Math.hypot(s.x2-t.x1,s.y2-t.y1)<eps){s.x2=t.x2;s.y2=t.y2;used.add(j);changed=true;}
-        else if(Math.hypot(s.x2-t.x2,s.y2-t.y2)<eps){s.x2=t.x1;s.y2=t.y1;used.add(j);changed=true;}
-        else if(Math.hypot(s.x1-t.x2,s.y1-t.y2)<eps){s.x1=t.x1;s.y1=t.y1;used.add(j);changed=true;}
-        else if(Math.hypot(s.x1-t.x1,s.y1-t.y1)<eps){s.x1=t.x2;s.y1=t.y2;used.add(j);changed=true;}
+        if(Math.hypot(s.x2-t.x1,s.y2-t.y1)<eps){s.x2=t.x2;s.y2=t.y2;used[j]=true;chg=true;}
+        else if(Math.hypot(s.x2-t.x2,s.y2-t.y2)<eps){s.x2=t.x1;s.y2=t.y1;used[j]=true;chg=true;}
+        else if(Math.hypot(s.x1-t.x2,s.y1-t.y2)<eps){s.x1=t.x1;s.y1=t.y1;used[j]=true;chg=true;}
+        else if(Math.hypot(s.x1-t.x1,s.y1-t.y1)<eps){s.x1=t.x2;s.y1=t.y2;used[j]=true;chg=true;}
       }
     }
-    used.add(i); out.push(s);
+    used[i]=true; out.push(s);
   }
   return out;
 }
 
-function filterPipeSegs(raw) {
+function filterPipeSegs(raw){
   if(!raw.length) return [];
-  var maxLW = 0;
+  var maxLW=0;
   for(var i=0;i<raw.length;i++) if(raw[i].lw>maxLW) maxLW=raw[i].lw;
-  var lwMin = maxLW * 0.45;
-  var classified=[], MIN_LEN=6;
+  if(maxLW===0) return [];
+  var lwMin=maxLW*0.45, MIN_LEN=6;
+  var cls=[];
   for(var i=0;i<raw.length;i++){
     var s=raw[i];
-    if(s.lw<lwMin||slen(s)<MIN_LEN) continue;
+    if(s.lw<lwMin||sl(s)<MIN_LEN) continue;
     var ax=isoAxis(s.x1,s.y1,s.x2,s.y2);
-    if(ax) classified.push(Object.assign({},s,{axis:ax}));
+    if(ax) cls.push(Object.assign({},s,{axis:ax}));
   }
-  // Deduplicate (app draws each pipe twice)
-  var deduped=[];
-  for(var i=0;i<classified.length;i++){
-    var s=classified[i], dup=false;
-    for(var j=0;j<deduped.length;j++){
-      var d=deduped[j];
-      if(Math.hypot(d.x1-s.x1,d.y1-s.y1)<2&&Math.hypot(d.x2-s.x2,d.y2-s.y2)<2){dup=true;break;}
+  /* Deduplicate – app draws each pipe twice (stroke + fill) */
+  var dd=[];
+  for(var i=0;i<cls.length;i++){
+    var s=cls[i],dup=false;
+    for(var j=0;j<dd.length;j++){
+      if(Math.hypot(dd[j].x1-s.x1,dd[j].y1-s.y1)<2&&Math.hypot(dd[j].x2-s.x2,dd[j].y2-s.y2)<2){dup=true;break;}
     }
-    if(!dup) deduped.push(s);
+    if(!dup) dd.push(s);
   }
-  return mergeSegs(deduped);
+  return mergeSegs(dd);
 }
 
-// ═══════════════════════════════════════
-// 2D ISO → 3D
-// ═══════════════════════════════════════
-function dir3D(axis, dx, dy) {
-  if(axis==='X') return new THREE.Vector3(dx>=0?1:-1, 0, 0);
-  if(axis==='Z') return new THREE.Vector3(0, 0, dx>=0?-1:1);
-  if(axis==='Y') return new THREE.Vector3(0, dy>=0?1:-1, 0);
-  return new THREE.Vector3();
+/* ════════════════════════════════
+   2D ISO → 3D 재구성
+════════════════════════════════ */
+function dir3(axis,dx,dy){
+  if(axis==='X') return new THREE.Vector3(dx>=0?1:-1,0,0);
+  if(axis==='Z') return new THREE.Vector3(0,0,dx>=0?-1:1);
+  return new THREE.Vector3(0,dy>=0?1:-1,0);
 }
 
-function buildNet3D(pipeSegs) {
-  if(!pipeSegs.length) return [];
-  var totalLen=0;
-  for(var i=0;i<pipeSegs.length;i++) totalLen+=slen(pipeSegs[i]);
-  var scale = 8 / (totalLen/pipeSegs.length);
-
-  var nodes=[], edges=[], EPS=4;
-  function findNode(x,y){
-    for(var i=0;i<nodes.length;i++)
-      if(Math.hypot(nodes[i].x-x,nodes[i].y-y)<EPS) return i;
-    nodes.push({x:x,y:y,pos3D:null}); return nodes.length-1;
-  }
-  for(var i=0;i<pipeSegs.length;i++){
-    var seg=pipeSegs[i];
-    var a=findNode(seg.x1,seg.y1), b=findNode(seg.x2,seg.y2);
-    if(a!==b) edges.push({a:a,b:b,axis:seg.axis,len3D:slen(seg)*scale});
-  }
+function buildNet3D(ps){
+  if(!ps.length) return [];
+  var tot=0; for(var i=0;i<ps.length;i++) tot+=sl(ps[i]);
+  var scale=8/(tot/ps.length);
+  var nodes=[],edges=[],EPS=4;
+  function fn(x,y){for(var i=0;i<nodes.length;i++)if(Math.hypot(nodes[i].x-x,nodes[i].y-y)<EPS)return i;nodes.push({x:x,y:y,p:null});return nodes.length-1;}
+  for(var i=0;i<ps.length;i++){var s=ps[i],a=fn(s.x1,s.y1),b=fn(s.x2,s.y2);if(a!==b)edges.push({a:a,b:b,axis:s.axis,len:sl(s)*scale});}
   if(!nodes.length) return [];
+  var adj=[]; for(var i=0;i<nodes.length;i++) adj.push([]);
+  for(var i=0;i<edges.length;i++){adj[edges[i].a].push({nb:edges[i].b,ei:i});adj[edges[i].b].push({nb:edges[i].a,ei:i});}
 
-  var adj=[];
-  for(var i=0;i<nodes.length;i++) adj.push([]);
-  for(var i=0;i<edges.length;i++){
-    adj[edges[i].a].push({nb:edges[i].b,ei:i});
-    adj[edges[i].b].push({nb:edges[i].a,ei:i});
-  }
+  /* Multi-component BFS with inverse-ISO placement for disconnected groups */
+  var rx=nodes[0].x,ry=nodes[0].y,SQ3=Math.sqrt(3);
+  function isoInv(x,y){var dx=x-rx,dy=y-ry;return new THREE.Vector3((dx/SQ3+dy)*scale,0,(dy-dx/SQ3)*scale);}
+  var vis=new Array(nodes.length).fill(false);
+  var unvis=[]; for(var i=0;i<nodes.length;i++) unvis.push(i);
 
-  // Multi-component BFS with inverse ISO projection for disconnected groups
-  var refX=nodes[0].x, refY=nodes[0].y, SQ3=Math.sqrt(3);
-  function isoInv(nx,ny){
-    var dx=nx-refX, dy=ny-refY;
-    return new THREE.Vector3((dx/SQ3+dy)*scale, 0, (dy-dx/SQ3)*scale);
-  }
-
-  var visited=new Set(), unplaced=new Set();
-  for(var i=0;i<nodes.length;i++) unplaced.add(i);
-
-  while(unplaced.size>0){
-    var startIdx=[...unplaced][0];
-    nodes[startIdx].pos3D = isoInv(nodes[startIdx].x, nodes[startIdx].y);
-    visited.add(startIdx); unplaced.delete(startIdx);
-    var queue=[startIdx];
-    while(queue.length){
-      var cur=queue.shift();
-      var pos=nodes[cur].pos3D;
+  while(unvis.length>0){
+    var si=unvis.shift(); if(vis[si]) continue;
+    nodes[si].p=isoInv(nodes[si].x,nodes[si].y);
+    vis[si]=true;
+    var q=[si];
+    while(q.length){
+      var cur=q.shift();
       for(var k=0;k<adj[cur].length;k++){
-        var nb=adj[cur][k].nb, ei=adj[cur][k].ei;
-        if(visited.has(nb)) continue;
-        visited.add(nb); unplaced.delete(nb);
-        var e=edges[ei];
-        var dx=nodes[nb].x-nodes[cur].x, dy=nodes[nb].y-nodes[cur].y;
-        var d3=dir3D(e.axis,dx,dy);
-        nodes[nb].pos3D=pos.clone().addScaledVector(d3,e.len3D);
-        queue.push(nb);
+        var nb=adj[cur][k].nb,ei=adj[cur][k].ei;
+        if(vis[nb]) continue; vis[nb]=true;
+        var e=edges[ei],dx=nodes[nb].x-nodes[cur].x,dy=nodes[nb].y-nodes[cur].y;
+        nodes[nb].p=nodes[cur].p.clone().addScaledVector(dir3(e.axis,dx,dy),e.len);
+        q.push(nb);
       }
     }
   }
 
-  var segs3D=[];
-  for(var i=0;i<edges.length;i++){
-    var pa=nodes[edges[i].a].pos3D, pb=nodes[edges[i].b].pos3D;
-    if(pa&&pb) segs3D.push({start:pa.clone(),end:pb.clone()});
-  }
-  if(segs3D.length){
+  var out=[];
+  for(var i=0;i<edges.length;i++){var pa=nodes[edges[i].a].p,pb=nodes[edges[i].b].p;if(pa&&pb)out.push({s:pa.clone(),e:pb.clone()});}
+  if(out.length){
     var bb=new THREE.Box3();
-    for(var i=0;i<segs3D.length;i++){bb.expandByPoint(segs3D[i].start);bb.expandByPoint(segs3D[i].end);}
-    var ctr=new THREE.Vector3(); bb.getCenter(ctr);
-    for(var i=0;i<segs3D.length;i++){segs3D[i].start.sub(ctr);segs3D[i].end.sub(ctr);}
+    for(var i=0;i<out.length;i++){bb.expandByPoint(out[i].s);bb.expandByPoint(out[i].e);}
+    var c=new THREE.Vector3();bb.getCenter(c);
+    for(var i=0;i<out.length;i++){out[i].s.sub(c);out[i].e.sub(c);}
   }
-  return segs3D;
+  return out;
 }
 
-// ═══════════════════════════════════════
-// BUILD 3D SCENE
-// ═══════════════════════════════════════
-function clearGroup(){
-  while(pipeGroup.children.length){
-    var c=pipeGroup.children[0];
-    if(c.geometry) c.geometry.dispose();
-    pipeGroup.remove(c);
-  }
-}
+/* ════════════════════════════════
+   3D SCENE BUILDER
+════════════════════════════════ */
+function clearPG(){while(pg.children.length){var c=pg.children[0];if(c.geometry)c.geometry.dispose();pg.remove(c);}}
 
-function buildScene(segs3D){
-  clearGroup();
-  if(!segs3D.length) return 0;
-
+function buildScene(seg3){
+  clearPG(); if(!seg3.length) return 0;
   var bb=new THREE.Box3();
-  for(var i=0;i<segs3D.length;i++){bb.expandByPoint(segs3D[i].start);bb.expandByPoint(segs3D[i].end);}
-  var sz=new THREE.Vector3(); bb.getSize(sz);
-  var maxDim=Math.max(sz.x,sz.y,sz.z,1);
-  baseR = Math.max(0.35, maxDim*0.014) * radiusScale;
+  for(var i=0;i<seg3.length;i++){bb.expandByPoint(seg3[i].s);bb.expandByPoint(seg3[i].e);}
+  var sz=new THREE.Vector3();bb.getSize(sz);
+  var maxD=Math.max(sz.x,sz.y,sz.z,1);
+  baseR=Math.max(.35,maxD*.014)*rScale;
 
-  var ptMap={};
-  function ptKey(v){ return v.x.toFixed(2)+','+v.y.toFixed(2)+','+v.z.toFixed(2); }
-  function ensurePt(v){ var k=ptKey(v); if(!ptMap[k]) ptMap[k]={pos:v.clone(),conn:0}; ptMap[k].conn++; }
+  var ptM={};
+  function ptK(v){return v.x.toFixed(2)+','+v.y.toFixed(2)+','+v.z.toFixed(2);}
+  function addPt(v){var k=ptK(v);if(!ptM[k])ptM[k]={pos:v.clone(),c:0};ptM[k].c++;}
 
   var upY=new THREE.Vector3(0,1,0);
-  for(var i=0;i<segs3D.length;i++){
-    var seg=segs3D[i];
-    var dist=seg.start.distanceTo(seg.end);
-    if(dist<0.01) continue;
-    var mid=seg.start.clone().lerp(seg.end,.5);
-    var dir=seg.end.clone().sub(seg.start).normalize();
-    var geo=new THREE.CylinderBufferGeometry(baseR,baseR,dist,24,1);
-    var mesh=new THREE.Mesh(geo,pipeMat);
-    mesh.position.copy(mid);
-    mesh.quaternion.setFromUnitVectors(upY,dir);
-    mesh.castShadow=true; mesh.receiveShadow=true;
-    pipeGroup.add(mesh);
-    ensurePt(seg.start); ensurePt(seg.end);
+  for(var i=0;i<seg3.length;i++){
+    var sg=seg3[i],d=sg.s.distanceTo(sg.e);
+    if(d<.01) continue;
+    var mid=sg.s.clone().lerp(sg.e,.5);
+    var dir=sg.e.clone().sub(sg.s).normalize();
+    var geo=new THREE.CylinderBufferGeometry(baseR,baseR,d,24,1);
+    var m=new THREE.Mesh(geo,pMat);
+    m.position.copy(mid);
+    m.quaternion.setFromUnitVectors(upY,dir);
+    m.castShadow=true;m.receiveShadow=true;
+    pg.add(m);
+    addPt(sg.s);addPt(sg.e);
   }
 
-  // Junction spheres
-  var sphGeo=new THREE.SphereBufferGeometry(baseR*1.05,22,16);
-  for(var k in ptMap){
-    var sp=new THREE.Mesh(sphGeo,jntMat);
-    sp.position.copy(ptMap[k].pos);
-    sp.castShadow=true; pipeGroup.add(sp);
-  }
+  var sG=new THREE.SphereBufferGeometry(baseR*1.05,22,16);
+  for(var k in ptM){var sp=new THREE.Mesh(sG,jMat);sp.position.copy(ptM[k].pos);sp.castShadow=true;pg.add(sp);}
 
-  // Endcaps
-  for(var k in ptMap){
-    if(ptMap[k].conn!==1) continue;
-    var pos=ptMap[k].pos;
-    for(var i=0;i<segs3D.length;i++){
-      var isS=pos.distanceTo(segs3D[i].start)<0.1;
-      var isE=pos.distanceTo(segs3D[i].end)<0.1;
+  for(var k in ptM){
+    if(ptM[k].c!==1) continue;
+    var pos=ptM[k].pos;
+    for(var i=0;i<seg3.length;i++){
+      var isS=pos.distanceTo(seg3[i].s)<.1,isE=pos.distanceTo(seg3[i].e)<.1;
       if(!isS&&!isE) continue;
-      var away=isS?segs3D[i].end:segs3D[i].start;
-      var dir2=pos.clone().sub(away).normalize();
-      var capGeo=new THREE.CircleBufferGeometry(baseR,20);
-      var cap=new THREE.Mesh(capGeo,capMat);
-      cap.position.copy(pos).addScaledVector(dir2,0.01);
-      cap.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),dir2);
-      cap.castShadow=true; pipeGroup.add(cap); break;
+      var aw=isS?seg3[i].e:seg3[i].s;
+      var d2=pos.clone().sub(aw).normalize();
+      var cg=new THREE.CircleBufferGeometry(baseR,20);
+      var cp=new THREE.Mesh(cg,cMat);
+      cp.position.copy(pos).addScaledVector(d2,.01);
+      cp.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),d2);
+      cp.castShadow=true;pg.add(cp);break;
     }
   }
 
-  // Reposition floor & grid
-  var bbF=new THREE.Box3().setFromObject(pipeGroup);
+  var bbF=new THREE.Box3().setFromObject(pg);
   var fy=bbF.min.y-baseR;
-  floorMesh.position.y=fy; grid.position.y=fy-0.02;
+  flr.position.y=fy;grid.position.y=fy-.02;
 
-  // Fit camera
-  var ctrF=new THREE.Vector3(); bbF.getCenter(ctrF);
-  var szF=new THREE.Vector3(); bbF.getSize(szF);
-  var maxS=Math.max(szF.x,szF.y,szF.z);
+  var ctrF=new THREE.Vector3();bbF.getCenter(ctrF);
+  var szF=new THREE.Vector3();bbF.getSize(szF);
+  var ms=Math.max(szF.x,szF.y,szF.z);
   var fov=camera.fov*Math.PI/180;
-  var dist=(maxS/2/Math.tan(fov/2))*1.7;
-  controls.target.copy(ctrF);
+  var dist=(ms/2/Math.tan(fov/2))*1.7;
+  ctrl.target.copy(ctrF);
   camera.position.set(ctrF.x+dist*.65,ctrF.y+dist*.42,ctrF.z+dist*.82);
-  camera.near=dist*.001; camera.far=dist*12;
-  camera.updateProjectionMatrix(); controls.update();
-
-  return segs3D.length;
+  camera.near=dist*.001;camera.far=dist*12;
+  camera.updateProjectionMatrix();ctrl.update();
+  return seg3.length;
 }
 
-// ═══════════════════════════════════════
-// PDF PROCESSING PIPELINE
-// ═══════════════════════════════════════
-function setLoad(txt){
-  var el=document.getElementById('lov');
-  document.getElementById('ltxt').textContent=txt||'';
-  el.classList.toggle('show',!!txt);
+/* ════════════════════════════════
+   PDF PROCESSING PIPELINE
+════════════════════════════════ */
+function setLoad(t){var e=document.getElementById('lov');document.getElementById('lt').textContent=t||'';e.classList.toggle('on',!!t);}
+
+function processPDF(buf){
+  setLoad('PDF 스트림 추출 중...');
+  setTimeout(function(){
+    try{
+      var raw=parsePDFBuffer(buf);
+      setLoad('파이프 라인 분석 중...');
+      setTimeout(function(){
+        try{
+          var ps=filterPipeSegs(raw);
+          if(!ps.length){
+            setLoad(null);
+            showErr('파이프 라인 인식 실패 — Pipe ISO 앱 PDF인지 확인해주세요 (총 '+raw.length+'개 선 추출됨)');
+            return;
+          }
+          setLoad('3D 렌더링 중...');
+          setTimeout(function(){
+            var s3=buildNet3D(ps);
+            var cnt=buildScene(s3);
+            showResult(cnt,ps.length,raw.length);
+          },30);
+        }catch(e){setLoad(null);showErr('분석 오류: '+e.message);console.error(e);}
+      },30);
+    }catch(e){setLoad(null);showErr('파싱 오류: '+e.message);console.error(e);}
+  },30);
 }
 
-function processPDF(buf) {
-  setLoad('PDF 로딩 중...');
-  pdfjsLib.getDocument({data:buf}).promise.then(function(pdf){
-    return pdf.getPage(1);
-  }).then(function(page){
-    setLoad('벡터 선 추출 중...');
-    return page.getOperatorList();
-  }).then(function(opList){
-    setLoad('파이프 패턴 분석 중...');
-    var raw = extractLines(opList);
-    var pipeSegs = filterPipeSegs(raw);
-
-    if(!pipeSegs.length){
-      setLoad(null);
-      showErr('파이프 라인 인식 실패 – Pipe ISO 앱에서 내보낸 PDF를 사용해주세요');
-      return;
-    }
-
-    setLoad('3D 모델 생성 중...');
-    setTimeout(function(){
-      var segs3D = buildNet3D(pipeSegs);
-      var count  = buildScene(segs3D);
-      showResult(count, pipeSegs.length);
-    }, 30);
-  }).catch(function(err){
-    setLoad(null);
-    showErr('오류: '+err.message);
-    console.error(err);
-  });
-}
-
-function showResult(pipes, extracted){
+function showResult(pipes,extracted,total){
   setLoad(null);
   document.getElementById('uov').classList.add('gone');
-  document.getElementById('ctrl').classList.add('show');
-  document.getElementById('infobar').classList.add('show');
-  document.getElementById('btn-reset').style.display='';
-  document.getElementById('btn-open').style.display='';
-  var st=document.getElementById('stats');
-  st.innerHTML='파이프 '+pipes+'개<br>추출 라인 '+extracted+'개';
-  st.classList.add('show');
+  document.getElementById('cp').classList.add('on');
+  document.getElementById('ib').classList.add('on');
+  document.getElementById('br').style.display='';
+  document.getElementById('bo').style.display='';
+  var s=document.getElementById('sb');
+  s.innerHTML='파이프 '+pipes+'개<br>추출 '+extracted+'개 / 전체 '+total+'개';
+  s.classList.add('on');
 }
 
-// ═══════════════════════════════════════
-// DEMO
-// ═══════════════════════════════════════
-function add(arr,x1,y1,z1,x2,y2,z2){
-  arr.push({start:new THREE.Vector3(x1,y1,z1),end:new THREE.Vector3(x2,y2,z2)});
-}
+/* ════════════════════════════════
+   DEMO SCENE
+════════════════════════════════ */
+function mk(x1,y1,z1,x2,y2,z2){return{s:new THREE.Vector3(x1,y1,z1),e:new THREE.Vector3(x2,y2,z2)};}
 function runDemo(){
-  var s=[];
-  add(s,-22,0,0,-8,0,0); add(s,-8,0,0,0,0,0); add(s,0,0,0,14,0,0); add(s,14,0,0,22,0,0);
-  add(s,-8,0,0,-8,14,0); add(s,-8,14,0,-8,14,-10); add(s,-8,14,-10,4,14,-10); add(s,4,14,-10,4,0,-10);
-  add(s,0,0,0,0,9,0); add(s,0,9,0,10,9,0); add(s,10,9,0,10,9,9); add(s,10,9,9,10,0,9);
-  add(s,4,0,0,4,0,12); add(s,4,0,12,4,7,12); add(s,4,7,12,-6,7,12); add(s,-6,7,12,-6,0,12);
-  add(s,22,0,0,22,8,0); add(s,22,8,0,22,8,-8);
+  var s=[
+    mk(-22,0,0,-8,0,0),mk(-8,0,0,0,0,0),mk(0,0,0,14,0,0),mk(14,0,0,22,0,0),
+    mk(-8,0,0,-8,14,0),mk(-8,14,0,-8,14,-10),mk(-8,14,-10,4,14,-10),mk(4,14,-10,4,0,-10),
+    mk(0,0,0,0,9,0),mk(0,9,0,10,9,0),mk(10,9,0,10,9,9),mk(10,9,9,10,0,9),
+    mk(4,0,0,4,0,12),mk(4,0,12,4,7,12),mk(4,7,12,-6,7,12),mk(-6,7,12,-6,0,12),
+    mk(22,0,0,22,8,0),mk(22,8,0,22,8,-8)
+  ];
   buildScene(s);
-  showResult(s.length,0);
-  document.getElementById('stats').innerHTML='데모 모드<br>파이프 '+s.length+'개';
+  showResult(s.length,s.length,0);
+  document.getElementById('sb').innerHTML='데모 모드<br>파이프 '+s.length+'개';
 }
-window.runDemo = runDemo;
+window.runDemo=runDemo;
 
-// ═══════════════════════════════════════
-// UI CONTROLS
-// ═══════════════════════════════════════
-window.onRadius = function(v){ radiusScale=parseFloat(v); };
-window.onColor  = function(v){ pipeMat.color.set(v); jntMat.color.set(v); };
-window.onShiny  = function(v){ var f=parseFloat(v); pipeMat.shininess=f; jntMat.shininess=f+20; };
-window.onBg     = function(v){ scene.background=new THREE.Color(v); };
-window.onLight  = function(v){
-  var f=parseFloat(v);
-  ambLight.intensity=1.0*f; keyLight.intensity=2.0*f;
-  fillLight.intensity=0.8*f; rimLight.intensity=0.5*f;
+/* ════════════════════════════════
+   UI CONTROLS
+════════════════════════════════ */
+window.onR=function(v){rScale=parseFloat(v);};
+window.onC=function(v){pMat.color.set(v);jMat.color.set(v);};
+window.onS=function(v){var f=parseFloat(v);pMat.shininess=f;jMat.shininess=f+20;};
+window.onBg=function(v){scene.background=new THREE.Color(v);};
+window.onL=function(v){var f=parseFloat(v);ambL.intensity=f;keyL.intensity=2*f;fillL.intensity=.8*f;rimL.intensity=.5*f;};
+window.onG=function(v){grid.visible=v>0;};
+window.resetCam=function(){
+  if(!pg.children.length) return;
+  var bb=new THREE.Box3().setFromObject(pg);
+  var c=new THREE.Vector3();bb.getCenter(c);
+  var s=new THREE.Vector3();bb.getSize(s);
+  var d=Math.max(s.x,s.y,s.z)*1.7;
+  ctrl.target.copy(c);
+  camera.position.set(c.x+d*.65,c.y+d*.42,c.z+d*.82);
+  ctrl.update();
 };
-window.onGrid   = function(v){ grid.visible=v>0; };
-window.resetCam = function(){
-  if(!pipeGroup.children.length) return;
-  var bb=new THREE.Box3().setFromObject(pipeGroup);
-  var ctr=new THREE.Vector3(); bb.getCenter(ctr);
-  var sz=new THREE.Vector3(); bb.getSize(sz);
-  var d=Math.max(sz.x,sz.y,sz.z)*1.7;
-  controls.target.copy(ctr);
-  camera.position.set(ctr.x+d*.65,ctr.y+d*.42,ctr.z+d*.82);
-  controls.update();
-};
-window.openFile = function(){ document.getElementById('fi').click(); };
+window.openFile=function(){document.getElementById('fi').click();};
 
-// ═══════════════════════════════════════
-// FILE HANDLING
-// ═══════════════════════════════════════
-document.getElementById('fi').addEventListener('change', function(e){
-  var f=e.target.files[0];
-  if(!f) return;
-  var reader=new FileReader();
-  reader.onload=function(ev){ processPDF(ev.target.result); };
-  reader.readAsArrayBuffer(f);
+/* ════════════════════════════════
+   FILE HANDLING
+════════════════════════════════ */
+document.getElementById('fi').addEventListener('change',function(e){
+  var f=e.target.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(ev){processPDF(ev.target.result);};
+  r.readAsArrayBuffer(f);
   e.target.value='';
 });
-
 document.getElementById('uov').addEventListener('dragover',function(e){e.preventDefault();});
 document.addEventListener('drop',function(e){
   e.preventDefault();
   var f=e.dataTransfer.files[0];
-  if(f&&f.type==='application/pdf'){
-    var reader=new FileReader();
-    reader.onload=function(ev){ processPDF(ev.target.result); };
-    reader.readAsArrayBuffer(f);
-  }
+  if(f&&f.type==='application/pdf'){var r=new FileReader();r.onload=function(ev){processPDF(ev.target.result);};r.readAsArrayBuffer(f);}
 });
 
 })();
