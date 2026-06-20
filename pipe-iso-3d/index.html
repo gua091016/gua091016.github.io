@@ -409,7 +409,7 @@ window.pdfjsLib.GlobalWorkerOptions.workerSrc =
 ═══════════════════════════════════════ */
 const OPS = window.pdfjsLib.OPS;
 
-function extractLines(opList, pageH) {
+function extractLines(opList) {
   const segs = [];
   const { fnArray: fns, argsArray: args } = opList;
 
@@ -441,13 +441,12 @@ function extractLines(opList, pageH) {
       case OPS.setLineWidth: lw = a[0]; break;
       case OPS.moveTo: {
         const [px,py] = tp(a[0],a[1]);
-        cx=px; cy=pageH-py; sx=cx; sy=cy; break;
+        cx=px; cy=py; sx=cx; sy=cy; break;  // PDF Y-up: no flip
       }
       case OPS.lineTo: {
         const [px,py] = tp(a[0],a[1]);
-        const nx=px, ny=pageH-py;
-        segs.push({ x1:cx, y1:cy, x2:nx, y2:ny, lw });
-        cx=nx; cy=ny; break;
+        segs.push({ x1:cx, y1:cy, x2:px, y2:py, lw });
+        cx=px; cy=py; break;
       }
       case OPS.closePath: {
         if(Math.hypot(cx-sx, cy-sy) > 0.1)
@@ -508,16 +507,33 @@ function mergeSegs(segs, eps=3.5) {
 
 /* ── Filter pipe segments ── */
 function filterPipeSegs(raw) {
+  if (!raw.length) return [];
+
+  // Pipes are always the THICKEST lines in the PDF.
+  // Grid lines / dimension lines are thin. Use relative threshold.
+  const maxLW = Math.max(...raw.map(s => s.lw));
+  const lwMin  = maxLW * 0.45;   // keep top 45% thickness → pipe lines only
+
   const MIN_LEN = 6;
   const classified = raw
-    .filter(s => segLen(s) >= MIN_LEN)
+    .filter(s => s.lw >= lwMin && segLen(s) >= MIN_LEN)
     .map(s => {
-      const ax = isoAxis(s.x1,s.y1,s.x2,s.y2);
-      return ax ? {...s, axis:ax} : null;
+      const ax = isoAxis(s.x1, s.y1, s.x2, s.y2);
+      return ax ? {...s, axis: ax} : null;
     })
     .filter(Boolean);
 
-  return mergeSegs(classified);
+  // Deduplicate: app sometimes draws each pipe twice (outline + fill)
+  const deduped = [];
+  for (const seg of classified) {
+    const isDup = deduped.some(d =>
+      Math.hypot(d.x1-seg.x1, d.y1-seg.y1) < 2 &&
+      Math.hypot(d.x2-seg.x2, d.y2-seg.y2) < 2
+    );
+    if (!isDup) deduped.push(seg);
+  }
+
+  return mergeSegs(deduped);
 }
 
 /* ═══════════════════════════════════════
@@ -574,24 +590,48 @@ function buildNet3D(pipeSegs) {
     adj[e.b].push({ nb: e.a, ei: i });
   });
 
-  // BFS to place nodes in 3D
-  nodes[0].pos3D = new THREE.Vector3(0,0,0);
-  const queue   = [0];
-  const visited = new Set([0]);
+  // Multi-component BFS:
+  // Each disconnected group is placed using inverse-ISO projection
+  // relative to the first node so relative 3D positions are preserved.
+  const refX = nodes[0].x, refY = nodes[0].y;
+  const SQ3  = Math.sqrt(3);
 
-  while (queue.length) {
-    const cur = queue.shift();
-    const pos = nodes[cur].pos3D;
-    for (const { nb, ei } of adj[cur]) {
-      if (visited.has(nb)) continue;
-      visited.add(nb);
-      const e   = edges[ei];
-      const nbN = nodes[nb];
-      const dx  = nbN.x - nodes[cur].x;
-      const dy  = nbN.y - nodes[cur].y;
-      const d3  = dir3D(e.axis, dx, dy);
-      nodes[nb].pos3D = pos.clone().addScaledVector(d3, e.len3D);
-      queue.push(nb);
+  function isoInverse(nx, ny) {
+    // Inverse of: sx = (X-Z)*cos30°, sy = (X+Z)*sin30° + Y
+    // Assume Y=0 (elevation unknown for disconnected nodes):
+    const dx2d = nx - refX, dy2d = ny - refY;
+    return new THREE.Vector3(
+      (dx2d / SQ3 + dy2d) * scale,
+      0,
+      (dy2d - dx2d / SQ3) * scale
+    );
+  }
+
+  const visited  = new Set();
+  const unplaced = new Set(nodes.map((_,i) => i));
+
+  while (unplaced.size > 0) {
+    const startIdx = [...unplaced][0];
+    // Seed this component's root using inverse ISO projection
+    nodes[startIdx].pos3D = isoInverse(nodes[startIdx].x, nodes[startIdx].y);
+    visited.add(startIdx);
+    unplaced.delete(startIdx);
+
+    const queue = [startIdx];
+    while (queue.length) {
+      const cur = queue.shift();
+      const pos = nodes[cur].pos3D;
+      for (const { nb, ei } of adj[cur]) {
+        if (visited.has(nb)) continue;
+        visited.add(nb);
+        unplaced.delete(nb);
+        const e  = edges[ei];
+        const dx = nodes[nb].x - nodes[cur].x;
+        const dy = nodes[nb].y - nodes[cur].y;
+        const d3 = dir3D(e.axis, dx, dy);
+        nodes[nb].pos3D = pos.clone().addScaledVector(d3, e.len3D);
+        queue.push(nb);
+      }
     }
   }
 
@@ -747,7 +787,7 @@ async function processPDF(buf) {
 
   setLoad('벡터 선 추출 중...');
   const opList = await page.getOperatorList();
-  const raw    = extractLines(opList, vp.height);
+  const raw    = extractLines(opList);
 
   setLoad('파이프 패턴 분석 중...');
   const pipeSegs = filterPipeSegs(raw);
