@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipe ISO 3D Viewer v6</title>
+<title>Pipe ISO 3D Viewer v7</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#070b14;color:#c8d8f0;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;}
@@ -49,7 +49,7 @@ input[type=color]{width:28px;height:19px;border:1px solid rgba(55,100,180,.28);b
 </head>
 <body>
 <div id="hdr">
-  <div class="hl">P</div><span class="ht">Pipe ISO 3D <span style="font-size:10px;opacity:.5">v6</span></span>
+  <div class="hl">P</div><span class="ht">Pipe ISO 3D <span style="font-size:10px;opacity:.5">v7</span></span>
   <div class="hs"></div>
   <button class="hb" id="br" onclick="resetCam()" style="display:none">카메라 리셋</button>
   <button class="hb" id="bo" onclick="openFile()" style="display:none">PDF 열기</button>
@@ -179,37 +179,36 @@ function decodeLatin1(u8){
 
 function parsePDFBuffer(buf){
   var bytes=new Uint8Array(buf);
+  var diag={streams:0,decomp:0,content:0,segs:0};
 
-  /* Byte-level stream boundary search – no full-file string decode */
-  var results=[], pos=0;
+  /* Byte-level stream boundary search */
+  var pos=0, allSegs=[];
   while(true){
     var si=findBytes(bytes,B_STREAM,pos);
     if(si<0) break;
     var ds=si+6;
-    if(bytes[ds]===13) ds++;   /* \r */
-    if(bytes[ds]===10) ds++;   /* \n */
+    if(bytes[ds]===13) ds++;
+    if(bytes[ds]===10) ds++;
     var ei=findBytes(bytes,B_ENDSTREAM,ds);
     if(ei<0) break;
-    results.push(bytes.slice(ds,ei));
+    diag.streams++;
+    var raw=bytes.slice(ds,ei);
     pos=ei+9;
-  }
 
-  /* Try each stream: decompress and parse */
-  var allSegs=[];
-  for(var r=0;r<results.length;r++){
-    var raw=results[r];
     var decoded=null;
     try{ decoded=pako.inflate(raw); }catch(e1){
       try{ decoded=pako.inflateRaw(raw); }catch(e2){ continue; }
     }
+    diag.decomp++;
     var text=decodeLatin1(decoded);
-    /* Content stream check: has path moveto operator */
     if(text.indexOf(' m ')>=0||text.indexOf('\nm')>=0||text.indexOf('\rm')>=0){
+      diag.content++;
       var segs=parseContentStream(text);
+      diag.segs+=segs.length;
       if(segs.length>0) allSegs=allSegs.concat(segs);
     }
   }
-  return allSegs;
+  return {segs:allSegs,diag:diag};
 }
 
 function parseContentStream(text){
@@ -446,15 +445,21 @@ function processPDF(buf){
   setLoad('PDF 스트림 추출 중...');
   setTimeout(function(){
     try{
-      var raw=parsePDFBuffer(buf);
+      var result=parsePDFBuffer(buf);
+      var raw=result.segs, diag=result.diag;
       setLoad('파이프 라인 분석 중...');
       setTimeout(function(){
         try{
           var ps=filterPipeSegs(raw);
           if(!ps.length){
             setLoad(null);
-            if(!raw.length) showErr('PDF 스트림 파싱 실패 — 스트림 0개 추출. pako 로드 여부: '+(typeof pako));
-            else showErr('ISO 파이프 인식 실패 — 전체 선 '+raw.length+'개 추출됨. 최대lw='+raw.reduce(function(m,s){return Math.max(m,s.lw);},0).toFixed(3)+' 각도분포: Y='+(raw.filter(function(s){var d=((Math.atan2(s.y2-s.y1,s.x2-s.x1)*180/Math.PI%180)+180)%180;return Math.abs(d-90)<9;}).length)+' X='+(raw.filter(function(s){var d=((Math.atan2(s.y2-s.y1,s.x2-s.x1)*180/Math.PI%180)+180)%180;return Math.abs(d-30)<9;}).length)+' Z='+(raw.filter(function(s){var d=((Math.atan2(s.y2-s.y1,s.x2-s.x1)*180/Math.PI%180)+180)%180;return Math.abs(d-150)<9;}).length));
+            var msg='[스트림'+diag.streams+'/압축해제'+diag.decomp+'/콘텐츠'+diag.content+'/선'+diag.segs+'개] ';
+            if(!diag.streams) msg+='PDF에서 스트림을 찾지 못함';
+            else if(!diag.decomp) msg+='모든 스트림 압축해제 실패';
+            else if(!diag.content) msg+='경로(path) 데이터 없음';
+            else if(!diag.segs) msg+='선분 0개 추출됨';
+            else msg+='ISO 각도 선분 없음 (파이프ISO 앱 PDF인지 확인)';
+            showErr(msg);
             return;
           }
           setLoad('3D 렌더링 중...');
