@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipe ISO 3D Viewer v7</title>
+<title>Pipe ISO 3D Viewer v8</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#070b14;color:#c8d8f0;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;}
@@ -49,7 +49,7 @@ input[type=color]{width:28px;height:19px;border:1px solid rgba(55,100,180,.28);b
 </head>
 <body>
 <div id="hdr">
-  <div class="hl">P</div><span class="ht">Pipe ISO 3D <span style="font-size:10px;opacity:.5">v7</span></span>
+  <div class="hl">P</div><span class="ht">Pipe ISO 3D <span style="font-size:10px;opacity:.5">v8</span></span>
   <div class="hs"></div>
   <button class="hb" id="br" onclick="resetCam()" style="display:none">카메라 리셋</button>
   <button class="hb" id="bo" onclick="openFile()" style="display:none">PDF 열기</button>
@@ -89,7 +89,6 @@ input[type=color]{width:28px;height:19px;border:1px solid rgba(55,100,180,.28);b
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 <script>
 (function(){
 'use strict';
@@ -98,10 +97,9 @@ input[type=color]{width:28px;height:19px;border:1px solid rgba(55,100,180,.28);b
 function showErr(m){
   var e=document.getElementById('em');
   e.textContent=m; e.style.display='block';
-  setTimeout(function(){e.style.display='none';},7000);
+  setTimeout(function(){e.style.display='none';},9000);
 }
 if(typeof THREE==='undefined'){showErr('Three.js 로딩 실패');return;}
-if(typeof pako==='undefined'){showErr('pako 로딩 실패');return;}
 
 /* ════════════════════════════════
    THREE.JS SETUP
@@ -154,7 +152,7 @@ function resize(){
    PDF 직접 파싱 (Python 검증 로직 포트)
 ════════════════════════════════ */
 
-/* Byte-level search: find byte sequence in Uint8Array */
+/* ── Byte search ── */
 function findBytes(arr,seq,from){
   from=from||0;
   var sl=seq.length,al=arr.length-sl;
@@ -164,25 +162,45 @@ function findBytes(arr,seq,from){
   }
   return -1;
 }
-var B_STREAM=new Uint8Array([115,116,114,101,97,109]);
-var B_ENDSTREAM=new Uint8Array([101,110,100,115,116,114,101,97,109]);
+var B_STREAM=new Uint8Array([115,116,114,101,97,109]);       /* 'stream' */
+var B_ENDSTREAM=new Uint8Array([101,110,100,115,116,114,101,97,109]); /* 'endstream' */
 
-function decodeLatin1(u8){
-  /* Fastest cross-browser Latin-1 decode */
-  try{return new TextDecoder('latin1').decode(u8);}catch(e){}
-  try{return new TextDecoder('iso-8859-1').decode(u8);}catch(e){}
-  /* fallback */
+/* ── Decompress: native DecompressionStream (no CDN needed) ── */
+function inflate(data){
+  /* DecompressionStream: Chrome80+, Safari16.4+, Firefox113+ */
+  if(typeof DecompressionStream!=='undefined'){
+    /* 'deflate' mode handles zlib-wrapped (0x78...) which PDF FlateDecode uses */
+    return new Response(
+      new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate'))
+    ).arrayBuffer().then(function(ab){return new Uint8Array(ab);})
+    .catch(function(){
+      /* fallback: try raw deflate (strip 2-byte zlib header) */
+      return new Response(
+        new Blob([data.slice(2)]).stream().pipeThrough(new DecompressionStream('deflate-raw'))
+      ).arrayBuffer().then(function(ab){return new Uint8Array(ab);});
+    });
+  }
+  /* Last resort: pako if somehow available */
+  if(typeof pako!=='undefined'){
+    try{return Promise.resolve(pako.inflate(data));}catch(e){}
+    try{return Promise.resolve(pako.inflateRaw(data));}catch(e){}
+  }
+  return Promise.reject(new Error('no decompressor'));
+}
+
+function u8toStr(u8){
+  try{return new TextDecoder().decode(u8);}catch(e){}
   var s='',n=u8.length;
-  for(var i=0;i<n;i++) s+=String.fromCharCode(u8[i]);
+  for(var i=0;i<n;i++) s+=String.fromCharCode(u8[i]&0x7f);
   return s;
 }
 
-function parsePDFBuffer(buf){
+/* ── Async PDF parser ── */
+async function parsePDFBuffer(buf){
   var bytes=new Uint8Array(buf);
   var diag={streams:0,decomp:0,content:0,segs:0};
+  var allSegs=[], pos=0;
 
-  /* Byte-level stream boundary search */
-  var pos=0, allSegs=[];
   while(true){
     var si=findBytes(bytes,B_STREAM,pos);
     if(si<0) break;
@@ -195,12 +213,11 @@ function parsePDFBuffer(buf){
     var raw=bytes.slice(ds,ei);
     pos=ei+9;
 
-    var decoded=null;
-    try{ decoded=pako.inflate(raw); }catch(e1){
-      try{ decoded=pako.inflateRaw(raw); }catch(e2){ continue; }
-    }
+    var decoded;
+    try{ decoded=await inflate(raw); }catch(e){ continue; }
     diag.decomp++;
-    var text=decodeLatin1(decoded);
+
+    var text=u8toStr(decoded);
     if(text.indexOf(' m ')>=0||text.indexOf('\nm')>=0||text.indexOf('\rm')>=0){
       diag.content++;
       var segs=parseContentStream(text);
@@ -441,37 +458,29 @@ function buildScene(seg3){
 ════════════════════════════════ */
 function setLoad(t){var e=document.getElementById('lov');document.getElementById('lt').textContent=t||'';e.classList.toggle('on',!!t);}
 
-function processPDF(buf){
+async function processPDF(buf){
   setLoad('PDF 스트림 추출 중...');
-  setTimeout(function(){
-    try{
-      var result=parsePDFBuffer(buf);
-      var raw=result.segs, diag=result.diag;
-      setLoad('파이프 라인 분석 중...');
-      setTimeout(function(){
-        try{
-          var ps=filterPipeSegs(raw);
-          if(!ps.length){
-            setLoad(null);
-            var msg='[스트림'+diag.streams+'/압축해제'+diag.decomp+'/콘텐츠'+diag.content+'/선'+diag.segs+'개] ';
-            if(!diag.streams) msg+='PDF에서 스트림을 찾지 못함';
-            else if(!diag.decomp) msg+='모든 스트림 압축해제 실패';
-            else if(!diag.content) msg+='경로(path) 데이터 없음';
-            else if(!diag.segs) msg+='선분 0개 추출됨';
-            else msg+='ISO 각도 선분 없음 (파이프ISO 앱 PDF인지 확인)';
-            showErr(msg);
-            return;
-          }
-          setLoad('3D 렌더링 중...');
-          setTimeout(function(){
-            var s3=buildNet3D(ps);
-            var cnt=buildScene(s3);
-            showResult(cnt,ps.length,raw.length);
-          },30);
-        }catch(e){setLoad(null);showErr('분석 오류: '+e.message);console.error(e);}
-      },30);
-    }catch(e){setLoad(null);showErr('파싱 오류: '+e.message);console.error(e);}
-  },30);
+  try{
+    var result=await parsePDFBuffer(buf);
+    var raw=result.segs, diag=result.diag;
+    setLoad('파이프 라인 분석 중...');
+    var ps=filterPipeSegs(raw);
+    if(!ps.length){
+      setLoad(null);
+      var msg='[스트림'+diag.streams+'/압축해제'+diag.decomp+'/콘텐츠'+diag.content+'/선'+diag.segs+'개] ';
+      if(!diag.streams) msg+='PDF 스트림 없음';
+      else if(!diag.decomp) msg+='압축해제 전부 실패';
+      else if(!diag.content) msg+='드로잉 데이터 없음';
+      else if(!diag.segs) msg+='선분 추출 0개';
+      else msg+='ISO 각도 인식 실패 (Pipe ISO 앱 PDF인지 확인)';
+      showErr(msg);
+      return;
+    }
+    setLoad('3D 렌더링 중...');
+    var s3=buildNet3D(ps);
+    var cnt=buildScene(s3);
+    showResult(cnt,ps.length,raw.length);
+  }catch(e){setLoad(null);showErr('오류: '+e.message);console.error(e);}
 }
 
 function showResult(pipes,extracted,total){
