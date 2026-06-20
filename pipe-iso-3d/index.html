@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipe ISO 3D Viewer v5</title>
+<title>Pipe ISO 3D Viewer v6</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#070b14;color:#c8d8f0;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;}
@@ -49,7 +49,7 @@ input[type=color]{width:28px;height:19px;border:1px solid rgba(55,100,180,.28);b
 </head>
 <body>
 <div id="hdr">
-  <div class="hl">P</div><span class="ht">Pipe ISO 3D <span style="font-size:10px;opacity:.5">v5</span></span>
+  <div class="hl">P</div><span class="ht">Pipe ISO 3D <span style="font-size:10px;opacity:.5">v6</span></span>
   <div class="hs"></div>
   <button class="hb" id="br" onclick="resetCam()" style="display:none">카메라 리셋</button>
   <button class="hb" id="bo" onclick="openFile()" style="display:none">PDF 열기</button>
@@ -153,42 +153,60 @@ function resize(){
 /* ════════════════════════════════
    PDF 직접 파싱 (Python 검증 로직 포트)
 ════════════════════════════════ */
+
+/* Byte-level search: find byte sequence in Uint8Array */
+function findBytes(arr,seq,from){
+  from=from||0;
+  var sl=seq.length,al=arr.length-sl;
+  outer:for(var i=from;i<=al;i++){
+    for(var j=0;j<sl;j++) if(arr[i+j]!==seq[j]) continue outer;
+    return i;
+  }
+  return -1;
+}
+var B_STREAM=new Uint8Array([115,116,114,101,97,109]);
+var B_ENDSTREAM=new Uint8Array([101,110,100,115,116,114,101,97,109]);
+
+function decodeLatin1(u8){
+  /* Fastest cross-browser Latin-1 decode */
+  try{return new TextDecoder('latin1').decode(u8);}catch(e){}
+  try{return new TextDecoder('iso-8859-1').decode(u8);}catch(e){}
+  /* fallback */
+  var s='',n=u8.length;
+  for(var i=0;i<n;i++) s+=String.fromCharCode(u8[i]);
+  return s;
+}
+
 function parsePDFBuffer(buf){
-  /* buf = ArrayBuffer */
   var bytes=new Uint8Array(buf);
 
-  /* Latin-1 decode (PDF binary safe) */
-  var str=new TextDecoder('latin1').decode(bytes);
-
-  /* Find all stream...endstream regions */
-  var results=[];
-  var pos=0;
+  /* Byte-level stream boundary search – no full-file string decode */
+  var results=[], pos=0;
   while(true){
-    var si=str.indexOf('stream',pos);
+    var si=findBytes(bytes,B_STREAM,pos);
     if(si<0) break;
-    /* skip \r\n or \n after 'stream' */
     var ds=si+6;
-    if(str[ds]==='\r') ds++;
-    if(str[ds]==='\n') ds++;
-    var ei=str.indexOf('endstream',ds);
+    if(bytes[ds]===13) ds++;   /* \r */
+    if(bytes[ds]===10) ds++;   /* \n */
+    var ei=findBytes(bytes,B_ENDSTREAM,ds);
     if(ei<0) break;
-    results.push({start:ds,end:ei,data:bytes.slice(ds,ei)});
+    results.push(bytes.slice(ds,ei));
     pos=ei+9;
   }
 
   /* Try each stream: decompress and parse */
   var allSegs=[];
   for(var r=0;r<results.length;r++){
-    var raw=results[r].data;
+    var raw=results[r];
     var decoded=null;
     try{ decoded=pako.inflate(raw); }catch(e1){
       try{ decoded=pako.inflateRaw(raw); }catch(e2){ continue; }
     }
-    var text=new TextDecoder('latin1').decode(decoded);
-    /* Check if this looks like a drawing content stream */
-    if(text.indexOf(' m ')>=0||text.indexOf('\nm ')>=0){
+    var text=decodeLatin1(decoded);
+    /* Content stream check: has path moveto operator */
+    if(text.indexOf(' m ')>=0||text.indexOf('\nm')>=0||text.indexOf('\rm')>=0){
       var segs=parseContentStream(text);
-      if(segs.length>0){ allSegs=allSegs.concat(segs); }
+      if(segs.length>0) allSegs=allSegs.concat(segs);
     }
   }
   return allSegs;
@@ -216,7 +234,7 @@ function parseContentStream(text){
     switch(t){
       case 'q':  stk.push(ctm.slice()); vals=[]; break;
       case 'Q':  if(stk.length) ctm=stk.pop(); vals=[]; break;
-      case 'cm': if(vals.length>=6) mul(vals[0],vals[1],vals[2],vals[3],vals[4],vals[5]); vals=[]; break;
+      case 'cm': if(vals.length>=6){var v6=vals.length-6;mul(vals[v6],vals[v6+1],vals[v6+2],vals[v6+3],vals[v6+4],vals[v6+5]);} vals=[]; break;
       case 'w':  if(vals.length>=1) lw=vals[vals.length-1]; vals=[]; break;
       case 'm':
         if(vals.length>=2){var p=tp(vals[vals.length-2],vals[vals.length-1]);cx=p[0];cy=p[1];sx=cx;sy=cy;}
@@ -435,7 +453,8 @@ function processPDF(buf){
           var ps=filterPipeSegs(raw);
           if(!ps.length){
             setLoad(null);
-            showErr('파이프 라인 인식 실패 — Pipe ISO 앱 PDF인지 확인해주세요 (총 '+raw.length+'개 선 추출됨)');
+            if(!raw.length) showErr('PDF 스트림 파싱 실패 — 스트림 0개 추출. pako 로드 여부: '+(typeof pako));
+            else showErr('ISO 파이프 인식 실패 — 전체 선 '+raw.length+'개 추출됨. 최대lw='+raw.reduce(function(m,s){return Math.max(m,s.lw);},0).toFixed(3)+' 각도분포: Y='+(raw.filter(function(s){var d=((Math.atan2(s.y2-s.y1,s.x2-s.x1)*180/Math.PI%180)+180)%180;return Math.abs(d-90)<9;}).length)+' X='+(raw.filter(function(s){var d=((Math.atan2(s.y2-s.y1,s.x2-s.x1)*180/Math.PI%180)+180)%180;return Math.abs(d-30)<9;}).length)+' Z='+(raw.filter(function(s){var d=((Math.atan2(s.y2-s.y1,s.x2-s.x1)*180/Math.PI%180)+180)%180;return Math.abs(d-150)<9;}).length));
             return;
           }
           setLoad('3D 렌더링 중...');
