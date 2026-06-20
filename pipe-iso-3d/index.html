@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipe ISO 3D Viewer</title>
+<title>Pipe ISO 3D Viewer v5</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#070b14;color:#c8d8f0;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;height:100vh;}
@@ -49,7 +49,7 @@ input[type=color]{width:28px;height:19px;border:1px solid rgba(55,100,180,.28);b
 </head>
 <body>
 <div id="hdr">
-  <div class="hl">P</div><span class="ht">Pipe ISO 3D</span>
+  <div class="hl">P</div><span class="ht">Pipe ISO 3D <span style="font-size:10px;opacity:.5">v5</span></span>
   <div class="hs"></div>
   <button class="hb" id="br" onclick="resetCam()" style="display:none">카메라 리셋</button>
   <button class="hb" id="bo" onclick="openFile()" style="display:none">PDF 열기</button>
@@ -158,8 +158,7 @@ function parsePDFBuffer(buf){
   var bytes=new Uint8Array(buf);
 
   /* Latin-1 decode (PDF binary safe) */
-  var str='';
-  for(var i=0;i<bytes.length;i++) str+=String.fromCharCode(bytes[i]);
+  var str=new TextDecoder('latin1').decode(bytes);
 
   /* Find all stream...endstream regions */
   var results=[];
@@ -185,8 +184,7 @@ function parsePDFBuffer(buf){
     try{ decoded=pako.inflate(raw); }catch(e1){
       try{ decoded=pako.inflateRaw(raw); }catch(e2){ continue; }
     }
-    var text='';
-    for(var i=0;i<decoded.length;i++) text+=String.fromCharCode(decoded[i]);
+    var text=new TextDecoder('latin1').decode(decoded);
     /* Check if this looks like a drawing content stream */
     if(text.indexOf(' m ')>=0||text.indexOf('\nm ')>=0){
       var segs=parseContentStream(text);
