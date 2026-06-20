@@ -3,380 +3,306 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipe ISO 3D Viewer | Koreafitter</title>
+<title>Pipe ISO 3D Viewer</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-
 body {
-  background: #070b14;
-  color: #c8d8f0;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  overflow: hidden;
-  height: 100vh;
-  user-select: none;
+  background:#070b14; color:#c8d8f0;
+  font-family:'Segoe UI',system-ui,sans-serif;
+  overflow:hidden; height:100vh;
 }
 
-/* ── Header ── */
 #header {
-  position: fixed; top:0; left:0; right:0; height:52px;
-  background: rgba(7,11,20,0.93);
-  border-bottom: 1px solid rgba(80,140,220,0.18);
-  display: flex; align-items: center; padding: 0 16px; gap:12px;
-  z-index: 100; backdrop-filter: blur(14px);
+  position:fixed; top:0; left:0; right:0; height:50px;
+  background:rgba(7,11,20,.93);
+  border-bottom:1px solid rgba(80,140,220,.18);
+  display:flex; align-items:center; padding:0 14px; gap:10px;
+  z-index:100; backdrop-filter:blur(12px);
 }
 .hlogo {
-  width:30px; height:30px;
-  background: linear-gradient(135deg,#3a8eff,#0044cc);
-  border-radius:7px; display:flex; align-items:center;
-  justify-content:center; font-size:15px; font-weight:800; color:#fff;
-  flex-shrink:0;
+  width:28px; height:28px;
+  background:linear-gradient(135deg,#3a8eff,#004dcc);
+  border-radius:6px; display:flex; align-items:center;
+  justify-content:center; font-size:14px; font-weight:800; color:#fff;
 }
-.htitle { font-size:15px; font-weight:700; color:#ddeeff; }
-.hsub   { font-size:11px; color:#3a5a8a; }
+.htitle { font-size:14px; font-weight:700; color:#ddeeff; }
 .hspace { flex:1; }
 .hbtn {
-  padding:5px 12px; border-radius:7px;
-  border:1px solid rgba(80,140,220,0.25);
-  background:rgba(25,45,100,0.4); color:#90b8f0;
-  font-size:12px; cursor:pointer; transition:.2s;
+  padding:5px 11px; border-radius:7px;
+  border:1px solid rgba(80,140,220,.25);
+  background:rgba(25,45,100,.4); color:#90b8f0;
+  font-size:12px; cursor:pointer;
 }
-.hbtn:hover { background:rgba(50,90,190,0.5); color:#cce0ff; }
-.hbtn:active { transform:scale(.97); }
+.hbtn:active { opacity:.7; }
 
-/* ── Canvas ── */
-#canvas-wrap {
-  position:fixed; inset:0; top:52px;
-}
-#three-canvas { width:100%; height:100%; display:block; }
+#canvas-wrap { position:fixed; inset:0; top:50px; }
+#c { width:100%; height:100%; display:block; }
 
-/* ── Upload overlay ── */
-#upload-overlay {
-  position:fixed; inset:0; top:52px;
-  background: rgba(7,11,20,0.97);
+/* Upload overlay */
+#uov {
+  position:fixed; inset:0; top:50px;
+  background:rgba(7,11,20,.97);
   display:flex; align-items:center; justify-content:center;
   z-index:80; transition:opacity .5s;
 }
-#upload-overlay.gone { opacity:0; pointer-events:none; }
-
+#uov.gone { opacity:0; pointer-events:none; }
 .ucard {
-  background: rgba(10,16,32,0.9);
-  border: 1.5px dashed rgba(70,130,255,0.3);
-  border-radius:22px; padding:48px 64px;
-  text-align:center; cursor:pointer; max-width:440px; width:92%;
-  position:relative; overflow:hidden;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1),
-              border-color .3s, box-shadow .3s;
+  background:rgba(10,16,32,.9);
+  border:1.5px dashed rgba(70,130,255,.3);
+  border-radius:20px; padding:40px 52px;
+  text-align:center; max-width:400px; width:92%;
+  cursor:pointer; transition:transform .3s, border-color .3s;
 }
-.ucard::before {
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse at 50% 0%, rgba(50,120,255,.07), transparent 65%);
-  pointer-events:none;
-}
-.ucard:hover, .ucard.drag-over {
-  border-color: rgba(80,160,255,.65);
-  transform: translateY(-5px) scale(1.015);
-  box-shadow: 0 24px 60px rgba(40,110,255,.13);
-}
-.uico {
-  width:68px; height:68px; margin:0 auto 20px;
-  background: linear-gradient(135deg,rgba(50,120,255,.18),rgba(20,60,180,.15));
-  border-radius:16px; display:flex; align-items:center; justify-content:center;
-  font-size:30px; border:1px solid rgba(70,130,255,.18);
-}
-.utitle { font-size:21px; font-weight:700; color:#d0e4ff; margin-bottom:9px; }
-.udesc  { font-size:13px; color:#4a6a9a; line-height:1.65; margin-bottom:24px; }
+.ucard:hover { border-color:rgba(80,160,255,.6); transform:translateY(-4px); }
+.uico { font-size:42px; margin-bottom:16px; }
+.utitle { font-size:20px; font-weight:700; color:#d0e4ff; margin-bottom:8px; }
+.udesc { font-size:13px; color:#4a6a9a; line-height:1.6; margin-bottom:20px; }
 .uhint {
-  display:inline-flex; align-items:center; gap:7px;
-  background:rgba(35,70,160,.28); border:1px solid rgba(70,130,210,.18);
-  border-radius:8px; padding:7px 14px; font-size:11.5px; color:#5a7aaa;
+  display:inline-block; background:rgba(35,70,160,.28);
+  border:1px solid rgba(70,130,210,.2); border-radius:7px;
+  padding:6px 13px; font-size:11.5px; color:#5a7aaa;
 }
-.demo-row {
-  margin-top:20px;
-  font-size:12px; color:#3a5270;
-}
+.demo-row { margin-top:16px; font-size:12px; color:#3a5270; }
 .demo-btn {
   background:none; border:1px solid rgba(60,100,180,.3);
-  color:#5a80b0; border-radius:6px; padding:4px 10px;
+  color:#5a80b0; border-radius:6px; padding:3px 9px;
   cursor:pointer; font-size:12px; margin-left:6px;
-  transition:.2s;
 }
-.demo-btn:hover { color:#90b8f0; border-color:rgba(80,140,220,.5); }
-#file-input { display:none; }
+#fi { display:none; }
 
-/* ── Loading ── */
-#loading {
-  position:fixed; inset:0; top:52px;
+/* Loading */
+#lov {
+  position:fixed; inset:0; top:50px;
   background:rgba(7,11,20,.92);
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
   z-index:90; opacity:0; pointer-events:none; transition:opacity .25s;
 }
-#loading.show { opacity:1; pointer-events:all; }
+#lov.show { opacity:1; pointer-events:all; }
 .lring {
-  width:52px; height:52px;
+  width:50px; height:50px;
   border:3px solid rgba(70,130,255,.15);
-  border-top-color:#3a8eff;
-  border-radius:50%; animation:spin .75s linear infinite; margin-bottom:16px;
+  border-top-color:#3a8eff; border-radius:50%;
+  animation:spin .75s linear infinite; margin-bottom:14px;
 }
 @keyframes spin { to { transform:rotate(360deg); } }
-#loading-txt { font-size:13px; color:#4a6a9a; }
+#ltxt { font-size:13px; color:#4a6a9a; }
 
-/* ── Controls panel ── */
+/* Controls */
 #ctrl {
-  position:fixed; top:64px; right:14px;
+  position:fixed; top:62px; right:12px;
   background:rgba(9,14,26,.9);
   border:1px solid rgba(55,95,175,.18);
-  border-radius:13px; padding:13px; width:196px;
-  backdrop-filter:blur(16px); z-index:50;
-  display:none;
+  border-radius:12px; padding:12px; width:190px;
+  backdrop-filter:blur(14px); z-index:50; display:none;
 }
 #ctrl.show { display:block; }
-.csec { margin-bottom:14px; }
+.csec { margin-bottom:12px; }
 .csec:last-child { margin-bottom:0; }
-.clabel {
-  font-size:9.5px; font-weight:700; letter-spacing:.1em;
-  text-transform:uppercase; color:#2a4a7a; margin-bottom:8px;
+.clb {
+  font-size:9px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:#2a4a7a; margin-bottom:7px;
 }
-.crow {
+.cr {
   display:flex; align-items:center;
   justify-content:space-between;
-  font-size:11.5px; color:#607898; margin-bottom:7px;
+  font-size:11px; color:#607898; margin-bottom:6px;
 }
-.crow:last-child { margin-bottom:0; }
+.cr:last-child { margin-bottom:0; }
 input[type=range] {
-  -webkit-appearance:none; width:96px; height:3px;
-  background:rgba(55,100,180,.28); border-radius:3px; outline:none;
+  -webkit-appearance:none; width:90px; height:3px;
+  background:rgba(55,100,180,.28); border-radius:3px;
 }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance:none; width:13px; height:13px;
   border-radius:50%; background:#3a8eff; cursor:pointer;
 }
 input[type=color] {
-  width:30px; height:20px; border:1px solid rgba(55,100,180,.28);
-  border-radius:4px; background:none; cursor:pointer; padding:1px;
+  width:28px; height:19px;
+  border:1px solid rgba(55,100,180,.28);
+  border-radius:4px; background:none; padding:1px;
 }
 
-/* ── Info bar ── */
 #infobar {
-  position:fixed; bottom:14px; left:50%; transform:translateX(-50%);
+  position:fixed; bottom:12px; left:50%; transform:translateX(-50%);
   background:rgba(9,14,26,.82); border:1px solid rgba(55,95,175,.18);
-  border-radius:20px; padding:7px 18px; font-size:11.5px; color:#3a5a8a;
+  border-radius:18px; padding:6px 16px; font-size:11px; color:#3a5a8a;
   backdrop-filter:blur(8px); pointer-events:none; white-space:nowrap;
   opacity:0; transition:opacity .4s; z-index:50;
 }
 #infobar.show { opacity:1; }
 
-/* ── Stats ── */
 #stats {
-  position:fixed; bottom:14px; left:14px;
+  position:fixed; bottom:12px; left:12px;
   background:rgba(9,14,26,.82); border:1px solid rgba(55,95,175,.18);
-  border-radius:10px; padding:7px 11px; font-size:11px; color:#2a4a6a;
+  border-radius:9px; padding:6px 10px; font-size:11px; color:#2a4a6a;
   backdrop-filter:blur(8px); line-height:1.7;
   opacity:0; transition:opacity .4s; z-index:50;
 }
 #stats.show { opacity:1; }
+
+#errmsg {
+  position:fixed; top:70px; left:50%; transform:translateX(-50%);
+  background:rgba(80,20,20,.9); border:1px solid rgba(200,80,80,.4);
+  border-radius:10px; padding:10px 18px; font-size:12px; color:#ffaaaa;
+  z-index:200; display:none; max-width:90%;
+}
 </style>
 </head>
 <body>
 
-<header id="header">
+<div id="header">
   <div class="hlogo">P</div>
   <span class="htitle">Pipe ISO 3D</span>
-  <span class="hsub">— Viewer</span>
   <div class="hspace"></div>
   <button class="hbtn" id="btn-reset" onclick="resetCam()" style="display:none">카메라 리셋</button>
   <button class="hbtn" id="btn-open"  onclick="openFile()"  style="display:none">PDF 열기</button>
-</header>
-
-<div id="canvas-wrap">
-  <canvas id="three-canvas"></canvas>
 </div>
 
-<!-- Upload overlay -->
-<div id="upload-overlay">
-  <div class="ucard" id="drop-zone" onclick="openFile()">
+<div id="canvas-wrap"><canvas id="c"></canvas></div>
+
+<div id="uov">
+  <div class="ucard" onclick="openFile()">
     <div class="uico">📐</div>
     <div class="utitle">Pipe ISO 3D Viewer</div>
-    <div class="udesc">
-      Pipe ISO 앱에서 내보낸 PDF를<br>
-      드래그하거나 클릭해서 열어주세요
-    </div>
-    <div class="uhint"><span>📄</span> ISO 스케치 벡터 PDF 지원</div>
+    <div class="udesc">Pipe ISO 앱에서 내보낸 PDF를<br>클릭하거나 드래그해서 열어주세요</div>
+    <div class="uhint">📄 ISO 스케치 PDF 지원</div>
     <div class="demo-row">
-      샘플이 없으시면 →
-      <button class="demo-btn" onclick="event.stopPropagation(); runDemo()">데모 보기</button>
+      샘플 없으시면 →
+      <button class="demo-btn" onclick="event.stopPropagation();runDemo()">데모 보기</button>
     </div>
   </div>
-  <input type="file" id="file-input" accept=".pdf">
+  <input type="file" id="fi" accept=".pdf">
 </div>
 
-<!-- Loading overlay -->
-<div id="loading">
-  <div class="lring"></div>
-  <div id="loading-txt">처리 중...</div>
-</div>
+<div id="lov"><div class="lring"></div><div id="ltxt">처리 중...</div></div>
+<div id="errmsg"></div>
 
-<!-- Controls -->
 <div id="ctrl">
   <div class="csec">
-    <div class="clabel">파이프</div>
-    <div class="crow">
-      <span>두께 배율</span>
-      <input type="range" id="c-radius" min=".4" max="4" step=".1" value="1"
-             oninput="onRadius(this.value)">
-    </div>
-    <div class="crow">
-      <span>색상</span>
-      <input type="color" id="c-color" value="#8fa8be"
-             oninput="onColor(this.value)">
-    </div>
-    <div class="crow">
-      <span>금속도</span>
-      <input type="range" id="c-metal" min="0" max="1" step=".05" value=".85"
-             oninput="onMetal(this.value)">
-    </div>
-    <div class="crow">
-      <span>거칠기</span>
-      <input type="range" id="c-rough" min=".05" max=".8" step=".05" value=".2"
-             oninput="onRough(this.value)">
-    </div>
+    <div class="clb">파이프</div>
+    <div class="cr"><span>두께</span><input type="range" min=".4" max="4" step=".1" value="1" oninput="onRadius(this.value)"></div>
+    <div class="cr"><span>색상</span><input type="color" value="#8fa8be" oninput="onColor(this.value)"></div>
+    <div class="cr"><span>광택</span><input type="range" min="10" max="200" step="5" value="80" oninput="onShiny(this.value)"></div>
   </div>
   <div class="csec">
-    <div class="clabel">씬</div>
-    <div class="crow">
-      <span>배경</span>
-      <input type="color" id="c-bg" value="#070b14"
-             oninput="onBg(this.value)">
-    </div>
-    <div class="crow">
-      <span>조명</span>
-      <input type="range" id="c-light" min=".2" max="3" step=".1" value="1.2"
-             oninput="onLight(this.value)">
-    </div>
-    <div class="crow">
-      <span>그리드</span>
-      <input type="range" id="c-grid" min="0" max="1" step="1" value="1"
-             oninput="onGrid(this.value)">
-    </div>
+    <div class="clb">씬</div>
+    <div class="cr"><span>배경</span><input type="color" value="#070b14" oninput="onBg(this.value)"></div>
+    <div class="cr"><span>조명</span><input type="range" min=".2" max="3" step=".1" value="1" oninput="onLight(this.value)"></div>
+    <div class="cr"><span>그리드</span><input type="range" min="0" max="1" step="1" value="1" oninput="onGrid(this.value)"></div>
   </div>
 </div>
 
-<div id="infobar">드래그: 회전 &nbsp;·&nbsp; 스크롤: 줌 &nbsp;·&nbsp; 우클릭: 이동</div>
+<div id="infobar">드래그: 회전 · 스크롤: 줌 · 우클릭: 이동</div>
 <div id="stats"></div>
 
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
+<!-- Global scripts – no importmap needed, works on any mobile browser -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script>
+(function() {
+'use strict';
+
+// ── Error display ──
+function showErr(msg) {
+  var el = document.getElementById('errmsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(function(){ el.style.display='none'; }, 6000);
 }
-</script>
 
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls }  from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// ── Verify libraries loaded ──
+if (typeof THREE === 'undefined') { showErr('Three.js 로딩 실패'); return; }
+if (typeof pdfjsLib === 'undefined') { showErr('PDF.js 로딩 실패'); return; }
 
-/* ═══════════════════════════════════════
-   THREE.JS SETUP
-═══════════════════════════════════════ */
-const canvas   = document.getElementById('three-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+// ═══════════════════════════════════════
+// THREE.JS SETUP
+// ═══════════════════════════════════════
+var canvas   = document.getElementById('c');
+var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled  = true;
 renderer.shadowMap.type     = THREE.PCFSoftShadowMap;
-renderer.toneMapping        = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.25;
-renderer.outputColorSpace   = THREE.SRGBColorSpace;
+renderer.physicallyCorrectLights = true;
 
-const scene = new THREE.Scene();
+var scene = new THREE.Scene();
 scene.background = new THREE.Color(0x070b14);
 
-// Environment map for metallic reflections
-const pmrem  = new THREE.PMREMGenerator(renderer);
-const envTex = pmrem.fromScene(new RoomEnvironment()).texture;
-scene.environment = envTex;
-pmrem.dispose();
-
-// Camera
-const camera = new THREE.PerspectiveCamera(48, 1, 0.01, 10000);
+var camera = new THREE.PerspectiveCamera(48, 1, 0.01, 10000);
 camera.position.set(40, 28, 60);
 
-// Orbit controls
-const controls = new OrbitControls(camera, canvas);
+var controls = new THREE.OrbitControls(camera, canvas);
 controls.enableDamping  = true;
-controls.dampingFactor  = 0.06;
+controls.dampingFactor  = 0.07;
 controls.minDistance    = 0.5;
 controls.maxDistance    = 3000;
 
 // Lights
-const ambLight = new THREE.AmbientLight(0x203050, 1.8);
+var ambLight = new THREE.AmbientLight(0x304060, 1.0);
 scene.add(ambLight);
 
-const keyLight = new THREE.DirectionalLight(0xd8eeff, 2.8);
+var keyLight = new THREE.DirectionalLight(0xd8eeff, 2.0);
 keyLight.position.set(60, 90, 70);
 keyLight.castShadow = true;
-keyLight.shadow.mapSize.set(2048, 2048);
+keyLight.shadow.mapSize.set(1024, 1024);
 keyLight.shadow.camera.near   = 0.5;
-keyLight.shadow.camera.far    = 800;
-keyLight.shadow.camera.left   = -120;
-keyLight.shadow.camera.right  = 120;
-keyLight.shadow.camera.top    = 120;
-keyLight.shadow.camera.bottom = -120;
+keyLight.shadow.camera.far    = 500;
+keyLight.shadow.camera.left   = -80;
+keyLight.shadow.camera.right  =  80;
+keyLight.shadow.camera.top    =  80;
+keyLight.shadow.camera.bottom = -80;
 scene.add(keyLight);
 
-const fillLight = new THREE.DirectionalLight(0x304870, 1.3);
-fillLight.position.set(-70, 20, -50);
+var fillLight = new THREE.DirectionalLight(0x405080, 0.8);
+fillLight.position.set(-60, 20, -50);
 scene.add(fillLight);
 
-const rimLight  = new THREE.DirectionalLight(0x6090c0, 0.7);
+var rimLight = new THREE.DirectionalLight(0x7090c0, 0.5);
 rimLight.position.set(0, -40, -80);
 scene.add(rimLight);
 
 // Grid
-const grid = new THREE.GridHelper(300, 50, 0x112235, 0x0a1525);
-grid.visible = true;
+var grid = new THREE.GridHelper(300, 50, 0x112235, 0x0a1525);
 scene.add(grid);
 
-// Floor (shadow receiver)
-const floorGeo = new THREE.PlaneGeometry(400, 400);
-const floorMat = new THREE.ShadowMaterial({ opacity: 0.25 });
-const floor    = new THREE.Mesh(floorGeo, floorMat);
-floor.rotation.x = -Math.PI / 2;
-floor.receiveShadow = true;
-scene.add(floor);
+// Shadow floor
+var floorMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(400, 400),
+  new THREE.ShadowMaterial({ opacity: 0.2 })
+);
+floorMesh.rotation.x = -Math.PI / 2;
+floorMesh.receiveShadow = true;
+scene.add(floorMesh);
 
-/* ── Materials ── */
-const pipeMat = new THREE.MeshStandardMaterial({
-  color:          new THREE.Color(0x8fa8be),
-  metalness:      0.85,
-  roughness:      0.20,
-  envMapIntensity: 1.9,
+// Materials
+var pipeMat = new THREE.MeshPhongMaterial({
+  color:    new THREE.Color(0x8fa8be),
+  specular: new THREE.Color(0x88b8d8),
+  shininess: 80,
 });
-const jntMat = new THREE.MeshStandardMaterial({
-  color:          new THREE.Color(0x7a98ae),
-  metalness:      0.92,
-  roughness:      0.13,
-  envMapIntensity: 2.2,
+var jntMat = new THREE.MeshPhongMaterial({
+  color:    new THREE.Color(0x7a98ae),
+  specular: new THREE.Color(0x99c0dc),
+  shininess: 100,
 });
-const capMat = new THREE.MeshStandardMaterial({
-  color:          new THREE.Color(0x6a8090),
-  metalness:      0.88,
-  roughness:      0.18,
-  envMapIntensity: 2.0,
+var capMat = new THREE.MeshPhongMaterial({
+  color:    new THREE.Color(0x6a8090),
+  specular: new THREE.Color(0x80a0b8),
+  shininess: 70,
 });
 
-/* ── Pipe group ── */
-let pipeGroup = new THREE.Group();
+var pipeGroup = new THREE.Group();
 scene.add(pipeGroup);
+var baseR = 1.0, radiusScale = 1.0;
 
-let basePipeRadius = 1.0; // computed from model scale
-let radiusScale    = 1.0;
-
-/* ── Resize ── */
+// Resize
 function resize() {
-  const w = canvas.clientWidth, h = canvas.clientHeight;
+  var w = canvas.clientWidth, h = canvas.clientHeight || 1;
   if (canvas.width !== w || canvas.height !== h) {
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
@@ -384,7 +310,7 @@ function resize() {
   }
 }
 
-/* ── Render loop ── */
+// Render loop
 (function loop() {
   requestAnimationFrame(loop);
   resize();
@@ -392,552 +318,394 @@ function resize() {
   renderer.render(scene, camera);
 })();
 
-/* ═══════════════════════════════════════
-   PDF.JS LOADING
-═══════════════════════════════════════ */
-await new Promise((res, rej) => {
-  const s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-  s.onload = res; s.onerror = rej;
-  document.head.appendChild(s);
-});
-window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-/* ═══════════════════════════════════════
-   PDF → SEGMENTS EXTRACTION
-═══════════════════════════════════════ */
-const OPS = window.pdfjsLib.OPS;
+// ═══════════════════════════════════════
+// PDF PARSING
+// ═══════════════════════════════════════
+var OPS = pdfjsLib.OPS;
 
 function extractLines(opList) {
-  const segs = [];
-  const { fnArray: fns, argsArray: args } = opList;
+  var segs = [];
+  var fns  = opList.fnArray;
+  var args = opList.argsArray;
+  var ctm  = [1,0,0,1,0,0];
+  var stk  = [];
+  var cx=0, cy=0, sx=0, sy=0, lw=1;
 
-  let ctm = [1,0,0,1,0,0];
-  const stack = [];
-  let cx=0, cy=0, sx=0, sy=0, lw=1;
-
-  function tp(x, y) {
-    return [
-      ctm[0]*x + ctm[2]*y + ctm[4],
-      ctm[1]*x + ctm[3]*y + ctm[5],
-    ];
+  function tp(x,y) {
+    return [ctm[0]*x+ctm[2]*y+ctm[4], ctm[1]*x+ctm[3]*y+ctm[5]];
   }
-  function mulCTM(a,b,c,d,e,f) {
-    const [a0,b0,c0,d0,e0,f0] = ctm;
-    ctm = [
-      a0*a + c0*b, b0*a + d0*b,
-      a0*c + c0*d, b0*c + d0*d,
-      a0*e + c0*f + e0, b0*e + d0*f + f0,
-    ];
+  function mul(a,b,c,d,e,f) {
+    var a0=ctm[0],b0=ctm[1],c0=ctm[2],d0=ctm[3],e0=ctm[4],f0=ctm[5];
+    ctm=[a0*a+c0*b, b0*a+d0*b, a0*c+c0*d, b0*c+d0*d, a0*e+c0*f+e0, b0*e+d0*f+f0];
   }
 
-  for (let i = 0; i < fns.length; i++) {
-    const fn = fns[i], a = args[i];
-    switch(fn) {
-      case OPS.save:    stack.push([...ctm]); break;
-      case OPS.restore: if(stack.length) ctm = stack.pop(); break;
-      case OPS.transform: mulCTM(...a); break;
-      case OPS.setLineWidth: lw = a[0]; break;
-      case OPS.moveTo: {
-        const [px,py] = tp(a[0],a[1]);
-        cx=px; cy=py; sx=cx; sy=cy; break;  // PDF Y-up: no flip
-      }
-      case OPS.lineTo: {
-        const [px,py] = tp(a[0],a[1]);
-        segs.push({ x1:cx, y1:cy, x2:px, y2:py, lw });
-        cx=px; cy=py; break;
-      }
-      case OPS.closePath: {
-        if(Math.hypot(cx-sx, cy-sy) > 0.1)
-          segs.push({ x1:cx, y1:cy, x2:sx, y2:sy, lw });
-        cx=sx; cy=sy; break;
-      }
+  for (var i=0; i<fns.length; i++) {
+    var fn=fns[i], a=args[i];
+    if      (fn===OPS.save)         { stk.push(ctm.slice()); }
+    else if (fn===OPS.restore)      { if(stk.length) ctm=stk.pop(); }
+    else if (fn===OPS.transform)    { mul(a[0],a[1],a[2],a[3],a[4],a[5]); }
+    else if (fn===OPS.setLineWidth) { lw=a[0]; }
+    else if (fn===OPS.moveTo)       { var p=tp(a[0],a[1]); cx=p[0]; cy=p[1]; sx=cx; sy=cy; }
+    else if (fn===OPS.lineTo) {
+      var p=tp(a[0],a[1]);
+      segs.push({x1:cx,y1:cy,x2:p[0],y2:p[1],lw:lw});
+      cx=p[0]; cy=p[1];
+    }
+    else if (fn===OPS.closePath) {
+      if(Math.hypot(cx-sx,cy-sy)>0.1) segs.push({x1:cx,y1:cy,x2:sx,y2:sy,lw:lw});
+      cx=sx; cy=sy;
     }
   }
   return segs;
 }
 
-/* ── Classify isometric angle ── */
-const ISO_TOL = 9; // degrees
-
+var ISO_TOL = 9;
 function isoAxis(x1,y1,x2,y2) {
-  let deg = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI;
-  deg = ((deg % 180) + 180) % 180;
-  if (Math.abs(deg - 90)  < ISO_TOL) return 'Y';
-  if (Math.abs(deg - 30)  < ISO_TOL) return 'X';
-  if (Math.abs(deg - 150) < ISO_TOL) return 'Z';
+  var deg = Math.atan2(y2-y1,x2-x1)*180/Math.PI;
+  deg = ((deg%180)+180)%180;
+  if(Math.abs(deg-90) <ISO_TOL) return 'Y';
+  if(Math.abs(deg-30) <ISO_TOL) return 'X';
+  if(Math.abs(deg-150)<ISO_TOL) return 'Z';
   return null;
 }
+function slen(s){ return Math.hypot(s.x2-s.x1,s.y2-s.y1); }
 
-function segLen(s) { return Math.hypot(s.x2-s.x1, s.y2-s.y1); }
-
-/* ── Merge collinear adjacent segments ── */
-function mergeSegs(segs, eps=3.5) {
-  const used = new Set();
-  const out  = [];
-
-  for (let i=0; i<segs.length; i++) {
-    if (used.has(i)) continue;
-    let s = {...segs[i]};
-    let changed = true;
-    while (changed) {
-      changed = false;
-      for (let j=0; j<segs.length; j++) {
-        if (used.has(j) || j===i) continue;
-        const t = segs[j];
-        if (t.axis !== s.axis) continue;
-        // Try all 4 endpoint-pair matches
-        if (Math.hypot(s.x2-t.x1,s.y2-t.y1) < eps) {
-          s = {...s, x2:t.x2, y2:t.y2}; used.add(j); changed=true;
-        } else if (Math.hypot(s.x2-t.x2,s.y2-t.y2) < eps) {
-          s = {...s, x2:t.x1, y2:t.y1}; used.add(j); changed=true;
-        } else if (Math.hypot(s.x1-t.x2,s.y1-t.y2) < eps) {
-          s = {...s, x1:t.x1, y1:t.y1}; used.add(j); changed=true;
-        } else if (Math.hypot(s.x1-t.x1,s.y1-t.y1) < eps) {
-          s = {...s, x1:t.x2, y1:t.y2}; used.add(j); changed=true;
-        }
+function mergeSegs(segs, eps) {
+  eps = eps || 3.5;
+  var used=new Set(), out=[];
+  for(var i=0;i<segs.length;i++){
+    if(used.has(i)) continue;
+    var s=Object.assign({},segs[i]);
+    var changed=true;
+    while(changed){
+      changed=false;
+      for(var j=0;j<segs.length;j++){
+        if(used.has(j)||j===i) continue;
+        var t=segs[j];
+        if(t.axis!==s.axis) continue;
+        if(Math.hypot(s.x2-t.x1,s.y2-t.y1)<eps){s.x2=t.x2;s.y2=t.y2;used.add(j);changed=true;}
+        else if(Math.hypot(s.x2-t.x2,s.y2-t.y2)<eps){s.x2=t.x1;s.y2=t.y1;used.add(j);changed=true;}
+        else if(Math.hypot(s.x1-t.x2,s.y1-t.y2)<eps){s.x1=t.x1;s.y1=t.y1;used.add(j);changed=true;}
+        else if(Math.hypot(s.x1-t.x1,s.y1-t.y1)<eps){s.x1=t.x2;s.y1=t.y2;used.add(j);changed=true;}
       }
     }
-    used.add(i);
-    out.push(s);
+    used.add(i); out.push(s);
   }
   return out;
 }
 
-/* ── Filter pipe segments ── */
 function filterPipeSegs(raw) {
-  if (!raw.length) return [];
-
-  // Pipes are always the THICKEST lines in the PDF.
-  // Grid lines / dimension lines are thin. Use relative threshold.
-  const maxLW = Math.max(...raw.map(s => s.lw));
-  const lwMin  = maxLW * 0.45;   // keep top 45% thickness → pipe lines only
-
-  const MIN_LEN = 6;
-  const classified = raw
-    .filter(s => s.lw >= lwMin && segLen(s) >= MIN_LEN)
-    .map(s => {
-      const ax = isoAxis(s.x1, s.y1, s.x2, s.y2);
-      return ax ? {...s, axis: ax} : null;
-    })
-    .filter(Boolean);
-
-  // Deduplicate: app sometimes draws each pipe twice (outline + fill)
-  const deduped = [];
-  for (const seg of classified) {
-    const isDup = deduped.some(d =>
-      Math.hypot(d.x1-seg.x1, d.y1-seg.y1) < 2 &&
-      Math.hypot(d.x2-seg.x2, d.y2-seg.y2) < 2
-    );
-    if (!isDup) deduped.push(seg);
+  if(!raw.length) return [];
+  var maxLW = 0;
+  for(var i=0;i<raw.length;i++) if(raw[i].lw>maxLW) maxLW=raw[i].lw;
+  var lwMin = maxLW * 0.45;
+  var classified=[], MIN_LEN=6;
+  for(var i=0;i<raw.length;i++){
+    var s=raw[i];
+    if(s.lw<lwMin||slen(s)<MIN_LEN) continue;
+    var ax=isoAxis(s.x1,s.y1,s.x2,s.y2);
+    if(ax) classified.push(Object.assign({},s,{axis:ax}));
   }
-
+  // Deduplicate (app draws each pipe twice)
+  var deduped=[];
+  for(var i=0;i<classified.length;i++){
+    var s=classified[i], dup=false;
+    for(var j=0;j<deduped.length;j++){
+      var d=deduped[j];
+      if(Math.hypot(d.x1-s.x1,d.y1-s.y1)<2&&Math.hypot(d.x2-s.x2,d.y2-s.y2)<2){dup=true;break;}
+    }
+    if(!dup) deduped.push(s);
+  }
   return mergeSegs(deduped);
 }
 
-/* ═══════════════════════════════════════
-   2D ISO → 3D RECONSTRUCTION
-═══════════════════════════════════════ */
-/*
-  Isometric projection (ISO standard):
-    X axis → 30° right  in screen  (screen vec: +√3/2, +0.5)
-    Z axis → 150° left  in screen  (screen vec: -√3/2, +0.5)
-    Y axis → vertical   in screen  (screen vec: 0, +1)
-  Each 3D unit maps 1:1 in screen length (isometric property).
-*/
-
+// ═══════════════════════════════════════
+// 2D ISO → 3D
+// ═══════════════════════════════════════
 function dir3D(axis, dx, dy) {
-  switch(axis) {
-    case 'X': return new THREE.Vector3(dx >= 0 ? 1 : -1,  0, 0);
-    case 'Z': return new THREE.Vector3(0, 0, dx >= 0 ? -1 : 1);
-    case 'Y': return new THREE.Vector3(0, dy >= 0 ? 1 : -1, 0);
-    default:  return new THREE.Vector3();
-  }
+  if(axis==='X') return new THREE.Vector3(dx>=0?1:-1, 0, 0);
+  if(axis==='Z') return new THREE.Vector3(0, 0, dx>=0?-1:1);
+  if(axis==='Y') return new THREE.Vector3(0, dy>=0?1:-1, 0);
+  return new THREE.Vector3();
 }
 
 function buildNet3D(pipeSegs) {
-  if (!pipeSegs.length) return [];
+  if(!pipeSegs.length) return [];
+  var totalLen=0;
+  for(var i=0;i<pipeSegs.length;i++) totalLen+=slen(pipeSegs[i]);
+  var scale = 8 / (totalLen/pipeSegs.length);
 
-  // Scale: target average segment ~ 8 units
-  const avgLen2D = pipeSegs.reduce((s,seg)=>s+segLen(seg),0) / pipeSegs.length;
-  const scale    = 8 / avgLen2D;
+  var nodes=[], edges=[], EPS=4;
+  function findNode(x,y){
+    for(var i=0;i<nodes.length;i++)
+      if(Math.hypot(nodes[i].x-x,nodes[i].y-y)<EPS) return i;
+    nodes.push({x:x,y:y,pos3D:null}); return nodes.length-1;
+  }
+  for(var i=0;i<pipeSegs.length;i++){
+    var seg=pipeSegs[i];
+    var a=findNode(seg.x1,seg.y1), b=findNode(seg.x2,seg.y2);
+    if(a!==b) edges.push({a:a,b:b,axis:seg.axis,len3D:slen(seg)*scale});
+  }
+  if(!nodes.length) return [];
 
-  // Build node list + edges
-  const nodes = [], edges = [];
-  const EPS   = 4;
-
-  function findNode(x, y) {
-    for (let i=0; i<nodes.length; i++)
-      if (Math.hypot(nodes[i].x-x, nodes[i].y-y) < EPS) return i;
-    nodes.push({ x, y, pos3D: null });
-    return nodes.length - 1;
+  var adj=[];
+  for(var i=0;i<nodes.length;i++) adj.push([]);
+  for(var i=0;i<edges.length;i++){
+    adj[edges[i].a].push({nb:edges[i].b,ei:i});
+    adj[edges[i].b].push({nb:edges[i].a,ei:i});
   }
 
-  for (const seg of pipeSegs) {
-    const a = findNode(seg.x1, seg.y1);
-    const b = findNode(seg.x2, seg.y2);
-    if (a === b) continue;
-    edges.push({ a, b, axis: seg.axis, len3D: segLen(seg) * scale });
+  // Multi-component BFS with inverse ISO projection for disconnected groups
+  var refX=nodes[0].x, refY=nodes[0].y, SQ3=Math.sqrt(3);
+  function isoInv(nx,ny){
+    var dx=nx-refX, dy=ny-refY;
+    return new THREE.Vector3((dx/SQ3+dy)*scale, 0, (dy-dx/SQ3)*scale);
   }
 
-  if (!nodes.length) return [];
+  var visited=new Set(), unplaced=new Set();
+  for(var i=0;i<nodes.length;i++) unplaced.add(i);
 
-  // Build adjacency
-  const adj = Array.from({length: nodes.length}, ()=>[]);
-  edges.forEach((e, i) => {
-    adj[e.a].push({ nb: e.b, ei: i });
-    adj[e.b].push({ nb: e.a, ei: i });
-  });
-
-  // Multi-component BFS:
-  // Each disconnected group is placed using inverse-ISO projection
-  // relative to the first node so relative 3D positions are preserved.
-  const refX = nodes[0].x, refY = nodes[0].y;
-  const SQ3  = Math.sqrt(3);
-
-  function isoInverse(nx, ny) {
-    // Inverse of: sx = (X-Z)*cos30°, sy = (X+Z)*sin30° + Y
-    // Assume Y=0 (elevation unknown for disconnected nodes):
-    const dx2d = nx - refX, dy2d = ny - refY;
-    return new THREE.Vector3(
-      (dx2d / SQ3 + dy2d) * scale,
-      0,
-      (dy2d - dx2d / SQ3) * scale
-    );
-  }
-
-  const visited  = new Set();
-  const unplaced = new Set(nodes.map((_,i) => i));
-
-  while (unplaced.size > 0) {
-    const startIdx = [...unplaced][0];
-    // Seed this component's root using inverse ISO projection
-    nodes[startIdx].pos3D = isoInverse(nodes[startIdx].x, nodes[startIdx].y);
-    visited.add(startIdx);
-    unplaced.delete(startIdx);
-
-    const queue = [startIdx];
-    while (queue.length) {
-      const cur = queue.shift();
-      const pos = nodes[cur].pos3D;
-      for (const { nb, ei } of adj[cur]) {
-        if (visited.has(nb)) continue;
-        visited.add(nb);
-        unplaced.delete(nb);
-        const e  = edges[ei];
-        const dx = nodes[nb].x - nodes[cur].x;
-        const dy = nodes[nb].y - nodes[cur].y;
-        const d3 = dir3D(e.axis, dx, dy);
-        nodes[nb].pos3D = pos.clone().addScaledVector(d3, e.len3D);
+  while(unplaced.size>0){
+    var startIdx=[...unplaced][0];
+    nodes[startIdx].pos3D = isoInv(nodes[startIdx].x, nodes[startIdx].y);
+    visited.add(startIdx); unplaced.delete(startIdx);
+    var queue=[startIdx];
+    while(queue.length){
+      var cur=queue.shift();
+      var pos=nodes[cur].pos3D;
+      for(var k=0;k<adj[cur].length;k++){
+        var nb=adj[cur][k].nb, ei=adj[cur][k].ei;
+        if(visited.has(nb)) continue;
+        visited.add(nb); unplaced.delete(nb);
+        var e=edges[ei];
+        var dx=nodes[nb].x-nodes[cur].x, dy=nodes[nb].y-nodes[cur].y;
+        var d3=dir3D(e.axis,dx,dy);
+        nodes[nb].pos3D=pos.clone().addScaledVector(d3,e.len3D);
         queue.push(nb);
       }
     }
   }
 
-  // Build output segments
-  const segs3D = [];
-  for (const e of edges) {
-    const pa = nodes[e.a].pos3D, pb = nodes[e.b].pos3D;
-    if (pa && pb) segs3D.push({ start: pa.clone(), end: pb.clone() });
+  var segs3D=[];
+  for(var i=0;i<edges.length;i++){
+    var pa=nodes[edges[i].a].pos3D, pb=nodes[edges[i].b].pos3D;
+    if(pa&&pb) segs3D.push({start:pa.clone(),end:pb.clone()});
   }
-
-  // Center model at origin
-  if (segs3D.length) {
-    const bb = new THREE.Box3();
-    segs3D.forEach(s => { bb.expandByPoint(s.start); bb.expandByPoint(s.end); });
-    const ctr = new THREE.Vector3();
-    bb.getCenter(ctr);
-    segs3D.forEach(s => { s.start.sub(ctr); s.end.sub(ctr); });
+  if(segs3D.length){
+    var bb=new THREE.Box3();
+    for(var i=0;i<segs3D.length;i++){bb.expandByPoint(segs3D[i].start);bb.expandByPoint(segs3D[i].end);}
+    var ctr=new THREE.Vector3(); bb.getCenter(ctr);
+    for(var i=0;i<segs3D.length;i++){segs3D[i].start.sub(ctr);segs3D[i].end.sub(ctr);}
   }
   return segs3D;
 }
 
-/* ═══════════════════════════════════════
-   BUILD 3D SCENE
-═══════════════════════════════════════ */
-function clearGroup() {
-  while (pipeGroup.children.length) {
-    const c = pipeGroup.children[0];
-    c.geometry?.dispose();
+// ═══════════════════════════════════════
+// BUILD 3D SCENE
+// ═══════════════════════════════════════
+function clearGroup(){
+  while(pipeGroup.children.length){
+    var c=pipeGroup.children[0];
+    if(c.geometry) c.geometry.dispose();
     pipeGroup.remove(c);
   }
 }
 
-function buildScene(segs3D) {
+function buildScene(segs3D){
   clearGroup();
-  if (!segs3D.length) return;
+  if(!segs3D.length) return 0;
 
-  // Compute pipe radius from model size
-  const bb = new THREE.Box3();
-  segs3D.forEach(s => { bb.expandByPoint(s.start); bb.expandByPoint(s.end); });
-  const sz = new THREE.Vector3();
-  bb.getSize(sz);
-  const maxDim = Math.max(sz.x, sz.y, sz.z, 1);
-  basePipeRadius = Math.max(0.35, maxDim * 0.014) * radiusScale;
+  var bb=new THREE.Box3();
+  for(var i=0;i<segs3D.length;i++){bb.expandByPoint(segs3D[i].start);bb.expandByPoint(segs3D[i].end);}
+  var sz=new THREE.Vector3(); bb.getSize(sz);
+  var maxDim=Math.max(sz.x,sz.y,sz.z,1);
+  baseR = Math.max(0.35, maxDim*0.014) * radiusScale;
 
-  // Endpoint connection counts
-  const ptMap = new Map();
-  const ptKey = v => `${v.x.toFixed(2)},${v.y.toFixed(2)},${v.z.toFixed(2)}`;
+  var ptMap={};
+  function ptKey(v){ return v.x.toFixed(2)+','+v.y.toFixed(2)+','+v.z.toFixed(2); }
+  function ensurePt(v){ var k=ptKey(v); if(!ptMap[k]) ptMap[k]={pos:v.clone(),conn:0}; ptMap[k].conn++; }
 
-  const ensurePt = (v) => {
-    const k = ptKey(v);
-    if (!ptMap.has(k)) ptMap.set(k, { pos: v.clone(), conn: 0 });
-    ptMap.get(k).conn++;
-  };
-
-  // Pipe cylinders
-  const upY = new THREE.Vector3(0,1,0);
-  for (const seg of segs3D) {
-    const dist = seg.start.distanceTo(seg.end);
-    if (dist < 0.01) continue;
-
-    const mid = seg.start.clone().lerp(seg.end, 0.5);
-    const dir = seg.end.clone().sub(seg.start).normalize();
-
-    const geo  = new THREE.CylinderGeometry(basePipeRadius, basePipeRadius, dist, 28, 1);
-    const mesh = new THREE.Mesh(geo, pipeMat);
+  var upY=new THREE.Vector3(0,1,0);
+  for(var i=0;i<segs3D.length;i++){
+    var seg=segs3D[i];
+    var dist=seg.start.distanceTo(seg.end);
+    if(dist<0.01) continue;
+    var mid=seg.start.clone().lerp(seg.end,.5);
+    var dir=seg.end.clone().sub(seg.start).normalize();
+    var geo=new THREE.CylinderBufferGeometry(baseR,baseR,dist,24,1);
+    var mesh=new THREE.Mesh(geo,pipeMat);
     mesh.position.copy(mid);
-    mesh.quaternion.setFromUnitVectors(upY, dir);
-    mesh.castShadow    = true;
-    mesh.receiveShadow = true;
+    mesh.quaternion.setFromUnitVectors(upY,dir);
+    mesh.castShadow=true; mesh.receiveShadow=true;
     pipeGroup.add(mesh);
-
-    ensurePt(seg.start);
-    ensurePt(seg.end);
+    ensurePt(seg.start); ensurePt(seg.end);
   }
 
-  // Junction spheres (elbows / tees)
-  const sphGeo = new THREE.SphereGeometry(basePipeRadius * 1.04, 26, 18);
-  for (const { pos } of ptMap.values()) {
-    const sp = new THREE.Mesh(sphGeo, jntMat);
-    sp.position.copy(pos);
-    sp.castShadow = true;
-    pipeGroup.add(sp);
+  // Junction spheres
+  var sphGeo=new THREE.SphereBufferGeometry(baseR*1.05,22,16);
+  for(var k in ptMap){
+    var sp=new THREE.Mesh(sphGeo,jntMat);
+    sp.position.copy(ptMap[k].pos);
+    sp.castShadow=true; pipeGroup.add(sp);
   }
 
-  // Endcaps on terminal nodes (conn === 1)
-  for (const { pos, conn } of ptMap.values()) {
-    if (conn !== 1) continue;
-    // Find the one segment this terminal belongs to
-    for (const seg of segs3D) {
-      const isStart = pos.distanceTo(seg.start) < 0.1;
-      const isEnd   = pos.distanceTo(seg.end)   < 0.1;
-      if (!isStart && !isEnd) continue;
-      const away = isStart ? seg.end : seg.start;
-      const dir  = pos.clone().sub(away).normalize();
-      const capGeo = new THREE.CircleGeometry(basePipeRadius, 24);
-      const cap    = new THREE.Mesh(capGeo, capMat);
-      cap.position.copy(pos).addScaledVector(dir, 0.01);
-      cap.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), dir);
-      cap.castShadow = true;
-      pipeGroup.add(cap);
-      break;
+  // Endcaps
+  for(var k in ptMap){
+    if(ptMap[k].conn!==1) continue;
+    var pos=ptMap[k].pos;
+    for(var i=0;i<segs3D.length;i++){
+      var isS=pos.distanceTo(segs3D[i].start)<0.1;
+      var isE=pos.distanceTo(segs3D[i].end)<0.1;
+      if(!isS&&!isE) continue;
+      var away=isS?segs3D[i].end:segs3D[i].start;
+      var dir2=pos.clone().sub(away).normalize();
+      var capGeo=new THREE.CircleBufferGeometry(baseR,20);
+      var cap=new THREE.Mesh(capGeo,capMat);
+      cap.position.copy(pos).addScaledVector(dir2,0.01);
+      cap.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),dir2);
+      cap.castShadow=true; pipeGroup.add(cap); break;
     }
   }
 
-  // Position floor / grid under model
-  const bbFull = new THREE.Box3().setFromObject(pipeGroup);
-  const floorY = bbFull.min.y - basePipeRadius;
-  floor.position.y  = floorY;
-  grid.position.y   = floorY - 0.02;
-  keyLight.shadow.camera.near = 0.1;
-  keyLight.shadow.camera.far  = maxDim * 5;
-  [-120,120,-120,120].forEach((_,i) => {
-    if(i===0) keyLight.shadow.camera.left   = -maxDim * 2;
-    if(i===1) keyLight.shadow.camera.right  =  maxDim * 2;
-    if(i===2) keyLight.shadow.camera.top    =  maxDim * 2;
-    if(i===3) keyLight.shadow.camera.bottom = -maxDim * 2;
-  });
-  keyLight.shadow.camera.updateProjectionMatrix();
+  // Reposition floor & grid
+  var bbF=new THREE.Box3().setFromObject(pipeGroup);
+  var fy=bbF.min.y-baseR;
+  floorMesh.position.y=fy; grid.position.y=fy-0.02;
 
   // Fit camera
-  const ctr  = new THREE.Vector3();
-  bbFull.getCenter(ctr);
-  const sz2  = new THREE.Vector3();
-  bbFull.getSize(sz2);
-  const maxS = Math.max(sz2.x, sz2.y, sz2.z);
-  const fov  = camera.fov * Math.PI / 180;
-  const dist = (maxS / 2 / Math.tan(fov / 2)) * 1.7;
-
-  controls.target.copy(ctr);
-  camera.position.set(ctr.x + dist*.65, ctr.y + dist*.42, ctr.z + dist*.82);
-  camera.near = dist * 0.001;
-  camera.far  = dist * 12;
-  camera.updateProjectionMatrix();
-  controls.update();
+  var ctrF=new THREE.Vector3(); bbF.getCenter(ctrF);
+  var szF=new THREE.Vector3(); bbF.getSize(szF);
+  var maxS=Math.max(szF.x,szF.y,szF.z);
+  var fov=camera.fov*Math.PI/180;
+  var dist=(maxS/2/Math.tan(fov/2))*1.7;
+  controls.target.copy(ctrF);
+  camera.position.set(ctrF.x+dist*.65,ctrF.y+dist*.42,ctrF.z+dist*.82);
+  camera.near=dist*.001; camera.far=dist*12;
+  camera.updateProjectionMatrix(); controls.update();
 
   return segs3D.length;
 }
 
-/* ═══════════════════════════════════════
-   PDF PROCESSING PIPELINE
-═══════════════════════════════════════ */
-function setLoad(txt) {
-  const el = document.getElementById('loading');
-  document.getElementById('loading-txt').textContent = txt || '';
-  el.classList.toggle('show', !!txt);
+// ═══════════════════════════════════════
+// PDF PROCESSING PIPELINE
+// ═══════════════════════════════════════
+function setLoad(txt){
+  var el=document.getElementById('lov');
+  document.getElementById('ltxt').textContent=txt||'';
+  el.classList.toggle('show',!!txt);
 }
 
-async function processPDF(buf) {
+function processPDF(buf) {
   setLoad('PDF 로딩 중...');
-  const pdf  = await pdfjsLib.getDocument({data: buf}).promise;
-  const page = await pdf.getPage(1);
-  const vp   = page.getViewport({scale:1});
+  pdfjsLib.getDocument({data:buf}).promise.then(function(pdf){
+    return pdf.getPage(1);
+  }).then(function(page){
+    setLoad('벡터 선 추출 중...');
+    return page.getOperatorList();
+  }).then(function(opList){
+    setLoad('파이프 패턴 분석 중...');
+    var raw = extractLines(opList);
+    var pipeSegs = filterPipeSegs(raw);
 
-  setLoad('벡터 선 추출 중...');
-  const opList = await page.getOperatorList();
-  const raw    = extractLines(opList);
+    if(!pipeSegs.length){
+      setLoad(null);
+      showErr('파이프 라인 인식 실패 – Pipe ISO 앱에서 내보낸 PDF를 사용해주세요');
+      return;
+    }
 
-  setLoad('파이프 패턴 분석 중...');
-  const pipeSegs = filterPipeSegs(raw);
-
-  if (!pipeSegs.length) {
+    setLoad('3D 모델 생성 중...');
+    setTimeout(function(){
+      var segs3D = buildNet3D(pipeSegs);
+      var count  = buildScene(segs3D);
+      showResult(count, pipeSegs.length);
+    }, 30);
+  }).catch(function(err){
     setLoad(null);
-    alert('ISO 파이프 라인을 인식하지 못했습니다.\nPipe ISO 앱에서 내보낸 PDF를 사용해주세요.');
-    return;
-  }
-
-  setLoad('3D 네트워크 재구성 중...');
-  const segs3D = buildNet3D(pipeSegs);
-
-  setLoad('렌더링 중...');
-  await new Promise(r => setTimeout(r, 30));
-
-  const count = buildScene(segs3D);
-  showResult(count, pipeSegs.length);
+    showErr('오류: '+err.message);
+    console.error(err);
+  });
 }
 
-function showResult(pipes, extracted) {
+function showResult(pipes, extracted){
   setLoad(null);
-  document.getElementById('upload-overlay').classList.add('gone');
+  document.getElementById('uov').classList.add('gone');
   document.getElementById('ctrl').classList.add('show');
   document.getElementById('infobar').classList.add('show');
-  document.getElementById('btn-reset').style.display = '';
-  document.getElementById('btn-open').style.display  = '';
-
-  const st = document.getElementById('stats');
-  st.innerHTML = `파이프 ${pipes}개<br>추출 라인 ${extracted}개`;
+  document.getElementById('btn-reset').style.display='';
+  document.getElementById('btn-open').style.display='';
+  var st=document.getElementById('stats');
+  st.innerHTML='파이프 '+pipes+'개<br>추출 라인 '+extracted+'개';
   st.classList.add('show');
 }
 
-/* ═══════════════════════════════════════
-   DEMO SCENE
-═══════════════════════════════════════ */
-function buildDemoSegs() {
-  const add = (x1,y1,z1,x2,y2,z2) =>
-    ({ start: new THREE.Vector3(x1,y1,z1), end: new THREE.Vector3(x2,y2,z2) });
-
-  return [
-    // Main header (X)
-    add(-22, 0, 0,  -8, 0, 0),
-    add( -8, 0, 0,   0, 0, 0),
-    add(  0, 0, 0,  14, 0, 0),
-    add( 14, 0, 0,  22, 0, 0),
-
-    // Riser A (Y) + branch (Z)
-    add( -8, 0, 0,  -8, 14, 0),
-    add( -8,14, 0,  -8, 14,-10),
-    add( -8,14,-10,  4, 14,-10),
-    add(  4,14,-10,  4,  0,-10),
-
-    // Riser B (Y) + branch (X + Z)
-    add(  0, 0, 0,   0,  9, 0),
-    add(  0, 9, 0,  10,  9, 0),
-    add( 10, 9, 0,  10,  9, 9),
-    add( 10, 9, 9,  10,  0, 9),
-
-    // Cross header (Z)
-    add(  4, 0, 0,   4,  0, 12),
-    add(  4, 0,12,   4,  7, 12),
-    add(  4, 7,12,  -6,  7, 12),
-    add( -6, 7,12,  -6,  0, 12),
-    add( -6, 0,12, -12,  0, 12),
-
-    // Riser C
-    add( 22, 0, 0,  22,  8, 0),
-    add( 22, 8, 0,  22,  8,-8),
-  ];
+// ═══════════════════════════════════════
+// DEMO
+// ═══════════════════════════════════════
+function add(arr,x1,y1,z1,x2,y2,z2){
+  arr.push({start:new THREE.Vector3(x1,y1,z1),end:new THREE.Vector3(x2,y2,z2)});
 }
-
-window.runDemo = function() {
-  buildScene(buildDemoSegs());
-  showResult(buildDemoSegs().length, 0);
-  document.getElementById('stats').innerHTML =
-    '데모 모드<br>파이프 ' + buildDemoSegs().length + '개';
-};
-
-/* ═══════════════════════════════════════
-   UI CONTROLS
-═══════════════════════════════════════ */
-window.onRadius = v => {
-  radiusScale = parseFloat(v);
-  if (pipeGroup.children.length) rebuildMeshes();
-};
-
-function rebuildMeshes() {
-  // Quick radius update: just rebuild
-  const segs = [];
-  pipeGroup.children.forEach(m => {
-    if (m.geometry?.type === 'CylinderGeometry') {
-      // We can't easily recover start/end from a mesh without storing them.
-      // Just skip a full rebuild for now — tell user to re-open PDF.
-    }
-  });
+function runDemo(){
+  var s=[];
+  add(s,-22,0,0,-8,0,0); add(s,-8,0,0,0,0,0); add(s,0,0,0,14,0,0); add(s,14,0,0,22,0,0);
+  add(s,-8,0,0,-8,14,0); add(s,-8,14,0,-8,14,-10); add(s,-8,14,-10,4,14,-10); add(s,4,14,-10,4,0,-10);
+  add(s,0,0,0,0,9,0); add(s,0,9,0,10,9,0); add(s,10,9,0,10,9,9); add(s,10,9,9,10,0,9);
+  add(s,4,0,0,4,0,12); add(s,4,0,12,4,7,12); add(s,4,7,12,-6,7,12); add(s,-6,7,12,-6,0,12);
+  add(s,22,0,0,22,8,0); add(s,22,8,0,22,8,-8);
+  buildScene(s);
+  showResult(s.length,0);
+  document.getElementById('stats').innerHTML='데모 모드<br>파이프 '+s.length+'개';
 }
+window.runDemo = runDemo;
 
-window.onColor  = v => { pipeMat.color.set(v); jntMat.color.set(v); };
-window.onMetal  = v => { const f=parseFloat(v); pipeMat.metalness=f; jntMat.metalness=f; };
-window.onRough  = v => { const f=parseFloat(v); pipeMat.roughness=f; jntMat.roughness=f; };
-window.onBg     = v => { scene.background = new THREE.Color(v); };
-window.onLight  = v => {
-  const f = parseFloat(v);
-  ambLight.intensity  = 1.8 * f;
-  keyLight.intensity  = 2.8 * f;
-  fillLight.intensity = 1.3 * f;
-  rimLight.intensity  = 0.7 * f;
+// ═══════════════════════════════════════
+// UI CONTROLS
+// ═══════════════════════════════════════
+window.onRadius = function(v){ radiusScale=parseFloat(v); };
+window.onColor  = function(v){ pipeMat.color.set(v); jntMat.color.set(v); };
+window.onShiny  = function(v){ var f=parseFloat(v); pipeMat.shininess=f; jntMat.shininess=f+20; };
+window.onBg     = function(v){ scene.background=new THREE.Color(v); };
+window.onLight  = function(v){
+  var f=parseFloat(v);
+  ambLight.intensity=1.0*f; keyLight.intensity=2.0*f;
+  fillLight.intensity=0.8*f; rimLight.intensity=0.5*f;
 };
-window.onGrid   = v => { grid.visible = v > 0; };
-
-window.resetCam = () => {
-  if (!pipeGroup.children.length) return;
-  const bb  = new THREE.Box3().setFromObject(pipeGroup);
-  const ctr = new THREE.Vector3();
-  bb.getCenter(ctr);
-  const sz  = new THREE.Vector3();
-  bb.getSize(sz);
-  const d   = Math.max(sz.x,sz.y,sz.z) * 1.7;
+window.onGrid   = function(v){ grid.visible=v>0; };
+window.resetCam = function(){
+  if(!pipeGroup.children.length) return;
+  var bb=new THREE.Box3().setFromObject(pipeGroup);
+  var ctr=new THREE.Vector3(); bb.getCenter(ctr);
+  var sz=new THREE.Vector3(); bb.getSize(sz);
+  var d=Math.max(sz.x,sz.y,sz.z)*1.7;
   controls.target.copy(ctr);
-  camera.position.set(ctr.x+d*.65, ctr.y+d*.42, ctr.z+d*.82);
+  camera.position.set(ctr.x+d*.65,ctr.y+d*.42,ctr.z+d*.82);
   controls.update();
 };
+window.openFile = function(){ document.getElementById('fi').click(); };
 
-window.openFile = () => document.getElementById('file-input').click();
-
-/* ═══════════════════════════════════════
-   FILE HANDLING
-═══════════════════════════════════════ */
-document.getElementById('file-input').addEventListener('change', e => {
-  const f = e.target.files[0];
-  if (f) f.arrayBuffer().then(processPDF).catch(err => {
-    setLoad(null);
-    alert('오류: ' + err.message);
-  });
-  e.target.value = '';
+// ═══════════════════════════════════════
+// FILE HANDLING
+// ═══════════════════════════════════════
+document.getElementById('fi').addEventListener('change', function(e){
+  var f=e.target.files[0];
+  if(!f) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){ processPDF(ev.target.result); };
+  reader.readAsArrayBuffer(f);
+  e.target.value='';
 });
 
-// Drag & drop
-document.addEventListener('dragover',  e => { e.preventDefault(); document.getElementById('drop-zone').classList.add('drag-over'); });
-document.addEventListener('dragleave', e => { if(!e.relatedTarget) document.getElementById('drop-zone').classList.remove('drag-over'); });
-document.addEventListener('drop', e => {
+document.getElementById('uov').addEventListener('dragover',function(e){e.preventDefault();});
+document.addEventListener('drop',function(e){
   e.preventDefault();
-  document.getElementById('drop-zone').classList.remove('drag-over');
-  const f = e.dataTransfer.files[0];
-  if (f?.type === 'application/pdf')
-    f.arrayBuffer().then(processPDF).catch(err => {
-      setLoad(null); alert('오류: ' + err.message);
-    });
+  var f=e.dataTransfer.files[0];
+  if(f&&f.type==='application/pdf'){
+    var reader=new FileReader();
+    reader.onload=function(ev){ processPDF(ev.target.result); };
+    reader.readAsArrayBuffer(f);
+  }
 });
+
+})();
 </script>
 </body>
 </html>
