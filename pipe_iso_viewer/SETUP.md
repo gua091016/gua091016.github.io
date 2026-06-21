@@ -1,24 +1,48 @@
-# Pipe ISO Viewer - 셋업 가이드
+# Pipe ISO Viewer - 설치 가이드 (Windows)
 
-## 1. 새 Flutter 프로젝트 생성
+## 필수 준비물
 
-```bash
-flutter create pipe_iso_viewer --org com.yourcompany
-cd pipe_iso_viewer
+1. **Flutter SDK** 설치 → https://docs.flutter.dev/get-started/install/windows
+2. **Android Studio** 설치 (이미 설치됨 ✓)
+3. Android Studio에 **Flutter + Dart 플러그인** 설치
+   - `File → Settings → Plugins → "Flutter" 검색 → 설치`
+
+---
+
+## 설치 순서
+
+### 1단계: GitHub에서 다운로드
+
+명령 프롬프트 열기 → 아래 입력:
+
+```
+cd %USERPROFILE%\Desktop
+git clone https://github.com/gua091016/gua091016.github.io.git
 ```
 
-## 2. 이 폴더 내용으로 덮어쓰기
+바탕화면에 `gua091016.github.io` 폴더가 생깁니다.
 
-git pull 받은 `pipe_iso_viewer/` 폴더의 내용을 위에서 만든 프로젝트에 복사합니다:
-- `lib/` 전체
-- `pubspec.yaml`
-- `android/app/src/main/AndroidManifest.xml`
+### 2단계: setup.bat 실행 (최초 1회만)
 
-## 3. 패키지 설치
+탐색기에서:
+`바탕화면 → gua091016.github.io → pipe_iso_viewer → setup.bat` **더블클릭**
 
-```bash
-flutter pub get
-```
+완료 메시지가 뜰 때까지 기다리세요 (약 2~5분).
+
+### 3단계: Android Studio에서 열기
+
+1. Android Studio 실행
+2. **File → Open**
+3. `바탕화면\gua091016.github.io\pipe_iso_viewer` 폴더 선택
+4. **OK**
+
+> "Get from VCS"가 안 보이면 → **File → Open** 으로 열면 됩니다.
+
+### 4단계: 실행
+
+에뮬레이터 또는 실기기 연결 후 상단 ▶ (Run) 버튼 클릭.
+
+---
 
 ## 4. iOS 설정 (iOS 빌드 시)
 
