@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gua091016.github.io/pipe-iso/sitemap.xml
