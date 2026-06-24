@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>配管切断寸法を簡単に計算できるアプリ | Pipe ISO Calculator</title>
+  <meta name="description" content="Pipe ISO Calculatorは、配管の斜め切断、CUT寸法、ISOスケッチ、3Dオフセット、エルボのマイター計算を現場で確認できるスマホアプリです。">
+  <meta name="keywords" content="配管 切断 寸法 計算, パイプ 斜め切り 計算, 配管 展開 寸法, パイプカット 計算アプリ, 配管工 便利アプリ">
+  <link rel="canonical" href="https://gua091016.github.io/pipe-iso/ja/">
+  <link rel="alternate" hreflang="ja" href="https://gua091016.github.io/pipe-iso/ja/">
+  <link rel="alternate" hreflang="x-default" href="https://gua091016.github.io/pipe-iso/">
+  <meta property="og:title" content="配管切断寸法を簡単に計算できるアプリ">
+  <meta property="og:description" content="配管のCUT寸法、ISOスケッチ、3Dオフセット、エルボのマイター計算を現場で素早く確認。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gua091016.github.io/pipe-iso/ja/">
+  <meta property="og:image" content="https://gua091016.github.io/pipe-iso/assets/app_icon.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18202b;
+      --muted: #5b6878;
+      --line: #d8e2eb;
+      --panel: #f6f9fc;
+      --blue: #0f7db7;
+      --green: #07946e;
+      --orange: #f39a1f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+      line-height: 1.75;
+    }
+
+    a { color: inherit; }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .nav {
+      max-width: 1080px;
+      margin: 0 auto;
+      min-height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 54px 20px 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 48px;
+      align-items: center;
+      padding-bottom: 46px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 680px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 8px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 1px solid var(--line);
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .app-visual {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      text-align: center;
+    }
+
+    .app-visual img {
+      width: min(100%, 240px);
+      height: auto;
+      border-radius: 32px;
+      box-shadow: 0 18px 38px rgba(24, 32, 43, 0.16);
+    }
+
+    .app-visual p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    section {
+      padding: 48px 0 0;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      background: #fff;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .article {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .article p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .keyword-box {
+      border-left: 4px solid var(--orange);
+      background: #fff8ed;
+      padding: 18px 20px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .keyword-box p {
+      margin: 0;
+      color: #5e4630;
+      font-weight: 700;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      padding: 24px 20px 40px;
+    }
+
+    footer .inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .article,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-top: 36px;
+      }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Pipe ISO Calculator",
+    "operatingSystem": "Android",
+    "applicationCategory": "UtilitiesApplication",
+    "description": "配管のCUT寸法、ISOスケッチ、3Dオフセット、エルボのマイター計算を現場で確認できるスマホアプリです。",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "JPY"
+    },
+    "url": "https://gua091016.github.io/pipe-iso/ja/"
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="brand">
+        <img src="../assets/app_icon.png" alt="Pipe ISO Calculator">
+        <span>Pipe ISO Calculator</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">機能</a>
+        <a href="#use">使い方</a>
+        <a href="#download">ダウンロード</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">配管工事、製作、現場確認向け</p>
+        <h1>配管切断寸法を<br>スマホで素早く計算</h1>
+        <p class="lead">
+          Pipe ISO Calculatorは、配管の斜め切断、CUT寸法、ISOスケッチ、3Dオフセット、
+          エルボのマイター計算を現場で確認するための計算アプリです。
+        </p>
+        <div class="actions" id="download">
+          <a class="button primary" href="https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator">Google Playで見る</a>
+          <a class="button" href="../">トップページへ</a>
+        </div>
+      </div>
+      <div class="app-visual">
+        <img src="../assets/app_icon.png" alt="Pipe ISO Calculator app icon">
+        <p>ISOスケッチ、CUTリスト、現場計算を1つのアプリで確認</p>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>主な機能</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>配管CUT寸法</h3>
+          <p>SIZE、CL、CUT寸法を整理し、配管の切断長さを確認できます。</p>
+        </div>
+        <div class="card">
+          <h3>ISOスケッチ</h3>
+          <p>配管ライン、フィッティング、寸法ラベル、溶接ポイントを確認できます。</p>
+        </div>
+        <div class="card">
+          <h3>3Dオフセット計算</h3>
+          <p>ロール角度、オフセット、直管部から3D形状とCUT結果を確認できます。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="use">
+      <h2>こんな場面で使えます</h2>
+      <div class="article">
+        <div>
+          <p>
+            配管の斜め切りやエルボ加工では、外径、角度、中心寸法によって切断寸法が変わります。
+            手計算だけで進めると、現場での確認に時間がかかり、寸法ミスも起こりやすくなります。
+          </p>
+          <p>
+            このアプリでは、配管工事前の寸法確認、製作前のCUT長さ確認、溶接前の仮合わせ確認を
+            スマホ上で素早く行えます。
+          </p>
+        </div>
+        <div class="keyword-box">
+          <p>
+            検索キーワード例:
+            配管 切断 寸法 計算、パイプ 斜め切り 計算、配管 展開 寸法、パイプカット 計算アプリ
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>注意事項</h2>
+      <div class="card">
+        <p>
+          本アプリは現場確認を補助する計算ツールです。実際の製作、施工、溶接前には、
+          必ず図面、仕様書、適用規格、材料カタログ、監督者の確認に従ってください。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="inner">
+      <span>© 2026 Koreafitter. Pipe ISO Calculator.</span>
+      <a href="../privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+</html>
