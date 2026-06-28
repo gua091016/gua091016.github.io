@@ -3,22 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="코리아피터 모바일 앱 및 현장 계산 도구 소개 페이지입니다.">
   <title>코리아피터</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial, "Noto Sans KR", sans-serif;
       max-width: 860px;
       margin: 40px auto;
       padding: 0 20px;
       line-height: 1.7;
       color: #222;
+      background: #fff;
     }
     h1 {
+      color: #111;
+      margin-bottom: 8px;
+    }
+    h2 {
+      margin-top: 0;
       color: #111;
     }
     a {
       color: #0b66c3;
       text-decoration: none;
+      font-weight: 700;
     }
     a:hover {
       text-decoration: underline;
@@ -29,6 +37,35 @@
       padding: 18px;
       margin-top: 18px;
       background: #fafafa;
+    }
+    .app-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .app-list li {
+      padding: 14px 0;
+      border-top: 1px solid #e7e7e7;
+    }
+    .app-list li:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+    .app-list p {
+      margin: 4px 0 0;
+      color: #555;
+      font-size: 14px;
+    }
+    .new {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: #eaf6ff;
+      color: #0878a5;
+      font-size: 12px;
+      font-weight: 700;
+      vertical-align: middle;
     }
     footer {
       margin-top: 40px;
@@ -46,15 +83,22 @@
 
   <div class="card">
     <h2>앱 목록</h2>
-    <ul>
+    <ul class="app-list">
+      <li>
+        <a href="./dummy-support/">더미 서포트 계산기</a><span class="new">NEW</span>
+        <p>배관 더미 서포트의 새들 컷, 엘보 트러니언, 엘보 마이터 전개 계산을 돕는 앱입니다.</p>
+      </li>
       <li>
         <a href="./pipe-iso/">현장배관 ISO 계산기</a>
+        <p>현장 배관 ISO 작업에 필요한 계산과 치수 검토를 돕는 앱입니다.</p>
       </li>
-       <li>
+      <li>
         <a href="./gongsoo-calendar/">공수달력</a>
+        <p>작업 일정과 공수 관리를 위한 달력 앱입니다.</p>
       </li>
       <li>
         <a href="./flange/">플랜지 마스터</a>
+        <p>플랜지 관련 치수와 현장 확인 작업을 돕는 앱입니다.</p>
       </li>
     </ul>
   </div>
@@ -62,7 +106,7 @@
   <div class="card">
     <h2>문의</h2>
     <p>
-      Email: gua091016@gmail.com
+      Email: <a href="mailto:gua091016@gmail.com">gua091016@gmail.com</a>
     </p>
   </div>
 
