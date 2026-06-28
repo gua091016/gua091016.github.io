@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Dummy Support Calculator는 배관 더미 서포트의 새들 컷 전개선과 현장 마킹 템플릿을 계산하는 앱입니다.">
+<title>Dummy Support Calculator | 더미 서포트 계산기</title>
+<style>
+  :root {
+    --ink: #142235;
+    --muted: #637386;
+    --line: #dce6ef;
+    --paper: #f5f8fb;
+    --surface: #ffffff;
+    --blue: #0d6f94;
+    --cyan: #0aa4c8;
+    --amber: #c97b20;
+    --green: #307a58;
+    --shadow: 0 18px 45px rgba(20,34,53,.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: var(--blue); }
+  .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+  .topbar {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .brand img { width: 38px; height: 38px; border-radius: 9px; }
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    align-items: center;
+  }
+  .nav a, .lang button {
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.8);
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: .88rem;
+    cursor: pointer;
+  }
+  .lang { display: flex; gap: 6px; }
+  .lang button[aria-current="true"] {
+    color: #fff;
+    border-color: var(--blue);
+    background: var(--blue);
+  }
+
+  .hero {
+    position: relative;
+    min-height: 610px;
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    color: #fff;
+    background: #132838 url("type_trunnion.png") center / cover no-repeat;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(9,22,34,.92) 0%, rgba(9,22,34,.74) 43%, rgba(9,22,34,.28) 100%),
+      linear-gradient(0deg, rgba(9,22,34,.68) 0%, rgba(9,22,34,.08) 55%);
+  }
+  .hero .wrap {
+    position: relative;
+    padding: 86px 0 78px;
+  }
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #d8f5ff;
+    font-size: .82rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .kicker::before {
+    content: "";
+    width: 34px;
+    height: 2px;
+    background: var(--cyan);
+  }
+  h1 {
+    max-width: 760px;
+    margin: 14px 0 16px;
+    font-size: clamp(2.35rem, 6vw, 5.35rem);
+    line-height: .98;
+    letter-spacing: 0;
+  }
+  .hero p {
+    max-width: 620px;
+    margin: 0;
+    color: #e8f4f8;
+    font-size: clamp(1rem, 2vw, 1.28rem);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.32);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+  }
+  .button.primary {
+    color: #073348;
+    background: #fff;
+    border-color: #fff;
+  }
+  .button.dark {
+    color: var(--ink);
+    border-color: var(--line);
+    background: #fff;
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,.32);
+    color: #d8f5ff;
+    font-weight: 700;
+  }
+
+  section { padding: 64px 0; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 26px;
+    margin-bottom: 24px;
+  }
+  .eyebrow {
+    color: var(--blue);
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h2 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.35rem);
+    line-height: 1.18;
+    letter-spacing: 0;
+  }
+  .section-head p {
+    max-width: 440px;
+    margin: 0;
+    color: var(--muted);
+  }
+  .showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, .9fr);
+    gap: 26px;
+    align-items: center;
+  }
+  .preview {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .preview img {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+  }
+  .facts {
+    display: grid;
+    gap: 12px;
+  }
+  .fact {
+    border-left: 4px solid var(--cyan);
+    background: #fff;
+    padding: 15px 16px;
+    border-radius: 0 8px 8px 0;
+  }
+  .fact:nth-child(2) { border-left-color: var(--amber); }
+  .fact:nth-child(3) { border-left-color: var(--green); }
+  .fact b { display: block; margin-bottom: 2px; }
+  .fact span { color: var(--muted); font-size: .94rem; }
+
+  .types {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .type {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(20,34,53,.06);
+  }
+  .type img {
+    width: 100%;
+    aspect-ratio: 1.42;
+    object-fit: cover;
+    background: #eef3f6;
+  }
+  .type .body { padding: 18px; }
+  .type h3 { margin: 0 0 6px; font-size: 1.12rem; }
+  .type p { margin: 0; color: var(--muted); font-size: .94rem; }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .feature {
+    min-height: 155px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    padding: 18px;
+  }
+  .feature .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #e6f6fb;
+    color: var(--blue);
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+  .feature:nth-child(2) .num { background: #fff1df; color: var(--amber); }
+  .feature:nth-child(3) .num { background: #e8f5ee; color: var(--green); }
+  .feature:nth-child(4) .num { background: #edf0f7; color: #53627c; }
+  .feature b { display: block; margin-bottom: 6px; }
+  .feature span { color: var(--muted); font-size: .92rem; }
+
+  .privacy-band {
+    background: #122536;
+    color: #fff;
+    padding: 44px 0;
+  }
+  .privacy-band .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .privacy-band h2 { font-size: clamp(1.35rem, 3vw, 2rem); }
+  .privacy-band p {
+    max-width: 650px;
+    margin: 8px 0 0;
+    color: #d8e5ee;
+  }
+  footer {
+    padding: 28px 0 54px;
+    color: var(--muted);
+    font-size: .9rem;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+
+  [data-lang-panel] { display: none; }
+  [data-lang-panel].active { display: block; }
+
+  @media (max-width: 860px) {
+    .hero { min-height: 560px; background-position: 58% center; }
+    .showcase, .types, .features { grid-template-columns: 1fr; }
+    .section-head { display: block; }
+    .section-head p { margin-top: 10px; }
+    .privacy-band .wrap { display: block; }
+    .privacy-band .button { margin-top: 20px; }
+  }
+  @media (max-width: 560px) {
+    .wrap { width: min(100% - 24px, 1120px); }
+    .topbar { align-items: flex-start; flex-direction: column; padding: 12px 0; }
+    .nav { justify-content: flex-start; }
+    .hero .wrap { padding: 70px 0 56px; }
+    .preview { padding: 12px; }
+    .preview-grid { gap: 10px; }
+    section { padding: 46px 0; }
+  }
+</style>
+</head>
+<body>
+<header class="wrap topbar">
+  <a class="brand" href="index.html" aria-label="Dummy Support Calculator home">
+    <img src="icon.png" alt="">
+    <span>Dummy Support Calculator</span>
+  </a>
+  <nav class="nav" aria-label="Page navigation">
+    <a href="#outputs" data-i18n="navOutput">결과물</a>
+    <a href="#types" data-i18n="navTypes">지원 타입</a>
+    <a href="privacy.html" data-i18n="navPrivacy">개인정보처리방침</a>
+    <div class="lang" aria-label="Language">
+      <button type="button" data-lang="ko" aria-current="true">KO</button>
+      <button type="button" data-lang="en" aria-current="false">EN</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="kicker" data-i18n="kicker">배관 제작 현장용 계산 도구</div>
+      <h1 data-i18n="heroTitle">더미 서포트 전개선을 빠르고 정확하게</h1>
+      <p data-i18n="heroText">모관과 엘보 곡면에 붙는 더미 파이프의 새들 컷 라인을 계산하고, 현장에서 바로 쓸 수 있는 실물 크기 마킹 템플릿과 좌표표를 만듭니다.</p>
+      <div class="hero-actions">
+        <span class="status" data-i18n="playStatus">Google Play 출시 준비 중</span>
+        <a class="button primary" href="#outputs" data-i18n="seeOutput">결과물 보기</a>
+        <a class="button" href="privacy.html" data-i18n="privacyButton">개인정보처리방침</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="outputs">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-i18n="outputEyebrow">Output</div>
+          <h2 data-i18n="outputTitle">계산에서 마킹까지 한 번에 이어집니다.</h2>
+        </div>
+        <p data-i18n="outputText">입력값을 바탕으로 전개 곡선, 단면 치수, 좌표표를 출력합니다. PDF로 내보내서 프린트하거나 공유할 수 있습니다.</p>
+      </div>
+      <div class="showcase">
+        <div class="preview" aria-label="Generated output previews">
+          <div class="preview-grid">
+            <img src="output_long.png" alt="엘보 더미 계산 화면 실제 스크린샷">
+            <img src="output_short.png" alt="직관 더미 계산 화면 실제 스크린샷">
+          </div>
+        </div>
+        <div class="facts">
+          <div class="fact"><b data-i18n="fact1Title">실물 크기 템플릿</b><span data-i18n="fact1Text">마킹 곡선을 1:1 크기로 출력해 제작 현장에서 바로 확인합니다.</span></div>
+          <div class="fact"><b data-i18n="fact2Title">좌표 기반 검토</b><span data-i18n="fact2Text">각 분할점의 좌표를 함께 제공해 수작업 마킹과 검산이 쉽습니다.</span></div>
+          <div class="fact"><b data-i18n="fact3Title">기기 내 계산</b><span data-i18n="fact3Text">핵심 계산과 PDF 생성은 사용자의 기기 안에서 처리됩니다.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="types">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-i18n="typeEyebrow">Supported Types</div>
+          <h2 data-i18n="typeTitle">현장에서 자주 쓰는 3가지 형식을 지원합니다.</h2>
+        </div>
+        <p data-i18n="typeText">직관적인 형상 선택 후 NPS, 중심 높이, 목표 각도 같은 핵심값만 입력하면 됩니다.</p>
+      </div>
+      <div class="types">
+        <article class="type">
+          <img src="type_straight.png" alt="Straight Dummy diagram">
+          <div class="body">
+            <h3 data-i18n="straightTitle">직관 더미</h3>
+            <p data-i18n="straightText">수평 모관 위에 수직으로 붙는 더미 파이프의 fishmouth 새들 컷을 계산합니다.</p>
+          </div>
+        </article>
+        <article class="type">
+          <img src="type_trunnion.png" alt="Elbow Trunnion diagram">
+          <div class="body">
+            <h3 data-i18n="trunnionTitle">엘보 트러니언</h3>
+            <p data-i18n="trunnionText">엘보 곡면 위에 붙는 더미의 원통-토러스 교차 전개선을 계산합니다.</p>
+          </div>
+        </article>
+        <article class="type">
+          <img src="type_miter.png" alt="Elbow Miter diagram">
+          <div class="body">
+            <h3 data-i18n="miterTitle">엘보 마이터</h3>
+            <p data-i18n="miterText">표준 45도 또는 90도 엘보를 목표 각도로 절단하기 위한 배면과 목면 길이를 산출합니다.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-i18n="featureEyebrow">Features</div>
+          <h2 data-i18n="featureTitle">복잡한 전개 작업을 작게 쪼개 줍니다.</h2>
+        </div>
+      </div>
+      <div class="features">
+        <div class="feature"><span class="num">1</span><b data-i18n="feature1Title">NPS 규격 선택</b><span data-i18n="feature1Text">규격을 고르면 외경 값이 자동 적용됩니다.</span></div>
+        <div class="feature"><span class="num">2</span><b data-i18n="feature2Title">중심 높이 기준</b><span data-i18n="feature2Text">모관 또는 엘보 중심 높이 H를 기준으로 더미 길이를 계산합니다.</span></div>
+        <div class="feature"><span class="num">3</span><b data-i18n="feature3Title">2D 단면 확인</b><span data-i18n="feature3Text">치수와 구조를 한 화면에서 확인해 입력 실수를 줄입니다.</span></div>
+        <div class="feature"><span class="num">4</span><b data-i18n="feature4Title">PDF 내보내기</b><span data-i18n="feature4Text">마킹 템플릿과 좌표표를 PDF로 저장하고 공유합니다.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy-band">
+    <div class="wrap">
+      <div>
+        <h2 data-i18n="privacyTitle">계산 데이터는 기본적으로 기기 안에 머뭅니다.</h2>
+        <p data-i18n="privacyText">앱은 이름, 이메일, 전화번호, 위치 같은 직접 식별 정보를 자체 수집하지 않습니다. 무료 버전 광고 표시에 필요한 정보 처리는 개인정보처리방침에서 확인할 수 있습니다.</p>
+      </div>
+      <a class="button primary" href="privacy.html" data-i18n="privacyRead">정책 읽기</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 gua091016</span>
+    <a href="mailto:gua091016@gmail.com">gua091016@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+const text = {
+  ko: {
+    navOutput: "결과물", navTypes: "지원 타입", navPrivacy: "개인정보처리방침",
+    kicker: "배관 제작 현장용 계산 도구",
+    heroTitle: "더미 서포트 전개선을 빠르고 정확하게",
+    heroText: "모관과 엘보 곡면에 붙는 더미 파이프의 새들 컷 라인을 계산하고, 현장에서 바로 쓸 수 있는 실물 크기 마킹 템플릿과 좌표표를 만듭니다.",
+    playStatus: "Google Play 출시 준비 중", seeOutput: "결과물 보기", privacyButton: "개인정보처리방침",
+    outputEyebrow: "Output", outputTitle: "계산에서 마킹까지 한 번에 이어집니다.",
+    outputText: "입력값을 바탕으로 전개 곡선, 단면 치수, 좌표표를 출력합니다. PDF로 내보내서 프린트하거나 공유할 수 있습니다.",
+    fact1Title: "실물 크기 템플릿", fact1Text: "마킹 곡선을 1:1 크기로 출력해 제작 현장에서 바로 확인합니다.",
+    fact2Title: "좌표 기반 검토", fact2Text: "각 분할점의 좌표를 함께 제공해 수작업 마킹과 검산이 쉽습니다.",
+    fact3Title: "기기 내 계산", fact3Text: "핵심 계산과 PDF 생성은 사용자의 기기 안에서 처리됩니다.",
+    typeEyebrow: "Supported Types", typeTitle: "현장에서 자주 쓰는 3가지 형식을 지원합니다.",
+    typeText: "직관적인 형상 선택 후 NPS, 중심 높이, 목표 각도 같은 핵심값만 입력하면 됩니다.",
+    straightTitle: "직관 더미", straightText: "수평 모관 위에 수직으로 붙는 더미 파이프의 fishmouth 새들 컷을 계산합니다.",
+    trunnionTitle: "엘보 트러니언", trunnionText: "엘보 곡면 위에 붙는 더미의 원통-토러스 교차 전개선을 계산합니다.",
+    miterTitle: "엘보 마이터", miterText: "표준 45도 또는 90도 엘보를 목표 각도로 절단하기 위한 배면과 목면 길이를 산출합니다.",
+    featureEyebrow: "Features", featureTitle: "복잡한 전개 작업을 작게 쪼개 줍니다.",
+    feature1Title: "NPS 규격 선택", feature1Text: "규격을 고르면 외경 값이 자동 적용됩니다.",
+    feature2Title: "중심 높이 기준", feature2Text: "모관 또는 엘보 중심 높이 H를 기준으로 더미 길이를 계산합니다.",
+    feature3Title: "2D 단면 확인", feature3Text: "치수와 구조를 한 화면에서 확인해 입력 실수를 줄입니다.",
+    feature4Title: "PDF 내보내기", feature4Text: "마킹 템플릿과 좌표표를 PDF로 저장하고 공유합니다.",
+    privacyTitle: "계산 데이터는 기본적으로 기기 안에 머뭅니다.",
+    privacyText: "앱은 이름, 이메일, 전화번호, 위치 같은 직접 식별 정보를 자체 수집하지 않습니다. 무료 버전 광고 표시에 필요한 정보 처리는 개인정보처리방침에서 확인할 수 있습니다.",
+    privacyRead: "정책 읽기"
+  },
+  en: {
+    navOutput: "Outputs", navTypes: "Types", navPrivacy: "Privacy",
+    kicker: "Fabrication calculator for pipe supports",
+    heroTitle: "Dummy support saddle cuts, ready for the shop floor",
+    heroText: "Calculate saddle cut lines where a dummy pipe meets a run pipe or elbow, then produce full-scale marking templates and coordinate tables.",
+    playStatus: "Preparing for Google Play", seeOutput: "View outputs", privacyButton: "Privacy Policy",
+    outputEyebrow: "Output", outputTitle: "From calculation to marking in one flow.",
+    outputText: "The app outputs development curves, section dimensions, and coordinate tables from your inputs. Export to PDF for printing or sharing.",
+    fact1Title: "Full-scale templates", fact1Text: "Print 1:1 marking curves for direct shop-floor checking.",
+    fact2Title: "Coordinate review", fact2Text: "Each division point is listed so manual marking and verification are easier.",
+    fact3Title: "On-device processing", fact3Text: "Core calculations and PDF generation are handled on your device.",
+    typeEyebrow: "Supported Types", typeTitle: "Three common field formats are supported.",
+    typeText: "Choose the shape, then enter practical values such as NPS, center height, and target angle.",
+    straightTitle: "Straight Dummy", straightText: "Fishmouth saddle cut for a dummy pipe welded vertically onto a horizontal run pipe.",
+    trunnionTitle: "Elbow Trunnion", trunnionText: "Cylinder-to-torus intersection development for a dummy on an elbow surface.",
+    miterTitle: "Elbow Miter", miterText: "Back and throat arc lengths for cutting a standard 45 or 90 degree elbow to a target angle.",
+    featureEyebrow: "Features", featureTitle: "Complex development work, broken into practical steps.",
+    feature1Title: "NPS size selection", feature1Text: "Pick a pipe size and the outside diameter is applied automatically.",
+    feature2Title: "Center-height based", feature2Text: "Calculate dummy length from the run pipe or elbow center height H.",
+    feature3Title: "2D section view", feature3Text: "Check dimensions and structure in a single view.",
+    feature4Title: "PDF export", feature4Text: "Save and share marking templates and coordinate tables as PDF files.",
+    privacyTitle: "Calculation data stays on your device by default.",
+    privacyText: "The app itself does not collect direct identifiers such as name, email, phone number, or location. Ad-related handling for the free version is described in the privacy policy.",
+    privacyRead: "Read policy"
+  }
+};
+
+function applyLang(lang) {
+  const dict = text[lang] || text.ko;
+  document.querySelectorAll("[data-i18n]").forEach((node) => {
+    const key = node.getAttribute("data-i18n");
+    if (dict[key]) node.textContent = dict[key];
+  });
+  document.querySelectorAll("[data-lang]").forEach((button) => {
+    button.setAttribute("aria-current", button.dataset.lang === lang ? "true" : "false");
+  });
+  document.documentElement.lang = lang;
+}
+
+document.querySelectorAll("[data-lang]").forEach((button) => {
+  button.addEventListener("click", () => applyLang(button.dataset.lang));
+});
+
+const preferred = (navigator.language || "ko").slice(0, 2).toLowerCase();
+applyLang(preferred === "en" ? "en" : "ko");
+</script>
+</body>
+</html>

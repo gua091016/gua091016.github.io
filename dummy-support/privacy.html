@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Dummy Support Calculator 개인정보처리방침">
+<title>Dummy Support Calculator | 개인정보처리방침</title>
+<style>
+  :root {
+    --ink: #172638;
+    --muted: #647487;
+    --line: #dfe8f0;
+    --paper: #f6f8fb;
+    --surface: #ffffff;
+    --blue: #0d6f94;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue); }
+  .wrap { width: min(820px, calc(100% - 32px)); margin: 0 auto; }
+  header {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+  }
+  .top {
+    min-height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .home {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 800;
+  }
+  .actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .actions a, .actions button {
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: .88rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .actions button[aria-current="true"] {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+  main { padding: 44px 0 84px; }
+  .policy {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: clamp(22px, 5vw, 44px);
+    box-shadow: 0 18px 42px rgba(23,38,56,.08);
+  }
+  h1 {
+    margin: 0 0 4px;
+    font-size: clamp(1.6rem, 4vw, 2.35rem);
+    line-height: 1.18;
+    letter-spacing: 0;
+  }
+  h2 {
+    margin: 2em 0 .45em;
+    padding-bottom: .28em;
+    border-bottom: 1px solid var(--line);
+    font-size: 1.13rem;
+  }
+  p, ul { margin-top: .4em; }
+  li + li { margin-top: .35em; }
+  .meta { color: var(--muted); font-size: .94rem; margin-bottom: 1.5em; }
+  .summary {
+    background: #eef7fb;
+    border: 1px solid #cfe7f1;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  [data-lang-panel] { display: none; }
+  [data-lang-panel].active { display: block; }
+  footer {
+    color: var(--muted);
+    font-size: .9rem;
+    padding-top: 24px;
+  }
+  @media (max-width: 560px) {
+    .wrap { width: min(100% - 24px, 820px); }
+    .top { align-items: flex-start; flex-direction: column; padding: 12px 0; }
+    .actions { justify-content: flex-start; }
+    main { padding-top: 28px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <a class="home" href="index.html">Dummy Support Calculator</a>
+    <nav class="actions" aria-label="Policy navigation">
+      <a href="index.html" data-i18n="home">홈</a>
+      <button type="button" data-lang="ko" aria-current="true">KO</button>
+      <button type="button" data-lang="en" aria-current="false">EN</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <article class="policy active" data-lang-panel="ko">
+    <h1>개인정보처리방침</h1>
+    <p class="meta">Dummy Support Calculator | 최종 업데이트: 2026-06-28</p>
+
+    <p class="summary"><strong>요약:</strong> Dummy Support Calculator는 이름, 이메일, 전화번호, 위치 같은 직접 식별 정보를 자체 수집하지 않습니다. 계산과 PDF 생성은 사용자의 기기에서 처리됩니다. 무료 버전에는 광고가 포함될 수 있으며, 광고 제공 과정에서 광고 ID와 일부 기기 정보가 광고 제공업체에 의해 처리될 수 있습니다.</p>
+
+    <h2>1. 수집하는 정보</h2>
+    <p>앱은 사용자의 이름, 이메일 주소, 전화번호, 정확한 위치 정보 등 개인을 직접 식별하는 정보를 자체적으로 수집하지 않습니다.</p>
+    <p>사용자가 입력한 배관 규격, 치수, 각도, 설정값은 계산과 작업 편의를 위해 기기 내 저장소에 보관될 수 있으며, 앱 자체 서버로 전송되지 않습니다.</p>
+
+    <h2>2. 데이터 처리 방식</h2>
+    <ul>
+      <li>새들 컷 계산, 전개선 계산, PDF 생성은 사용자의 기기에서 처리됩니다.</li>
+      <li>핵심 계산 기능은 인터넷 연결 없이도 동작할 수 있습니다.</li>
+      <li>무료 버전에서 광고를 표시하는 경우 광고 로딩을 위해 네트워크 연결이 사용됩니다.</li>
+    </ul>
+
+    <h2>3. 데이터 공유</h2>
+    <p>사용자가 공유 기능을 사용해 생성된 PDF 또는 이미지를 다른 앱으로 내보내는 경우, 이는 사용자의 명시적인 조작에 따라 이루어집니다. 앱은 해당 파일을 별도 서버에 저장하지 않습니다.</p>
+    <p>광고와 관련된 데이터 처리는 아래 4항의 광고 제공업체 정책에 따릅니다.</p>
+
+    <h2>4. 광고</h2>
+    <p>무료 버전은 Google AdMob 및 광고 미디에이션 파트너를 통해 광고를 표시할 수 있습니다. 광고 제공업체는 광고 제공, 빈도 제한, 측정, 맞춤형 광고를 위해 광고 ID, 기기 정보, 사용 관련 정보를 수집하거나 사용할 수 있습니다.</p>
+    <ul>
+      <li>Google 광고 데이터 처리 안내: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a></li>
+      <li>사용자는 Android 기기 설정에서 맞춤형 광고를 제한하거나 광고 ID를 재설정할 수 있습니다.</li>
+      <li>유료 또는 광고 제거 버전을 사용하는 경우 앱 내 광고가 표시되지 않습니다.</li>
+    </ul>
+
+    <h2>5. 분석 및 추적</h2>
+    <p>앱은 광고 SDK 자체가 수행하는 광고 측정 외에 별도의 사용자 분석 또는 행동 추적 도구를 포함하지 않습니다.</p>
+
+    <h2>6. 아동의 개인정보</h2>
+    <p>앱은 아동을 대상으로 하지 않으며, 아동으로부터 개인정보를 고의로 수집하지 않습니다.</p>
+
+    <h2>7. 보관 및 삭제</h2>
+    <p>기기 내에 저장된 입력값과 설정값은 앱 삭제, 앱 데이터 삭제, 또는 앱 내 초기화 기능을 통해 삭제될 수 있습니다.</p>
+
+    <h2>8. 정책 변경</h2>
+    <p>본 방침은 필요한 경우 변경될 수 있습니다. 변경 사항은 이 페이지에 게시되며, 상단의 최종 업데이트 날짜가 함께 갱신됩니다.</p>
+
+    <h2>9. 문의</h2>
+    <p>개인정보처리방침 관련 문의: <a href="mailto:gua091016@gmail.com">gua091016@gmail.com</a></p>
+  </article>
+
+  <article class="policy" data-lang-panel="en">
+    <h1>Privacy Policy</h1>
+    <p class="meta">Dummy Support Calculator | Last updated: 2026-06-28</p>
+
+    <p class="summary"><strong>Summary:</strong> Dummy Support Calculator itself does not collect direct identifiers such as your name, email address, phone number, or location. Calculations and PDF generation are processed on your device. The free version may include ads, and ad providers may process your advertising ID and certain device information to serve ads.</p>
+
+    <h2>1. Information We Collect</h2>
+    <p>The app itself does not collect personally identifiable information such as name, email address, phone number, or precise location.</p>
+    <p>Pipe sizes, dimensions, angles, and settings entered by the user may be stored in local device storage for calculation and convenience. These values are not sent to an app-owned server.</p>
+
+    <h2>2. How Data Is Processed</h2>
+    <ul>
+      <li>Saddle-cut calculations, development calculations, and PDF generation are processed on your device.</li>
+      <li>Core calculation features can work without an internet connection.</li>
+      <li>When ads are displayed in the free version, a network connection is used to load ads.</li>
+    </ul>
+
+    <h2>3. Data Sharing</h2>
+    <p>When you use the share feature to export a generated PDF or image to another app, that action is initiated by you. The app does not store those files on a separate server.</p>
+    <p>Ad-related data handling is governed by the policies of the advertising providers described in Section 4.</p>
+
+    <h2>4. Advertising</h2>
+    <p>The free version may display ads through Google AdMob and mediation partners. Advertising providers may collect or use your advertising ID, device information, and usage-related information for ad delivery, frequency capping, measurement, and personalized advertising.</p>
+    <ul>
+      <li>How Google uses advertising data: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a></li>
+      <li>You can limit personalized ads or reset your advertising ID in Android device settings.</li>
+      <li>If you use a paid or ad-free version, in-app ads are not displayed.</li>
+    </ul>
+
+    <h2>5. Analytics and Tracking</h2>
+    <p>The app does not include separate analytics or behavior tracking tools beyond ad measurement performed by the ad SDK itself.</p>
+
+    <h2>6. Children's Privacy</h2>
+    <p>The app is not directed to children and does not knowingly collect personal information from children.</p>
+
+    <h2>7. Retention and Deletion</h2>
+    <p>Values and settings stored on the device can be deleted by uninstalling the app, clearing app data, or using an in-app reset feature if available.</p>
+
+    <h2>8. Changes to This Policy</h2>
+    <p>This policy may be updated when needed. Changes will be posted on this page, and the last updated date above will be revised.</p>
+
+    <h2>9. Contact</h2>
+    <p>Questions about this privacy policy: <a href="mailto:gua091016@gmail.com">gua091016@gmail.com</a></p>
+  </article>
+
+  <footer>© 2026 gua091016</footer>
+</main>
+
+<script>
+const labels = {
+  ko: { home: "홈" },
+  en: { home: "Home" }
+};
+
+function applyLang(lang) {
+  document.querySelectorAll("[data-lang-panel]").forEach((panel) => {
+    panel.classList.toggle("active", panel.dataset.langPanel === lang);
+  });
+  document.querySelectorAll("[data-lang]").forEach((button) => {
+    button.setAttribute("aria-current", button.dataset.lang === lang ? "true" : "false");
+  });
+  document.querySelectorAll("[data-i18n]").forEach((node) => {
+    const key = node.getAttribute("data-i18n");
+    if (labels[lang] && labels[lang][key]) node.textContent = labels[lang][key];
+  });
+  document.documentElement.lang = lang;
+}
+
+document.querySelectorAll("[data-lang]").forEach((button) => {
+  button.addEventListener("click", () => applyLang(button.dataset.lang));
+});
+
+const preferred = (navigator.language || "ko").slice(0, 2).toLowerCase();
+applyLang(preferred === "en" ? "en" : "ko");
+</script>
+</body>
+</html>
