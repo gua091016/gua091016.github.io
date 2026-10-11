@@ -3,68 +3,189 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>제관 계산기 개인정보처리방침</title>
+<meta name="description" content="제관 계산기(Boilermaker Calc)는 콘·레듀샤·사각→원형·가지관·새우등·경판·탱크 등 제관 전개와 마킹 치수를 계산하는 앱입니다.">
+<title>제관 계산기 | Boilermaker Calc</title>
+<link rel="icon" href="icon.png">
 <style>
-:root{--bg:#F3F5F7;--ink:#14212B;--sub:#5E6B76;--brand:#1D5C8F;--line:#DFE4E8;--card:#fff}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#10171D;--ink:#E7EDF2;--sub:#9AA8B4;--brand:#7DB4E6;--line:#26323C;--card:#172129}}
-:root[data-theme="dark"]{--bg:#10171D;--ink:#E7EDF2;--sub:#9AA8B4;--brand:#7DB4E6;--line:#26323C;--card:#172129}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
-main{max-width:720px;margin:0 auto;padding:40px 16px 64px}
-h1{font-size:26px;margin:0 0 4px;color:var(--brand)}
-h2{font-size:18px;margin:32px 0 8px}
-p,li{color:var(--ink)}
-.meta{color:var(--sub);font-size:14px;margin:0 0 24px}
-section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:20px}
-ul{padding-left:20px;margin:8px 0}
-a{color:var(--brand)}
+  :root {
+    --ink: #142235;
+    --muted: #5e6b76;
+    --line: #dce6ef;
+    --paper: #f3f5f7;
+    --surface: #ffffff;
+    --blue: #1d5c8f;
+    --deep: #123e68;
+    --red: #c8161e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: var(--blue); }
+  .wrap { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+  .topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .home { color: var(--ink); text-decoration: none; font-weight: 800; }
+  .lang { display: flex; gap: 6px; }
+  .lang button {
+    border: 1px solid var(--line); background: #fff; color: var(--ink);
+    border-radius: 999px; padding: 6px 12px; font: inherit; font-size: .88rem; cursor: pointer;
+  }
+  .lang button[aria-pressed="true"] { color: #fff; background: var(--blue); border-color: var(--blue); }
+
+  .hero {
+    background: linear-gradient(120deg, #2a70a8, var(--deep));
+    color: #fff;
+    border-radius: 24px;
+    padding: 40px 32px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .hero > * { position: relative; }
+  .hero img { width: 120px; height: 120px; border-radius: 26px; box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+  .hero h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; }
+  .hero p { margin: 10px 0 0; opacity: .9; max-width: 56ch; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .badges span, .badges a {
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
+    color: #fff; text-decoration: none; border-radius: 999px; padding: 5px 12px; font-size: .9rem;
+  }
+
+  section { margin-top: 40px; }
+  h2 { font-size: 1.35rem; margin: 0 0 14px; }
+  .shots { display: grid; gap: 16px; }
+  .shots img { border-radius: 16px; border: 1px solid var(--line); background: #fff; }
+
+  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .group { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .group h3 { margin: 0 0 8px; font-size: 1.02rem; color: var(--blue); }
+  .group ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .95rem; }
+
+  .points { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .point { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; }
+  .point b { display: block; margin-bottom: 4px; }
+  .point span { color: var(--muted); font-size: .95rem; }
+
+  .privacy { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  footer { margin: 48px 0 32px; color: var(--muted); font-size: .9rem; }
+
+  body:not(.en) [data-l="en"] { display: none; }
+  body.en [data-l="ko"] { display: none; }
+
+  @media (max-width: 560px) {
+    .hero { grid-template-columns: 1fr; padding: 28px 22px; }
+    .hero img { width: 88px; height: 88px; border-radius: 20px; }
+  }
 </style>
 </head>
 <body>
-<main>
-<section lang="ko">
-<h1>제관 계산기 개인정보처리방침</h1>
-<p class="meta">시행일 2026-10-10 · 앱: 제관 계산기 (com.gua091016.boilermaker)</p>
-<h2>1. 수집하는 정보</h2>
-<p>이 앱은 이름, 연락처, 위치, 기기 식별자 등 개인정보를 수집하지 않으며, 서버로 어떤 정보도 보내지 않습니다. 광고와 분석 도구도 쓰지 않습니다.</p>
-<h2>2. 기기 안에만 저장되는 정보</h2>
-<ul>
-<li>단위 설정(mm / inch), 언어, 하루 무료 사용 횟수, Pro 구매 여부</li>
-<li>이 정보는 휴대폰 안에만 저장되며, 앱을 지우면 함께 지워집니다.</li>
-</ul>
-<h2>3. 결제</h2>
-<p>Pro 구매는 Google Play 결제로 처리됩니다. 결제 정보는 Google 이 처리하며 개발자는 카드 번호 등을 받지 않습니다. 자세한 내용은 <a href="https://policies.google.com/privacy">Google 개인정보처리방침</a>을 따릅니다.</p>
-<h2>4. 의견 보내기</h2>
-<p>앱 안의 "의견 보내기"를 누르면 휴대폰의 메일 앱이 열립니다. 직접 보낸 메일 내용과 메일 주소는 답장과 앱 개선에만 쓰고, 다른 곳에 제공하지 않습니다.</p>
-<h2>5. 내보내기 파일</h2>
-<p>PDF · DXF 파일은 휴대폰에서 만들어지고, 사용자가 고른 앱으로만 공유됩니다.</p>
-<h2>6. 아동</h2>
-<p>이 앱은 현장 기술자를 위한 도구이며 아동을 대상으로 하지 않습니다.</p>
-<h2>7. 문의</h2>
-<p>gua091016@gmail.com</p>
-</section>
+<div class="wrap">
+  <div class="topbar">
+    <a class="home" href="../">코리아피터</a>
+    <div class="lang">
+      <button type="button" data-set="ko" aria-pressed="true">KO</button>
+      <button type="button" data-set="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
 
-<section lang="en">
-<h1>Boilermaker Calc Privacy Policy</h1>
-<p class="meta">Effective 2026-10-10 · App: Boilermaker Calc (com.gua091016.boilermaker)</p>
-<h2>1. Information we collect</h2>
-<p>The app does not collect personal information such as name, contacts, location or device identifiers, and sends no data to any server. It contains no ads or analytics.</p>
-<h2>2. Stored on your device only</h2>
-<ul>
-<li>Unit setting (mm / inch), language, daily free-use count, Pro purchase status.</li>
-<li>These stay on your phone and are removed when the app is uninstalled.</li>
-</ul>
-<h2>3. Payments</h2>
-<p>Pro is purchased through Google Play Billing. Payment details are handled by Google; the developer never receives card information. See the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.</p>
-<h2>4. Feedback</h2>
-<p>"Send feedback" opens your email app. Emails you choose to send are used only to reply and improve the app, and are never shared.</p>
-<h2>5. Exported files</h2>
-<p>PDF and DXF files are created on your phone and shared only with apps you choose.</p>
-<h2>6. Children</h2>
-<p>This app is a tool for tradespeople and is not directed at children.</p>
-<h2>7. Contact</h2>
-<p>gua091016@gmail.com</p>
-</section>
-</main>
+  <header class="hero">
+    <img src="icon.png" alt="">
+    <div>
+      <h1><span data-l="ko">제관 계산기</span><span data-l="en">Boilermaker Calc</span></h1>
+      <p data-l="ko">콘·레듀샤, 사각→원형, 가지관, 새우등, 경판, 탱크까지 제관 전개 도구 33가지를 한 앱에 담았습니다. 그림을 보고 고르면 판에 바로 그릴 수 있는 치수와 전개도가 나옵니다.</p>
+      <p data-l="en">33 boilermaker layout tools in one app — cones and reducers, square to round, branches, lobster-back elbows, heads and tanks. Pick a tool by its picture and get dimensions and flat patterns you can mark straight onto the plate.</p>
+      <div class="badges">
+        <span data-l="ko">Google Play 출시 준비 중</span><span data-l="en">Coming soon to Google Play</span>
+        <span>mm / inch</span>
+        <span data-l="ko">광고 없음 · 오프라인</span><span data-l="en">No ads · works offline</span>
+        <a href="privacy.html" data-l="ko">개인정보처리방침</a><a href="privacy.html" data-l="en">Privacy policy</a>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <h2><span data-l="ko">화면</span><span data-l="en">Screens</span></h2>
+    <div class="shots" data-l="ko">
+      <img src="tools_ko.jpg" alt="제관 전개 도구 33가지">
+      <img src="head_ko.jpg" alt="경판 노즐 화면">
+      <img src="cone_ko.jpg" alt="콘 노즐 화면">
+    </div>
+    <div class="shots" data-l="en">
+      <img src="tools_en.jpg" alt="33 layout tools">
+      <img src="head_en.jpg" alt="Head nozzle screen">
+      <img src="petal_en.jpg" alt="Sphere petals screen">
+    </div>
+  </section>
+
+  <section>
+    <h2><span data-l="ko">도구</span><span data-l="en">Tools</span></h2>
+    <div class="groups" data-l="ko">
+      <div class="group"><h3>쉘 · 경판 · 탱크</h3><ul><li>현 → 호 변환</li><li>쉘 롤링 · 경판 블랭크</li><li>경판 노즐 구멍</li><li>가로 / 세로 탱크 용량 · 새들</li><li>꽃잎판 · 림펫 코일</li></ul></div>
+      <div class="group"><h3>콘 · 트랜지션</h3><ul><li>콘 전개 · 편심 콘 · 너클 콘</li><li>사각 / 직사각 / 편심 사각 → 원형</li><li>호퍼 · 편심 호퍼</li><li>콘 노즐 (수직 · 수평 · 면에 직각)</li></ul></div>
+      <div class="group"><h3>파이프 · 엘보</h3><ul><li>정각 · 경사 가지관</li><li>Y 분기 (바지관)</li><li>마이터 · 새우등 엘보</li><li>파이프 경사 절단</li></ul></div>
+      <div class="group"><h3>판 · 구조물 · 계산</h3><ul><li>스크류 플라이트 · 링 분할</li><li>판 절곡 전개 · 계단 · 직각 확인</li><li>PCD 볼트 구멍 · 중량 · 용접량</li></ul></div>
+    </div>
+    <div class="groups" data-l="en">
+      <div class="group"><h3>Shells · heads · tanks</h3><ul><li>Chord → arc</li><li>Shell rolling · head blank</li><li>Nozzle hole in a head</li><li>Horizontal / vertical tank volume · saddle</li><li>Sphere petals · limpet coil</li></ul></div>
+      <div class="group"><h3>Cones · transitions</h3><ul><li>Cone · eccentric · knuckle cone</li><li>Square / rectangle / offset square to round</li><li>Hopper · offset hopper</li><li>Nozzle on a cone (vertical · horizontal · normal)</li></ul></div>
+      <div class="group"><h3>Pipe · elbows</h3><ul><li>90° and lateral branches</li><li>Y-branch (breeches)</li><li>Miter and lobster-back elbows</li><li>Pipe angle cut</li></ul></div>
+      <div class="group"><h3>Plate · structures · calcs</h3><ul><li>Screw flight · ring segments</li><li>Bend allowance · stairs · square check</li><li>Bolt circle · weight · weld metal</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span data-l="ko">특징</span><span data-l="en">Features</span></h2>
+    <div class="points" data-l="ko">
+      <div class="point"><b>그림 위 치수</b><span>어디서 어디까지인지 도면처럼 그림에 직접 표시합니다.</span></div>
+      <div class="point"><b>mm / inch</b><span>1/16″ 분수 입력과 표시를 지원합니다.</span></div>
+      <div class="point"><b>검산된 계산식</b><span>모든 계산식은 3D 좌표로 검산했습니다.</span></div>
+      <div class="point"><b>PDF · DXF 내보내기</b><span>마킹표와 전개 도면을 파일로 받습니다 (Pro).</span></div>
+    </div>
+    <div class="points" data-l="en">
+      <div class="point"><b>Dimensions on the picture</b><span>Every value shows where it is measured from and to.</span></div>
+      <div class="point"><b>mm / inch</b><span>1/16″ fractions for input and display.</span></div>
+      <div class="point"><b>Checked formulas</b><span>Every formula is cross-checked with 3D geometry.</span></div>
+      <div class="point"><b>PDF · DXF export</b><span>Marking sheets and flat patterns as files (Pro).</span></div>
+    </div>
+  </section>
+
+  <section class="privacy">
+    <p data-l="ko">계산 값과 설정은 휴대폰 안에만 저장되며, 앱은 개인정보를 수집하거나 서버로 보내지 않습니다. <a href="privacy.html">개인정보처리방침 읽기</a></p>
+    <p data-l="en">Values and settings stay on your phone; the app collects no personal data and sends nothing to a server. <a href="privacy.html">Read the privacy policy</a></p>
+  </section>
+
+  <footer>© 코리아피터 · <a href="mailto:gua091016@gmail.com">gua091016@gmail.com</a></footer>
+</div>
+<script>
+  (function () {
+    var body = document.body;
+    var buttons = document.querySelectorAll('.lang button');
+    function set(l) {
+      body.classList.toggle('en', l === 'en');
+      document.documentElement.lang = l;
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+      try { localStorage.setItem('bm-lang', l); } catch (e) {}
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
+    var saved = null;
+    try { saved = localStorage.getItem('bm-lang'); } catch (e) {}
+    set(saved || ((navigator.language || 'ko').slice(0, 2) === 'ko' ? 'ko' : 'en'));
+  })();
+</script>
 </body>
 </html>
