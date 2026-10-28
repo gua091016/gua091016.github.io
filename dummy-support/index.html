@@ -231,7 +231,7 @@
 
   .types {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
   }
   .type {
@@ -364,8 +364,8 @@
       <h1 data-i18n="heroTitle">더미 서포트 전개선을 빠르고 정확하게</h1>
       <p data-i18n="heroText">주관과 엘보 곡면에 붙는 더미 파이프의 새들 컷 라인을 계산하고, 현장에서 바로 쓸 수 있는 실물 크기 마킹 템플릿과 좌표표를 만듭니다.</p>
       <div class="hero-actions">
-        <span class="status" data-i18n="playStatus">Google Play 출시 준비 중</span>
-        <a class="button primary" href="#outputs" data-i18n="seeOutput">결과물 보기</a>
+        <a class="button primary" href="https://play.google.com/store/apps/details?id=com.gua091016.dummy" target="_blank" rel="noopener" data-i18n="playStatus">Google Play에서 받기</a>
+        <a class="button" href="#outputs" data-i18n="seeOutput">결과물 보기</a>
         <a class="button" href="privacy.html" data-i18n="privacyButton">개인정보처리방침</a>
       </div>
     </div>
@@ -383,8 +383,8 @@
       <div class="showcase">
         <div class="preview" aria-label="Generated output previews">
           <div class="preview-grid">
-            <img src="output_long.png" alt="엘보 더미 계산 화면 실제 스크린샷">
-            <img src="output_short.png" alt="직관 더미 계산 화면 실제 스크린샷">
+            <img src="screen_straight.png" alt="직관 더미 계산 화면 실제 스크린샷">
+            <img src="screen_elbow.png" alt="엘보 더미 계산 화면 실제 스크린샷">
           </div>
         </div>
         <div class="facts">
@@ -401,7 +401,7 @@
       <div class="section-head">
         <div>
           <div class="eyebrow" data-i18n="typeEyebrow">Supported Types</div>
-          <h2 data-i18n="typeTitle">현장에서 자주 쓰는 3가지 형식을 지원합니다.</h2>
+          <h2 data-i18n="typeTitle">현장에서 자주 쓰는 4가지 형식을 지원합니다.</h2>
         </div>
         <p data-i18n="typeText">직관적인 형상 선택 후 NPS, 중심 높이, 목표 각도 같은 핵심값만 입력하면 됩니다.</p>
       </div>
@@ -418,6 +418,13 @@
           <div class="body">
             <h3 data-i18n="trunnionTitle">엘보 트러니언</h3>
             <p data-i18n="trunnionText">엘보 곡면 위에 붙는 더미의 원통-토러스 교차 전개선을 계산합니다.</p>
+          </div>
+        </article>
+        <article class="type">
+          <img src="type_beam.png" alt="Beam Dummy diagram">
+          <div class="body">
+            <h3 data-i18n="beamTitle">빔 더미</h3>
+            <p data-i18n="beamText">직관이나 엘보 아래에 받치는 H빔의 플랜지·웹 따내기 치수와 길이를 계산합니다.</p>
           </div>
         </article>
         <article class="type">
@@ -473,16 +480,17 @@ const text = {
     kicker: "배관 제작 현장용 계산 도구",
     heroTitle: "더미 서포트 전개선을 빠르고 정확하게",
     heroText: "주관과 엘보 곡면에 붙는 더미 파이프의 새들 컷 라인을 계산하고, 현장에서 바로 쓸 수 있는 실물 크기 마킹 템플릿과 좌표표를 만듭니다.",
-    playStatus: "Google Play 출시 준비 중", seeOutput: "결과물 보기", privacyButton: "개인정보처리방침",
+    playStatus: "Google Play에서 받기", seeOutput: "결과물 보기", privacyButton: "개인정보처리방침",
     outputEyebrow: "Output", outputTitle: "계산에서 마킹까지 한 번에 이어집니다.",
     outputText: "입력값을 바탕으로 전개 곡선, 단면 치수, 좌표표를 출력합니다. PDF로 내보내서 프린트하거나 공유할 수 있습니다.",
     fact1Title: "실물 크기 템플릿", fact1Text: "마킹 곡선을 1:1 크기로 출력해 제작 현장에서 바로 확인합니다.",
     fact2Title: "좌표 기반 검토", fact2Text: "각 분할점의 좌표를 함께 제공해 수작업 마킹과 검산이 쉽습니다.",
     fact3Title: "기기 내 계산", fact3Text: "핵심 계산과 PDF 생성은 사용자의 기기 안에서 처리됩니다.",
-    typeEyebrow: "Supported Types", typeTitle: "현장에서 자주 쓰는 3가지 형식을 지원합니다.",
+    typeEyebrow: "Supported Types", typeTitle: "현장에서 자주 쓰는 4가지 형식을 지원합니다.",
     typeText: "직관적인 형상 선택 후 NPS, 중심 높이, 목표 각도 같은 핵심값만 입력하면 됩니다.",
     straightTitle: "직관 더미", straightText: "수평 주관 위에 수직으로 붙는 더미 파이프의 fishmouth 새들 컷을 계산합니다.",
     trunnionTitle: "엘보 트러니언", trunnionText: "엘보 곡면 위에 붙는 더미의 원통-토러스 교차 전개선을 계산합니다.",
+    beamTitle: "빔 더미", beamText: "직관이나 엘보 아래에 받치는 H빔의 플랜지·웹 따내기 치수와 길이를 계산합니다.",
     miterTitle: "엘보 마이터", miterText: "표준 45도 또는 90도 엘보를 목표 각도로 절단하기 위한 배면과 목면 길이를 산출합니다.",
     featureEyebrow: "Features", featureTitle: "복잡한 전개 작업을 작게 쪼개 줍니다.",
     feature1Title: "NPS 규격 선택", feature1Text: "규격을 고르면 외경 값이 자동 적용됩니다.",
@@ -498,16 +506,17 @@ const text = {
     kicker: "Fabrication calculator for pipe supports",
     heroTitle: "Dummy support saddle cuts, ready for the shop floor",
     heroText: "Calculate saddle cut lines where a dummy pipe meets a run pipe or elbow, then produce full-scale marking templates and coordinate tables.",
-    playStatus: "Preparing for Google Play", seeOutput: "View outputs", privacyButton: "Privacy Policy",
+    playStatus: "Get it on Google Play", seeOutput: "View outputs", privacyButton: "Privacy Policy",
     outputEyebrow: "Output", outputTitle: "From calculation to marking in one flow.",
     outputText: "The app outputs development curves, section dimensions, and coordinate tables from your inputs. Export to PDF for printing or sharing.",
     fact1Title: "Full-scale templates", fact1Text: "Print 1:1 marking curves for direct shop-floor checking.",
     fact2Title: "Coordinate review", fact2Text: "Each division point is listed so manual marking and verification are easier.",
     fact3Title: "On-device processing", fact3Text: "Core calculations and PDF generation are handled on your device.",
-    typeEyebrow: "Supported Types", typeTitle: "Three common field formats are supported.",
+    typeEyebrow: "Supported Types", typeTitle: "Four common field formats are supported.",
     typeText: "Choose the shape, then enter practical values such as NPS, center height, and target angle.",
     straightTitle: "Straight Dummy", straightText: "Fishmouth saddle cut for a dummy pipe welded vertically onto a horizontal run pipe.",
     trunnionTitle: "Elbow Trunnion", trunnionText: "Cylinder-to-torus intersection development for a dummy on an elbow surface.",
+    beamTitle: "Beam Dummy", beamText: "Flange and web cope dimensions and length for an H-beam support under a straight pipe or elbow.",
     miterTitle: "Elbow Miter", miterText: "Back and throat arc lengths for cutting a standard 45 or 90 degree elbow to a target angle.",
     featureEyebrow: "Features", featureTitle: "Complex development work, broken into practical steps.",
     feature1Title: "NPS size selection", feature1Text: "Pick a pipe size and the outside diameter is applied automatically.",
@@ -523,16 +532,17 @@ const text = {
     kicker: "配管サポート製作用計算ツール",
     heroTitle: "ダミーサポートのサドルカットを現場ですぐ使える形に",
     heroText: "ランパイプやエルボに接続するダミーパイプのサドルカット線を計算し、実寸マーキングテンプレートと座標表を作成します。",
-    playStatus: "Google Play 公開準備中", seeOutput: "出力を見る", privacyButton: "プライバシーポリシー",
+    playStatus: "Google Play で入手", seeOutput: "出力を見る", privacyButton: "プライバシーポリシー",
     outputEyebrow: "Output", outputTitle: "計算からマーキングまで一つの流れで。",
     outputText: "入力値から展開曲線、断面寸法、座標表を出力します。PDFとして保存し、印刷や共有に使えます。",
     fact1Title: "実寸テンプレート", fact1Text: "1:1のマーキング曲線を印刷して、製作現場で直接確認できます。",
     fact2Title: "座標で確認", fact2Text: "各分割点の座標を表示するため、手作業のマーキングや検算がしやすくなります。",
     fact3Title: "端末内処理", fact3Text: "主要な計算とPDF生成はユーザーの端末内で処理されます。",
-    typeEyebrow: "Supported Types", typeTitle: "現場でよく使う3つの形式に対応。",
+    typeEyebrow: "Supported Types", typeTitle: "現場でよく使う4つの形式に対応。",
     typeText: "形状を選び、NPS、中心高さ、目標角度などの実務値を入力するだけです。",
     straightTitle: "直管ダミー", straightText: "水平ランパイプへ垂直に溶接するダミーパイプのfishmouthサドルカットを計算します。",
     trunnionTitle: "エルボトラニオン", trunnionText: "エルボ曲面上のダミーについて、円筒とトーラスの交差展開線を計算します。",
+    beamTitle: "ビームダミー", beamText: "直管やエルボの下に入れるH形鋼のフランジ・ウェブの切り欠き寸法と長さを計算します。",
     miterTitle: "エルボマイター", miterText: "標準45度または90度エルボを目標角度に切断するための背側・喉側の弧長を算出します。",
     featureEyebrow: "Features", featureTitle: "複雑な展開作業を実用的な手順に分解します。",
     feature1Title: "NPSサイズ選択", feature1Text: "サイズを選ぶと外径が自動で適用されます。",
@@ -548,16 +558,17 @@ const text = {
     kicker: "管道支撑制作计算工具",
     heroTitle: "快速生成 Dummy 支撑的马鞍口切割线",
     heroText: "计算 Dummy 管与主管或弯头曲面相交处的马鞍口切割线，并生成可用于现场的 1:1 标记模板和坐标表。",
-    playStatus: "Google Play 准备上线", seeOutput: "查看输出", privacyButton: "隐私政策",
+    playStatus: "在 Google Play 下载", seeOutput: "查看输出", privacyButton: "隐私政策",
     outputEyebrow: "Output", outputTitle: "从计算到现场标记，一次完成。",
     outputText: "根据输入值输出展开曲线、截面尺寸和坐标表，可导出为 PDF 用于打印或分享。",
     fact1Title: "1:1 实尺寸模板", fact1Text: "打印实际比例的标记曲线，便于现场直接检查。",
     fact2Title: "坐标校核", fact2Text: "提供各分割点坐标，方便手工标记和复核。",
     fact3Title: "设备内计算", fact3Text: "核心计算和 PDF 生成在用户设备上完成。",
-    typeEyebrow: "Supported Types", typeTitle: "支持现场常用的三种形式。",
+    typeEyebrow: "Supported Types", typeTitle: "支持现场常用的四种形式。",
     typeText: "选择形状后，只需输入 NPS、中心高度、目标角度等关键参数。",
     straightTitle: "直管 Dummy", straightText: "计算垂直焊接在水平主管上的 Dummy 管 fishmouth 马鞍口。",
     trunnionTitle: "弯头 Trunnion", trunnionText: "计算弯头曲面上 Dummy 管的圆柱-环面交线展开。",
+    beamTitle: "H 型钢支撑", beamText: "计算直管或弯头下方 H 型钢支撑的翼缘、腹板切口尺寸和长度。",
     miterTitle: "弯头 Miter", miterText: "计算标准45度或90度弯头切至目标角度所需的背弧和喉弧长度。",
     featureEyebrow: "Features", featureTitle: "把复杂展开工作拆成实用步骤。",
     feature1Title: "NPS 规格选择", feature1Text: "选择规格后自动应用外径。",
@@ -573,16 +584,17 @@ const text = {
     kicker: "Calculadora de fabricación para soportes de tubería",
     heroTitle: "Cortes saddle para dummy support, listos para taller",
     heroText: "Calcula las líneas de corte donde un tubo dummy se une a una tubería o codo, y genera plantillas a escala real y tablas de coordenadas.",
-    playStatus: "Preparando lanzamiento en Google Play", seeOutput: "Ver resultados", privacyButton: "Política de privacidad",
+    playStatus: "Disponible en Google Play", seeOutput: "Ver resultados", privacyButton: "Política de privacidad",
     outputEyebrow: "Output", outputTitle: "Del cálculo al marcado en un solo flujo.",
     outputText: "La app genera curvas de desarrollo, dimensiones de sección y tablas de coordenadas. Exporta a PDF para imprimir o compartir.",
     fact1Title: "Plantillas a escala real", fact1Text: "Imprime curvas de marcado 1:1 para revisarlas directamente en taller.",
     fact2Title: "Revisión por coordenadas", fact2Text: "Cada punto de división se lista para facilitar el marcado manual y la verificación.",
     fact3Title: "Procesamiento local", fact3Text: "Los cálculos principales y la generación de PDF se realizan en tu dispositivo.",
-    typeEyebrow: "Supported Types", typeTitle: "Tres formatos comunes de campo.",
+    typeEyebrow: "Supported Types", typeTitle: "Cuatro formatos comunes de campo.",
     typeText: "Elige la forma e introduce valores prácticos como NPS, altura al centro y ángulo objetivo.",
     straightTitle: "Dummy recto", straightText: "Corte fishmouth para un dummy soldado verticalmente sobre una tubería horizontal.",
     trunnionTitle: "Trunnion en codo", trunnionText: "Desarrollo de intersección cilindro-toro para un dummy sobre la superficie de un codo.",
+    beamTitle: "Soporte de viga", beamText: "Cotas de recorte de ala y alma y longitud de un soporte de viga H bajo un tubo recto o un codo.",
     miterTitle: "Miter de codo", miterText: "Longitudes de arco de espalda y garganta para cortar un codo estándar de 45 o 90 grados.",
     featureEyebrow: "Features", featureTitle: "Trabajo de desarrollo complejo, dividido en pasos prácticos.",
     feature1Title: "Selección NPS", feature1Text: "Elige el tamaño y el diámetro exterior se aplica automáticamente.",
@@ -598,16 +610,17 @@ const text = {
     kicker: "Calculadora de fabricação para suportes de tubulação",
     heroTitle: "Cortes saddle para dummy support, prontos para a oficina",
     heroText: "Calcula as linhas de corte onde um tubo dummy encontra um tubo principal ou curva, gerando gabaritos em escala real e tabelas de coordenadas.",
-    playStatus: "Preparando lançamento no Google Play", seeOutput: "Ver resultados", privacyButton: "Política de privacidade",
+    playStatus: "Disponível no Google Play", seeOutput: "Ver resultados", privacyButton: "Política de privacidade",
     outputEyebrow: "Output", outputTitle: "Do cálculo à marcação em um único fluxo.",
     outputText: "O app gera curvas de desenvolvimento, dimensões de seção e tabelas de coordenadas. Exporte em PDF para imprimir ou compartilhar.",
     fact1Title: "Gabaritos em escala real", fact1Text: "Imprima curvas de marcação 1:1 para conferência direta na oficina.",
     fact2Title: "Revisão por coordenadas", fact2Text: "Cada ponto de divisão é listado para facilitar marcação manual e conferência.",
     fact3Title: "Processamento no dispositivo", fact3Text: "Os cálculos principais e a geração de PDF são feitos no seu dispositivo.",
-    typeEyebrow: "Supported Types", typeTitle: "Três formatos comuns de campo.",
+    typeEyebrow: "Supported Types", typeTitle: "Quatro formatos comuns de campo.",
     typeText: "Escolha a forma e informe valores práticos como NPS, altura ao centro e ângulo alvo.",
     straightTitle: "Dummy reto", straightText: "Corte fishmouth para um dummy soldado verticalmente sobre um tubo horizontal.",
     trunnionTitle: "Trunnion em curva", trunnionText: "Desenvolvimento da interseção cilindro-toro para um dummy na superfície de uma curva.",
+    beamTitle: "Suporte de viga", beamText: "Cotas de recorte de mesa e alma e comprimento de um suporte de viga H sob tubo reto ou curva.",
     miterTitle: "Miter de curva", miterText: "Comprimentos de arco de costas e garganta para cortar uma curva padrão de 45 ou 90 graus.",
     featureEyebrow: "Features", featureTitle: "Trabalho complexo de desenvolvimento em etapas práticas.",
     feature1Title: "Seleção NPS", feature1Text: "Escolha o tamanho e o diâmetro externo é aplicado automaticamente.",
@@ -623,16 +636,17 @@ const text = {
     kicker: "Fertigungsrechner für Rohrstützen",
     heroTitle: "Sattelschnitte für Dummy Supports, bereit für die Werkstatt",
     heroText: "Berechnet die Schnittlinien, an denen ein Dummy-Rohr auf ein Laufrohr oder einen Bogen trifft, und erzeugt 1:1-Markierschablonen mit Koordinatentabellen.",
-    playStatus: "Google Play Veröffentlichung in Vorbereitung", seeOutput: "Ausgaben ansehen", privacyButton: "Datenschutzerklärung",
+    playStatus: "Jetzt bei Google Play", seeOutput: "Ausgaben ansehen", privacyButton: "Datenschutzerklärung",
     outputEyebrow: "Output", outputTitle: "Vom Rechnen zum Markieren in einem Ablauf.",
     outputText: "Die App erzeugt Abwicklungskurven, Schnittmaße und Koordinatentabellen. Als PDF exportieren, drucken oder teilen.",
     fact1Title: "1:1-Schablonen", fact1Text: "Markierkurven im Originalmaßstab drucken und direkt in der Werkstatt prüfen.",
     fact2Title: "Koordinatenprüfung", fact2Text: "Jeder Teilungspunkt wird aufgelistet, damit manuelles Markieren und Prüfen leichter wird.",
     fact3Title: "Verarbeitung auf dem Gerät", fact3Text: "Kernberechnungen und PDF-Erstellung erfolgen auf Ihrem Gerät.",
-    typeEyebrow: "Supported Types", typeTitle: "Drei gängige Formate für die Praxis.",
+    typeEyebrow: "Supported Types", typeTitle: "Vier gängige Formate für die Praxis.",
     typeText: "Form auswählen und praktische Werte wie NPS, Mittenhöhe und Zielwinkel eingeben.",
     straightTitle: "Gerader Dummy", straightText: "Fishmouth-Sattelschnitt für ein Dummy-Rohr, das senkrecht auf ein horizontales Laufrohr geschweißt wird.",
     trunnionTitle: "Bogen-Trunnion", trunnionText: "Abwicklung der Zylinder-Torus-Schnittlinie für einen Dummy auf einer Bogenfläche.",
+    beamTitle: "Träger-Stütze", beamText: "Flansch- und Stegausklinkung sowie Länge einer H-Träger-Stütze unter geradem Rohr oder Bogen.",
     miterTitle: "Bogen-Miter", miterText: "Rücken- und Kehlenbogenlängen zum Schneiden eines Standardbogens mit 45 oder 90 Grad.",
     featureEyebrow: "Features", featureTitle: "Komplexe Abwicklungsarbeit in praktische Schritte zerlegt.",
     feature1Title: "NPS-Auswahl", feature1Text: "Größe wählen, der Außendurchmesser wird automatisch übernommen.",
@@ -648,16 +662,17 @@ const text = {
     kicker: "Calculateur de fabrication pour supports de tuyauterie",
     heroTitle: "Coupes en selle pour dummy support, prêtes pour l'atelier",
     heroText: "Calcule les lignes de coupe où un tube dummy rejoint un tube principal ou un coude, puis génère des gabarits à l'échelle 1 et des tables de coordonnées.",
-    playStatus: "Préparation du lancement Google Play", seeOutput: "Voir les résultats", privacyButton: "Politique de confidentialité",
+    playStatus: "Disponible sur Google Play", seeOutput: "Voir les résultats", privacyButton: "Politique de confidentialité",
     outputEyebrow: "Output", outputTitle: "Du calcul au marquage dans un seul flux.",
     outputText: "L'app génère des courbes de développement, des dimensions de section et des tables de coordonnées. Exportez en PDF pour imprimer ou partager.",
     fact1Title: "Gabarits à l'échelle 1", fact1Text: "Imprimez des courbes de marquage 1:1 pour vérification directe en atelier.",
     fact2Title: "Vérification par coordonnées", fact2Text: "Chaque point de division est listé pour faciliter le marquage manuel et le contrôle.",
     fact3Title: "Traitement sur l'appareil", fact3Text: "Les calculs principaux et la génération PDF sont effectués sur votre appareil.",
-    typeEyebrow: "Supported Types", typeTitle: "Trois formats courants de terrain.",
+    typeEyebrow: "Supported Types", typeTitle: "Quatre formats courants de terrain.",
     typeText: "Choisissez la forme, puis saisissez les valeurs pratiques comme NPS, hauteur au centre et angle cible.",
     straightTitle: "Dummy droit", straightText: "Coupe fishmouth pour un tube dummy soudé verticalement sur un tube horizontal.",
     trunnionTitle: "Trunnion sur coude", trunnionText: "Développement de l'intersection cylindre-tore pour un dummy sur la surface d'un coude.",
+    beamTitle: "Support en poutre", beamText: "Cotes de grugeage d’aile et d’âme et longueur d’un support en poutre H sous un tube droit ou un coude.",
     miterTitle: "Miter de coude", miterText: "Longueurs d'arc dos et gorge pour couper un coude standard de 45 ou 90 degrés.",
     featureEyebrow: "Features", featureTitle: "Un travail de développement complexe découpé en étapes pratiques.",
     feature1Title: "Sélection NPS", feature1Text: "Choisissez la taille, le diamètre extérieur est appliqué automatiquement.",
