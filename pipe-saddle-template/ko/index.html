@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>파이프 새들 템플릿 생성기 – 새들 전개도 실물 크기 PDF 무료 출력</title>
+<meta name="description" content="주관·가지관 규격만 고르면 새들(피시마우스, 가지관 따내기) 전개도를 실제 크기 PDF로 무료 출력합니다. 1/2&quot;~24&quot;, mm·인치, 등분 전개 치수표 제공. 출력해서 파이프에 감고 그어서 자르면 끝.">
+<link rel="canonical" href="https://gua091016.github.io/pipe-saddle-template/ko/">
+<link rel="alternate" hreflang="en" href="https://gua091016.github.io/pipe-saddle-template/">
+<link rel="alternate" hreflang="ko" href="https://gua091016.github.io/pipe-saddle-template/ko/">
+<link rel="alternate" hreflang="x-default" href="https://gua091016.github.io/pipe-saddle-template/">
+<meta property="og:title" content="파이프 새들 템플릿 생성기 – 실물 크기 PDF">
+<meta property="og:description" content="주관·가지관 규격 선택 → 실제 크기 새들 전개도 PDF 출력 → 파이프에 감고 절단. 무료, 가입 없음.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gua091016.github.io/pipe-saddle-template/ko/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Pipe Saddle Template Generator",
+  "url": "https://gua091016.github.io/pipe-saddle-template/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (web browser)",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Generate a full-size printable pipe saddle (fishmouth) wrap-around cutting template as PDF for any header and branch pipe size."
+}
+</script>
+<style>
+  :root {
+    --ink: #142235;
+    --muted: #5d6d80;
+    --line: #dce6ef;
+    --paper: #f5f8fb;
+    --surface: #ffffff;
+    --blue: #0d6f94;
+    --blue-ink: #ffffff;
+    --amber: #b8661a;
+    --danger: #b3261e;
+    --shadow: 0 14px 36px rgba(20,34,53,.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #e6edf5;
+      --muted: #9aabbd;
+      --line: #2a3a4c;
+      --paper: #0f1720;
+      --surface: #17222e;
+      --blue: #3fb2d9;
+      --blue-ink: #06202b;
+      --amber: #e7a35a;
+      --danger: #ff8a80;
+      --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--ink); background: var(--paper);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue); }
+  .wrap { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; }
+  .brand { font-weight: 800; letter-spacing: .04em; color: var(--ink); text-decoration: none; }
+  .lang button {
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    padding: 5px 10px; border-radius: 8px; cursor: pointer; font: inherit; font-size: 14px;
+  }
+  .lang button[aria-pressed="true"] { background: var(--blue); color: var(--blue-ink); border-color: var(--blue); }
+  h1 { font-size: clamp(26px, 4.4vw, 40px); line-height: 1.15; margin: 10px 0 8px; }
+  .lead { color: var(--muted); max-width: 720px; margin: 0 0 22px; font-size: 17px; }
+  .tool { display: grid; grid-template-columns: 340px 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 860px) { .tool { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); }
+  fieldset { border: 0; margin: 0 0 14px; padding: 0; }
+  legend, label.lbl { font-weight: 700; font-size: 14px; margin-bottom: 6px; display: block; }
+  .hint { color: var(--muted); font-size: 13px; margin: 4px 0 0; }
+  select, input[type=number] {
+    width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px;
+    background: var(--paper); color: var(--ink); font: inherit; font-size: 16px;
+  }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+  .seg button { border: 0; background: var(--surface); color: var(--ink); padding: 7px 14px; font: inherit; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--blue); color: var(--blue-ink); }
+  .btn {
+    width: 100%; border: 0; background: var(--blue); color: var(--blue-ink); font: inherit; font-weight: 800;
+    font-size: 17px; padding: 13px; border-radius: 11px; cursor: pointer; margin-top: 4px;
+  }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .err { color: var(--danger); font-size: 14px; margin: 8px 0 0; min-height: 1em; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 12px; }
+  .stat { border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; }
+  .stat b { display: block; font-size: 20px; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--muted); font-size: 13px; }
+  #preview { width: 100%; height: auto; display: block; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
+  .tablewrap { overflow-x: auto; margin-top: 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+  th, td { border-bottom: 1px solid var(--line); padding: 5px 8px; text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted); font-weight: 700; }
+  .promo { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 26px 0; }
+  .promo .card { display: flex; gap: 14px; align-items: center; }
+  .promo canvas { flex: none; width: 96px; height: 96px; background: #fff; border-radius: 8px; padding: 4px; }
+  .promo h3 { margin: 0 0 4px; font-size: 17px; }
+  .promo p { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+  section.info { margin: 30px 0; }
+  section.info h2 { font-size: 22px; margin: 0 0 10px; }
+  ol.steps li { margin-bottom: 6px; }
+  details { border-top: 1px solid var(--line); padding: 10px 0; }
+  details summary { font-weight: 700; cursor: pointer; }
+  .sizes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px 14px; margin-top: 10px; }
+  .sizes h3 { grid-column: 1 / -1; font-size: 15px; margin: 10px 0 0; }
+  .sizes a { font-size: 14px; text-decoration: none; }
+  .sizes a:hover { text-decoration: underline; }
+  footer { color: var(--muted); font-size: 14px; padding: 26px 0 40px; border-top: 1px solid var(--line); margin-top: 30px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="/">KOREAFITTER</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ko">한국어</button>
+    </div>
+  </header>
+
+  <h1 data-i18n="h1">파이프 새들 템플릿 생성기</h1>
+  <p class="lead" data-i18n="lead">주관과 가지관 규격만 고르면 실제 크기 PDF가 나옵니다. 출력해서 가지관에 감고 선 따라 자르세요. 무료, 가입 없음.</p>
+
+  <div class="tool">
+    <form class="card" id="form" onsubmit="return false">
+      <fieldset>
+        <legend data-i18n="units">단위</legend>
+        <div class="seg" role="group">
+          <button type="button" data-unit="mm">mm</button>
+          <button type="button" data-unit="in">inch</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label class="lbl" for="runSel" data-i18n="run">주관 (헤더)</label>
+        <select id="runSel"></select>
+        <input type="number" id="runOd" step="any" min="1" hidden>
+        <p class="hint" id="runHint"></p>
+      </fieldset>
+
+      <fieldset>
+        <label class="lbl" for="brSel" data-i18n="branch">가지관 (새들 절단하는 쪽)</label>
+        <select id="brSel"></select>
+        <input type="number" id="brOd" step="any" min="1" hidden>
+        <p class="hint" id="brHint"></p>
+      </fieldset>
+
+      <div class="row2">
+        <fieldset>
+          <label class="lbl" for="divSel" data-i18n="div">등분</label>
+          <select id="divSel">
+            <option>8</option><option>12</option><option selected>16</option><option>24</option><option>32</option>
+          </select>
+        </fieldset>
+        <fieldset>
+          <label class="lbl" for="paperSel" data-i18n="paper">용지</label>
+          <select id="paperSel"><option value="a4">A4</option><option value="letter">Letter</option></select>
+        </fieldset>
+      </div>
+
+      <button class="btn" id="dl" type="button" data-i18n="download">PDF 템플릿 다운로드</button>
+      <p class="err" id="err" role="alert"></p>
+      <p class="hint" data-i18n="printHint">반드시 100% / "실제 크기"로 출력하고, 자르기 전에 각 장의 100 mm 눈금을 자로 확인하세요.</p>
+    </form>
+
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><b id="sDepth">–</b><span data-i18n="depth">새들 깊이</span></div>
+        <div class="stat"><b id="sCirc">–</b><span data-i18n="circ">감는 길이 (가지관 OD × π)</span></div>
+        <div class="stat"><b id="sPages">–</b><span data-i18n="pages">출력 장수</span></div>
+      </div>
+      <svg id="preview" role="img" aria-label="Template preview"></svg>
+      <p class="hint" data-i18n="previewHint">점선 상자 = 출력되는 용지. 절단선 아래 종이는 남기고, 위쪽 파이프를 잘라냅니다.</p>
+      <div class="tablewrap"><table id="tbl"></table></div>
+    </div>
+  </div>
+
+  <div class="promo">
+    <div class="card">
+      <canvas id="qrApp" width="200" height="200" aria-hidden="true"></canvas>
+      <div>
+        <h3 data-i18n="appTitle">90° 새들 말고 더 필요하세요?</h3>
+        <p data-i18n="appBody">엘보 트러니언, 빔 더미, 엘보 마이터 절단, 센터높이로 더미 길이까지 — 현장 배관공이 만든 무료 안드로이드 앱.</p>
+        <a id="appLink" target="_blank" rel="noopener" data-i18n="appCta">Google Play에서 받기 →</a>
+      </div>
+    </div>
+    <div class="card">
+      <canvas id="qrStore" width="200" height="200" aria-hidden="true"></canvas>
+      <div>
+        <h3 data-i18n="storeTitle">현장배관 ISO 계산기</h3>
+        <p data-i18n="storeBody">ISO 스케치로 CL/CUT 커팅 리스트, 2D 옵셋·평행 다관, 엘보 마이타까지 — PDF·DXF 내보내기. 무료 안드로이드 앱.</p>
+        <a id="storeLink" target="_blank" rel="noopener" data-i18n="storeCta">Google Play에서 받기 →</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="info" id="sizes">
+    <h2 data-i18n="sizesTitle">규격별 새들 템플릿</h2>
+    <p class="hint" data-i18n="sizesHint">자주 쓰는 주관 × 가지관 조합의 전개 치수표입니다. 각 페이지에서 실제 크기 PDF로 바로 넘어갑니다.</p>
+    <!--SIZES--><div class="sizes">
+<h3>2" header</h3><a href="/pipe-saddle-template/1-2-inch-on-2-inch/">1/2" on 2"</a><a href="/pipe-saddle-template/3-4-inch-on-2-inch/">3/4" on 2"</a><a href="/pipe-saddle-template/1-inch-on-2-inch/">1" on 2"</a><a href="/pipe-saddle-template/1-1-2-inch-on-2-inch/">1-1/2" on 2"</a><a href="/pipe-saddle-template/2-inch-on-2-inch/">2" on 2"</a>
+<h3>3" header</h3><a href="/pipe-saddle-template/1-2-inch-on-3-inch/">1/2" on 3"</a><a href="/pipe-saddle-template/3-4-inch-on-3-inch/">3/4" on 3"</a><a href="/pipe-saddle-template/1-inch-on-3-inch/">1" on 3"</a><a href="/pipe-saddle-template/1-1-2-inch-on-3-inch/">1-1/2" on 3"</a><a href="/pipe-saddle-template/2-inch-on-3-inch/">2" on 3"</a><a href="/pipe-saddle-template/3-inch-on-3-inch/">3" on 3"</a>
+<h3>4" header</h3><a href="/pipe-saddle-template/1-2-inch-on-4-inch/">1/2" on 4"</a><a href="/pipe-saddle-template/3-4-inch-on-4-inch/">3/4" on 4"</a><a href="/pipe-saddle-template/1-inch-on-4-inch/">1" on 4"</a><a href="/pipe-saddle-template/1-1-2-inch-on-4-inch/">1-1/2" on 4"</a><a href="/pipe-saddle-template/2-inch-on-4-inch/">2" on 4"</a><a href="/pipe-saddle-template/3-inch-on-4-inch/">3" on 4"</a><a href="/pipe-saddle-template/4-inch-on-4-inch/">4" on 4"</a>
+<h3>6" header</h3><a href="/pipe-saddle-template/1-2-inch-on-6-inch/">1/2" on 6"</a><a href="/pipe-saddle-template/3-4-inch-on-6-inch/">3/4" on 6"</a><a href="/pipe-saddle-template/1-inch-on-6-inch/">1" on 6"</a><a href="/pipe-saddle-template/1-1-2-inch-on-6-inch/">1-1/2" on 6"</a><a href="/pipe-saddle-template/2-inch-on-6-inch/">2" on 6"</a><a href="/pipe-saddle-template/3-inch-on-6-inch/">3" on 6"</a><a href="/pipe-saddle-template/4-inch-on-6-inch/">4" on 6"</a><a href="/pipe-saddle-template/6-inch-on-6-inch/">6" on 6"</a>
+<h3>8" header</h3><a href="/pipe-saddle-template/1-2-inch-on-8-inch/">1/2" on 8"</a><a href="/pipe-saddle-template/3-4-inch-on-8-inch/">3/4" on 8"</a><a href="/pipe-saddle-template/1-inch-on-8-inch/">1" on 8"</a><a href="/pipe-saddle-template/1-1-2-inch-on-8-inch/">1-1/2" on 8"</a><a href="/pipe-saddle-template/2-inch-on-8-inch/">2" on 8"</a><a href="/pipe-saddle-template/3-inch-on-8-inch/">3" on 8"</a><a href="/pipe-saddle-template/4-inch-on-8-inch/">4" on 8"</a><a href="/pipe-saddle-template/6-inch-on-8-inch/">6" on 8"</a><a href="/pipe-saddle-template/8-inch-on-8-inch/">8" on 8"</a>
+<h3>10" header</h3><a href="/pipe-saddle-template/1-2-inch-on-10-inch/">1/2" on 10"</a><a href="/pipe-saddle-template/3-4-inch-on-10-inch/">3/4" on 10"</a><a href="/pipe-saddle-template/1-inch-on-10-inch/">1" on 10"</a><a href="/pipe-saddle-template/1-1-2-inch-on-10-inch/">1-1/2" on 10"</a><a href="/pipe-saddle-template/2-inch-on-10-inch/">2" on 10"</a><a href="/pipe-saddle-template/3-inch-on-10-inch/">3" on 10"</a><a href="/pipe-saddle-template/4-inch-on-10-inch/">4" on 10"</a><a href="/pipe-saddle-template/6-inch-on-10-inch/">6" on 10"</a><a href="/pipe-saddle-template/8-inch-on-10-inch/">8" on 10"</a><a href="/pipe-saddle-template/10-inch-on-10-inch/">10" on 10"</a>
+<h3>12" header</h3><a href="/pipe-saddle-template/1-2-inch-on-12-inch/">1/2" on 12"</a><a href="/pipe-saddle-template/3-4-inch-on-12-inch/">3/4" on 12"</a><a href="/pipe-saddle-template/1-inch-on-12-inch/">1" on 12"</a><a href="/pipe-saddle-template/1-1-2-inch-on-12-inch/">1-1/2" on 12"</a><a href="/pipe-saddle-template/2-inch-on-12-inch/">2" on 12"</a><a href="/pipe-saddle-template/3-inch-on-12-inch/">3" on 12"</a><a href="/pipe-saddle-template/4-inch-on-12-inch/">4" on 12"</a><a href="/pipe-saddle-template/6-inch-on-12-inch/">6" on 12"</a><a href="/pipe-saddle-template/8-inch-on-12-inch/">8" on 12"</a><a href="/pipe-saddle-template/10-inch-on-12-inch/">10" on 12"</a><a href="/pipe-saddle-template/12-inch-on-12-inch/">12" on 12"</a>
+<h3>14" header</h3><a href="/pipe-saddle-template/1-2-inch-on-14-inch/">1/2" on 14"</a><a href="/pipe-saddle-template/3-4-inch-on-14-inch/">3/4" on 14"</a><a href="/pipe-saddle-template/1-inch-on-14-inch/">1" on 14"</a><a href="/pipe-saddle-template/1-1-2-inch-on-14-inch/">1-1/2" on 14"</a><a href="/pipe-saddle-template/2-inch-on-14-inch/">2" on 14"</a><a href="/pipe-saddle-template/3-inch-on-14-inch/">3" on 14"</a><a href="/pipe-saddle-template/4-inch-on-14-inch/">4" on 14"</a><a href="/pipe-saddle-template/6-inch-on-14-inch/">6" on 14"</a><a href="/pipe-saddle-template/8-inch-on-14-inch/">8" on 14"</a><a href="/pipe-saddle-template/10-inch-on-14-inch/">10" on 14"</a><a href="/pipe-saddle-template/12-inch-on-14-inch/">12" on 14"</a>
+<h3>16" header</h3><a href="/pipe-saddle-template/1-2-inch-on-16-inch/">1/2" on 16"</a><a href="/pipe-saddle-template/3-4-inch-on-16-inch/">3/4" on 16"</a><a href="/pipe-saddle-template/1-inch-on-16-inch/">1" on 16"</a><a href="/pipe-saddle-template/1-1-2-inch-on-16-inch/">1-1/2" on 16"</a><a href="/pipe-saddle-template/2-inch-on-16-inch/">2" on 16"</a><a href="/pipe-saddle-template/3-inch-on-16-inch/">3" on 16"</a><a href="/pipe-saddle-template/4-inch-on-16-inch/">4" on 16"</a><a href="/pipe-saddle-template/6-inch-on-16-inch/">6" on 16"</a><a href="/pipe-saddle-template/8-inch-on-16-inch/">8" on 16"</a><a href="/pipe-saddle-template/10-inch-on-16-inch/">10" on 16"</a><a href="/pipe-saddle-template/12-inch-on-16-inch/">12" on 16"</a>
+<h3>18" header</h3><a href="/pipe-saddle-template/1-2-inch-on-18-inch/">1/2" on 18"</a><a href="/pipe-saddle-template/3-4-inch-on-18-inch/">3/4" on 18"</a><a href="/pipe-saddle-template/1-inch-on-18-inch/">1" on 18"</a><a href="/pipe-saddle-template/1-1-2-inch-on-18-inch/">1-1/2" on 18"</a><a href="/pipe-saddle-template/2-inch-on-18-inch/">2" on 18"</a><a href="/pipe-saddle-template/3-inch-on-18-inch/">3" on 18"</a><a href="/pipe-saddle-template/4-inch-on-18-inch/">4" on 18"</a><a href="/pipe-saddle-template/6-inch-on-18-inch/">6" on 18"</a><a href="/pipe-saddle-template/8-inch-on-18-inch/">8" on 18"</a><a href="/pipe-saddle-template/10-inch-on-18-inch/">10" on 18"</a><a href="/pipe-saddle-template/12-inch-on-18-inch/">12" on 18"</a>
+<h3>20" header</h3><a href="/pipe-saddle-template/1-2-inch-on-20-inch/">1/2" on 20"</a><a href="/pipe-saddle-template/3-4-inch-on-20-inch/">3/4" on 20"</a><a href="/pipe-saddle-template/1-inch-on-20-inch/">1" on 20"</a><a href="/pipe-saddle-template/1-1-2-inch-on-20-inch/">1-1/2" on 20"</a><a href="/pipe-saddle-template/2-inch-on-20-inch/">2" on 20"</a><a href="/pipe-saddle-template/3-inch-on-20-inch/">3" on 20"</a><a href="/pipe-saddle-template/4-inch-on-20-inch/">4" on 20"</a><a href="/pipe-saddle-template/6-inch-on-20-inch/">6" on 20"</a><a href="/pipe-saddle-template/8-inch-on-20-inch/">8" on 20"</a><a href="/pipe-saddle-template/10-inch-on-20-inch/">10" on 20"</a><a href="/pipe-saddle-template/12-inch-on-20-inch/">12" on 20"</a>
+<h3>24" header</h3><a href="/pipe-saddle-template/1-2-inch-on-24-inch/">1/2" on 24"</a><a href="/pipe-saddle-template/3-4-inch-on-24-inch/">3/4" on 24"</a><a href="/pipe-saddle-template/1-inch-on-24-inch/">1" on 24"</a><a href="/pipe-saddle-template/1-1-2-inch-on-24-inch/">1-1/2" on 24"</a><a href="/pipe-saddle-template/2-inch-on-24-inch/">2" on 24"</a><a href="/pipe-saddle-template/3-inch-on-24-inch/">3" on 24"</a><a href="/pipe-saddle-template/4-inch-on-24-inch/">4" on 24"</a><a href="/pipe-saddle-template/6-inch-on-24-inch/">6" on 24"</a><a href="/pipe-saddle-template/8-inch-on-24-inch/">8" on 24"</a><a href="/pipe-saddle-template/10-inch-on-24-inch/">10" on 24"</a><a href="/pipe-saddle-template/12-inch-on-24-inch/">12" on 24"</a>
+</div><!--/SIZES-->
+  </section>
+
+  <section class="info">
+    <h2 data-i18n="howTitle">출력한 템플릿 쓰는 법</h2>
+    <ol class="steps">
+      <li data-i18n="how1">PDF를 100%(실제 크기)로 출력하고 100 mm 눈금을 재 보세요. 다르면 프린터가 크기를 바꾼 것입니다.</li>
+      <li data-i18n="how2">여러 장이면 점선을 따라 자르고 페이지 코드(A1, A2…) 순서대로 겹쳐 붙이세요.</li>
+      <li data-i18n="how3">템플릿 바깥선과 절단선(CUT LINE)을 따라 오립니다.</li>
+      <li data-i18n="how4">아래 직선 쪽이 파이프와 직각이 되게 가지관에 감고, 이음매를 겹침 탭에 맞춥니다.</li>
+      <li data-i18n="how5">SIDE(뿔) 표시는 주관 옆면, RUN AXIS 표시는 주관 길이 방향으로 맞추고 석필·페인트마커로 그은 뒤 절단·그라인딩으로 맞춥니다.</li>
+    </ol>
+  </section>
+
+  <section class="info">
+    <h2 data-i18n="faqTitle">자주 묻는 질문</h2>
+    <details><summary data-i18n="q1">어떤 지름 기준인가요?</summary><p data-i18n="a1">두 파이프 모두 외경(OD), ASME B36.10 기준입니다. 현장에서 마킹하는 바깥면을 따라갑니다. 완전용입 개선은 안쪽을 따로 그라인딩하세요.</p></details>
+    <details><summary data-i18n="q2">가지관이 주관보다 커도 되나요?</summary><p data-i18n="a2">안 됩니다. 90° 새들은 가지관 OD가 주관 OD 이하여야 합니다.</p></details>
+    <details><summary data-i18n="q3">더미 서포트 절단이랑 같은 건가요?</summary><p data-i18n="a3">네. 수평 배관 밑에 용접하는 직관 더미가 바로 이 새들 컷입니다. 앱에서는 센터높이로 긴 쪽·짧은 쪽 더미 길이도 계산해 줍니다.</p></details>
+  </section>
+
+  <footer>
+    <p data-i18n="foot">KOREAFITTER 무료 도구. 용접 전에 반드시 취부 상태를 확인하세요.</p>
+    <p><a href="/dummy-support/">Dummy Support Calculator</a> · <a href="/pipe-iso/">Pipe ISO Calculator</a> · <a href="/">KOREAFITTER</a></p>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>window.FORCE_LANG = 'ko'; window.EN_TEXT = {"h1":"Pipe Saddle Template Generator","lead":"Pick the header and branch pipe size, download a full-size PDF, wrap it around the branch pipe and cut along the line. Free, no sign-up.","units":"Units","run":"Header (run) pipe","branch":"Branch pipe (gets the saddle cut)","div":"Divisions","paper":"Paper","download":"Download PDF template","printHint":"Print at 100% / “Actual size”. Check the 100 mm bar on every page before cutting.","depth":"Saddle depth","circ":"Wrap length (branch OD × π)","pages":"Pages to print","previewHint":"Dashed boxes = printed pages. Keep the paper below the cut line; cut away the pipe above it.","appTitle":"Need more than a 90° saddle?","appBody":"Elbow trunnions, beam dummies, elbow miter cuts and dummy-leg cut lengths from center height — in the free Android app, made by a working pipefitter.","appCta":"Get it on Google Play →","storeTitle":"Pipe ISO &amp; cut-list calculator","storeBody":"Sketch the ISO, get CL/CUT cut lengths, 2D offsets, parallel runs and elbow miter cuts — export PDF/DXF. Free Android app.","storeCta":"Get it on Google Play →","sizesTitle":"Saddle templates by pipe size","sizesHint":"Ready-made layout tables for common header × branch combinations. Each page links to the full-size PDF.","howTitle":"How to use the printed template","how1":"Print the PDF at 100% (Actual size). Measure the 100 mm bar — if it is off, your printer scaled the page.","how2":"If the template spans several pages, trim along the dashed lines and tape the pages edge to edge in page-code order (A1, A2…).","how3":"Cut along the outer edge of the template and the CUT LINE.","how4":"Wrap it around the branch pipe with the straight bottom edge square to the pipe. Line up the seam with the overlap tab.","how5":"Point the SIDE (horn) marks to the sides of the header and the RUN AXIS marks along the header. Trace the line with a soapstone or paint marker, then cut and grind to fit.","faqTitle":"FAQ","q1":"Which diameter does the template use?","a1":"Outside diameter (OD) of both pipes, per ASME B36.10. The cut follows the outer surface, which is what you mark on site. For a full-penetration bevel, grind the inside afterwards.","q2":"Can the branch be bigger than the header?","a2":"No. For a 90° saddle the branch OD must be equal to or smaller than the header OD.","q3":"Is this the same as a dummy leg / pipe support cut?","a3":"Yes — a straight dummy leg welded under a horizontal pipe uses exactly this saddle cut. The app also gives the long and short leg lengths from the pipe center height.","foot":"Free tool by KOREAFITTER. Always check the fit before welding."};</script>
+<script>
+// ───────────────────────── 설정 ─────────────────────────
+// QR 두 개: ① 더미 앱(Play, 유입 추적용 referrer) ② 스마트스토어(템플릿 상품)
+const SITE_URL = 'https://gua091016.github.io/pipe-saddle-template/';
+const APP_URL = 'https://play.google.com/store/apps/details?id=com.gua091016.dummy'
+  + '&referrer=utm_source%3Dsaddle_';   // + 'pdf' | 'page'
+const ISO_URL = 'https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator'
+  + '&referrer=utm_source%3Dsaddle_';   // + 'pdf' | 'page'
+
+// ASME B36.10 OD (mm) — 더미 앱 pipe_dimensions.dart + 14~24"
+const PIPES = [
+  ['1/2"',21.3],['3/4"',26.7],['1"',33.4],['1-1/4"',42.2],['1-1/2"',48.3],['2"',60.3],
+  ['2-1/2"',73.0],['3"',88.9],['4"',114.3],['5"',141.3],['6"',168.3],['8"',219.1],['10"',273.1],
+  ['12"',323.9],['14"',355.6],['16"',406.4],['18"',457.0],['20"',508.0],['24"',610.0],
+];
+
+// ───────────────────────── 번역 ─────────────────────────
+const T = {
+  en: {},
+  ko: {
+    h1: '파이프 새들 템플릿 생성기',
+    lead: '주관과 가지관 규격만 고르면 실제 크기 PDF가 나옵니다. 출력해서 가지관에 감고 선 따라 자르세요. 무료, 가입 없음.',
+    units: '단위', run: '주관 (헤더)', branch: '가지관 (새들 절단하는 쪽)', div: '등분', paper: '용지',
+    download: 'PDF 템플릿 다운로드',
+    printHint: '반드시 100% / "실제 크기"로 출력하고, 자르기 전에 각 장의 100 mm 눈금을 자로 확인하세요.',
+    depth: '새들 깊이', circ: '감는 길이 (가지관 OD × π)', pages: '출력 장수',
+    previewHint: '점선 상자 = 출력되는 용지. 절단선 아래 종이는 남기고, 위쪽 파이프를 잘라냅니다.',
+    appTitle: '90° 새들 말고 더 필요하세요?',
+    appBody: '엘보 트러니언, 빔 더미, 엘보 마이터 절단, 센터높이로 더미 길이까지 — 현장 배관공이 만든 무료 안드로이드 앱.',
+    appCta: 'Google Play에서 받기 →',
+    storeTitle: '현장배관 ISO 계산기',
+    storeBody: 'ISO 스케치로 CL/CUT 커팅 리스트, 2D 옵셋·평행 다관, 엘보 마이타까지 — PDF·DXF 내보내기. 무료 안드로이드 앱.',
+    storeCta: 'Google Play에서 받기 →',
+    sizesTitle: '규격별 새들 템플릿',
+    sizesHint: '자주 쓰는 주관 × 가지관 조합의 전개 치수표입니다. 각 페이지에서 실제 크기 PDF로 바로 넘어갑니다.',
+    howTitle: '출력한 템플릿 쓰는 법',
+    how1: 'PDF를 100%(실제 크기)로 출력하고 100 mm 눈금을 재 보세요. 다르면 프린터가 크기를 바꾼 것입니다.',
+    how2: '여러 장이면 점선을 따라 자르고 페이지 코드(A1, A2…) 순서대로 겹쳐 붙이세요.',
+    how3: '템플릿 바깥선과 절단선(CUT LINE)을 따라 오립니다.',
+    how4: '아래 직선 쪽이 파이프와 직각이 되게 가지관에 감고, 이음매를 겹침 탭에 맞춥니다.',
+    how5: 'SIDE(뿔) 표시는 주관 옆면, RUN AXIS 표시는 주관 길이 방향으로 맞추고 석필·페인트마커로 그은 뒤 절단·그라인딩으로 맞춥니다.',
+    faqTitle: '자주 묻는 질문',
+    q1: '어떤 지름 기준인가요?', a1: '두 파이프 모두 외경(OD), ASME B36.10 기준입니다. 현장에서 마킹하는 바깥면을 따라갑니다. 완전용입 개선은 안쪽을 따로 그라인딩하세요.',
+    q2: '가지관이 주관보다 커도 되나요?', a2: '안 됩니다. 90° 새들은 가지관 OD가 주관 OD 이하여야 합니다.',
+    q3: '더미 서포트 절단이랑 같은 건가요?', a3: '네. 수평 배관 밑에 용접하는 직관 더미가 바로 이 새들 컷입니다. 앱에서는 센터높이로 긴 쪽·짧은 쪽 더미 길이도 계산해 줍니다.',
+    foot: 'KOREAFITTER 무료 도구. 용접 전에 반드시 취부 상태를 확인하세요.',
+    custom: '직접 입력 (OD)', odHint: 'OD', errBig: '가지관 OD는 주관 OD보다 클 수 없습니다.', errOd: 'OD를 입력하세요.',
+    angle: '각도', ord: '뿔 끝에서 내림', arc: '둘레 위치', making: 'PDF 만드는 중…', side: '옆면(뿔)', axis: '주관 축',
+  },
+};
+const EN = Object.assign({}, window.EN_TEXT || {});
+if (!window.EN_TEXT) document.querySelectorAll('[data-i18n]').forEach(el => { EN[el.dataset.i18n] = el.textContent; });
+Object.assign(EN, { custom: 'Custom OD', odHint: 'OD', errBig: 'Branch OD cannot be larger than the header OD.',
+  errOd: 'Enter an OD.', angle: 'Angle', ord: 'Drop from horn tip', arc: 'Around', making: 'Building PDF…', side: 'SIDE (horn)', axis: 'RUN AXIS' });
+T.en = EN;
+
+let lang = 'en', unit = 'mm';
+try {
+  lang = window.FORCE_LANG || localStorage.getItem('st_lang') || ((navigator.language || '').startsWith('ko') ? 'ko' : 'en');
+  unit = localStorage.getItem('st_unit') || ((navigator.language || '') === 'en-US' ? 'in' : 'mm');
+} catch (e) {}
+const t = k => (T[lang] && T[lang][k]) || EN[k] || k;
+
+// ───────────────────────── 계산 (saddle_math.dart 포팅) ─────────────────────────
+// seat(φ) = √(R² − r²·sin²φ),  ordinate = seat − seatMin (가장 긴 섬유=뿔 기준)
+function saddle(runOd, brOd) {
+  const R = runOd / 2, r = brOd / 2;
+  const seat = phi => { const s = r * Math.sin(phi); const v = R * R - s * s; return v <= 0 ? 0 : Math.sqrt(v); };
+  const seatMin = seat(Math.PI / 2);
+  return { R, r, circ: Math.PI * brOd, depth: R - seatMin, ord: phi => seat(phi) - seatMin };
+}
+
+// ───────────────────────── 표시 형식 ─────────────────────────
+const INCH = 25.4;
+function fmt(mm, digits) {
+  if (unit === 'mm') return mm.toFixed(digits ?? 1) + ' mm';
+  const inch = mm / INCH;
+  const s16 = Math.round(inch * 16);
+  const whole = Math.floor(s16 / 16); let n = s16 % 16, d = 16;
+  while (n && n % 2 === 0) { n /= 2; d /= 2; }
+  const frac = n ? (whole ? whole + ' ' : '') + n + '/' + d : String(whole);
+  return frac + '"';
+}
+const angLbl = (i, n) => +(i * 360 / n).toFixed(1) + '°';
+const fmtShort = mm => unit === 'mm' ? mm.toFixed(1) : fmt(mm).replace('"', '');
+
+// ───────────────────────── 레이아웃 (가상 mm 캔버스) ─────────────────────────
+const TAB = 15;        // 겹침 탭
+const BAND = 30;       // 가장 깊은 곳 아래 남기는 띠
+const PAPER = { a4: [297, 210], letter: [279.4, 215.9] };
+const MARGIN = 8, HEAD = 13, FOOT = 34, OVERLAP = 10, GAP = 10;
+
+function layout(s, paper) {
+  const W = s.circ + TAB, H = s.depth + BAND;
+  const [pw, ph] = PAPER[paper];
+  const cw = pw - 2 * MARGIN, ch = ph - 2 * MARGIN - HEAD - FOOT;
+  const cols = W <= cw ? 1 : Math.ceil((W - OVERLAP) / (cw - OVERLAP));
+  const rows = H <= ch ? 1 : Math.ceil((H - OVERLAP) / (ch - OVERLAP));
+  const stepX = cw - OVERLAP, stepY = ch - OVERLAP;
+  // 조각(띠)을 만들고, 높이가 남으면 한 장에 위아래로 쌓는다 → 낮은 템플릿은 종이 1장
+  const tiles = [];
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    tiles.push({ r, c, id: String.fromCharCode(65 + r) + (c + 1),
+      tw: Math.min(cw, W - c * stepX), th: Math.min(ch, H - r * stepY) });
+  }
+  const pages = []; let cur = [], used = 0;
+  for (const tl of tiles) {
+    const gap = cur.length ? GAP : 0;
+    if (cur.length && used + gap + tl.th > ch) { pages.push(cur); cur = []; used = 0; }
+    tl.y = used + (cur.length ? GAP : 0); used = tl.y + tl.th; cur.push(tl);
+  }
+  if (cur.length) pages.push(cur);
+  return { W, H, pw, ph, cw, ch, cols, rows, stepX, stepY, tiles, pages };
+}
+
+// 템플릿 도형을 그리는 공통 함수: draw 객체(line, text, dash) 에 위임 → SVG/PDF 공용
+function drawTemplate(d, s, divisions, lb) {
+  const C = s.circ, H = s.depth + BAND, N = 720;
+  const xOf = phi => phi / (2 * Math.PI) * C;
+  // 겹침 탭 (해칭)
+  d.style('tab');
+  for (let x = C + 3; x < C + TAB; x += 3) d.line(x, s.ord(2 * Math.PI * (x - C) / C) + 2, x, H - 2);
+  // 스테이션 세로선
+  d.style('station');
+  for (let i = 0; i <= divisions; i++) {
+    const phi = 2 * Math.PI * i / divisions, x = xOf(phi);
+    d.line(x, s.ord(phi), x, H);
+  }
+  // 외곽: 바닥선, 좌우
+  d.style('outline');
+  d.line(0, H, C + TAB, H);
+  d.line(0, s.ord(0), 0, H);
+  d.line(C + TAB, s.ord(2 * Math.PI * TAB / C), C + TAB, H);
+  // 이음매 (탭 시작)
+  d.style('seam'); d.line(C, s.ord(0), C, H);
+  // 절단선
+  d.style('cut');
+  let px = 0, py = s.ord(0);
+  const end = 2 * Math.PI * (C + TAB) / C;
+  for (let k = 1; k <= N + 30; k++) {
+    const phi = Math.min(end, end * k / (N + 30));
+    const x = xOf(phi), y = s.ord(phi);
+    d.line(px, py, x, y); px = x; py = y;
+  }
+  // 라벨
+  d.style('text');
+  for (let i = 0; i < divisions; i++) {
+    const phi = 2 * Math.PI * i / divisions, x = xOf(phi);
+    d.text(angLbl(i, divisions), x + 1, H - 3, 2.6);
+    d.text(fmtShort(s.ord(phi)), x + 1, H - 7, 2.6);
+  }
+  d.style('label');
+  [[0, lb.axis], [Math.PI / 2, lb.side], [Math.PI, lb.axis], [1.5 * Math.PI, lb.side]].forEach(([phi, label]) => {
+    d.text(label, xOf(phi) + 1, s.ord(phi) + 5, 3);
+  });
+  d.text('CUT LINE', xOf(Math.PI / 4) + 1, s.ord(Math.PI / 4) - 1.5, 3);
+  d.text('OVERLAP', C + 1, H - 12, 2.4);
+}
+
+// ───────────────────────── 미리보기 SVG ─────────────────────────
+const STY = {
+  tab: ['#9aa7b4', 0.3, null], station: ['#b9c4cf', 0.3, null], outline: ['#142235', 0.5, null],
+  seam: ['#142235', 0.4, '2 1.5'], cut: ['#d1341f', 0.9, null], text: ['#142235'], label: ['#0d6f94'],
+};
+function renderPreview(s, L, divisions) {
+  const svg = document.getElementById('preview');
+  const pad = 6, vbW = L.W + 2 * pad, vbH = L.H + 2 * pad + 6;
+  svg.setAttribute('viewBox', `${-pad} ${-pad - 6} ${vbW} ${vbH}`);
+  const out = [], cur = { s: STY.text };
+  const d = {
+    style(k) { cur.s = STY[k]; cur.k = k; },
+    line(x1, y1, x2, y2) {
+      out.push(`<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${cur.s[0]}" stroke-width="${cur.s[1]}"${cur.s[2] ? ` stroke-dasharray="${cur.s[2]}"` : ''} stroke-linecap="round"/>`);
+    },
+    text(str, x, y, size) {
+      out.push(`<text x="${x.toFixed(2)}" y="${y.toFixed(2)}" font-size="${size}" fill="${cur.s[0]}" font-family="system-ui,sans-serif" font-weight="${cur.k === 'label' ? 700 : 400}">${str}</text>`);
+    },
+  };
+  out.push(`<rect x="0" y="0" width="${L.W}" height="${L.H}" fill="#fff"/>`);
+  drawTemplate(d, s, divisions, { axis: t('axis'), side: t('side') });
+  // 용지 경계
+  for (const tl of L.tiles) {
+    const x = tl.c * L.stepX, y = tl.r * L.stepY;
+    out.push(`<rect x="${x}" y="${y}" width="${tl.tw}" height="${tl.th}" fill="none" stroke="#0d6f94" stroke-width="0.5" stroke-dasharray="3 2"/>`);
+    out.push(`<text x="${x + 2}" y="${y - 1.5}" font-size="4" fill="#0d6f94" font-weight="700" font-family="system-ui">${tl.id}</text>`);
+  }
+  svg.innerHTML = out.join('');
+}
+
+// ───────────────────────── QR ─────────────────────────
+function qrMatrix(text) {
+  const q = qrcode(0, 'M'); q.addData(text); q.make();
+  const n = q.getModuleCount(), m = [];
+  for (let r = 0; r < n; r++) { m.push([]); for (let c = 0; c < n; c++) m[r].push(q.isDark(r, c)); }
+  return m;
+}
+function qrToCanvas(id, text) {
+  const cv = document.getElementById(id), ctx = cv.getContext('2d');
+  const m = qrMatrix(text), n = m.length, q = 2, sz = cv.width / (n + 2 * q);
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height); ctx.fillStyle = '#000';
+  m.forEach((row, r) => row.forEach((on, c) => { if (on) ctx.fillRect((c + q) * sz, (r + q) * sz, Math.ceil(sz), Math.ceil(sz)); }));
+}
+function qrToPdf(doc, text, x, y, size) {
+  const m = qrMatrix(text), n = m.length, cell = size / n;
+  doc.setFillColor(0, 0, 0);
+  m.forEach((row, r) => row.forEach((on, c) => { if (on) doc.rect(x + c * cell, y + r * cell, cell + 0.02, cell + 0.02, 'F'); }));
+}
+
+// ───────────────────────── PDF ─────────────────────────
+function buildPdf(state) {
+  const { s, L, divisions, runLabel, brLabel, paper } = state;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: paper === 'a4' ? 'a4' : 'letter' });
+  const total = L.pages.length, multi = L.tiles.length > 1;
+  const PSTY = {
+    tab: [[150, 160, 170], 0.25, null], station: [[175, 185, 195], 0.25, null], outline: [[0, 0, 0], 0.45, null],
+    seam: [[0, 0, 0], 0.35, [2, 1.5]], cut: [[0, 0, 0], 0.8, null], text: [[0, 0, 0]], label: [[0, 0, 0]],
+  };
+  L.pages.forEach((tiles, pi) => {
+    if (pi) doc.addPage();
+    const page = pi + 1;
+
+    // 헤더
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(0);
+    doc.text(`Pipe saddle template  ${brLabel} branch on ${runLabel} header  (90°)`, MARGIN, MARGIN + 4);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+    doc.text(`Depth ${fmt(s.depth)}  ·  Wrap ${fmt(s.circ)}  ·  ${divisions} div.  ·  Page ${page}/${total}  ·  PRINT AT 100% / ACTUAL SIZE`,
+      MARGIN, MARGIN + 8);
+
+    for (const tl of tiles) {
+      const { r, c, tw, th } = tl;
+      const tx = MARGIN, ty = MARGIN + HEAD + tl.y;
+      const ox = tx - c * L.stepX, oy = ty - r * L.stepY;
+      if (multi) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(0);
+        doc.text(`Piece ${tl.id}`, tx + 4, ty - 1.5);
+      }
+      // 본문 (클립)
+      doc.saveGraphicsState();
+      doc.rect(tx, ty, tw, th, null); doc.clip(); doc.discardPath();
+      let cur = PSTY.text, curK = 'text';
+      const d = {
+        style(k) {
+          cur = PSTY[k]; curK = k;
+          doc.setDrawColor(...cur[0]); if (cur[1]) doc.setLineWidth(cur[1]);
+          doc.setLineDashPattern(cur[2] || [], 0);
+        },
+        line(x1, y1, x2, y2) { doc.line(ox + x1, oy + y1, ox + x2, oy + y2); },
+        text(str, x, y, size) {
+          doc.setTextColor(...cur[0]); doc.setFont('helvetica', curK === 'label' ? 'bold' : 'normal');
+          doc.setFontSize(size * 2.83); doc.text(str, ox + x, oy + y);
+        },
+      };
+      drawTemplate(d, s, divisions, { axis: 'RUN AXIS', side: 'SIDE (horn)' }); // PDF 는 Helvetica → 영어 고정
+      doc.restoreGraphicsState();
+      doc.setLineDashPattern([], 0);
+
+      // 이어붙이기: 겹침 구간 점선 + 안내
+      doc.setDrawColor(120); doc.setLineWidth(0.2); doc.setLineDashPattern([1.5, 1.5], 0);
+      if (c < L.cols - 1) doc.line(tx + tw - OVERLAP, ty, tx + tw - OVERLAP, ty + th);
+      if (r < L.rows - 1) doc.line(tx, ty + th - OVERLAP, tx + tw, ty + th - OVERLAP);
+      doc.setLineDashPattern([], 0);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(6); doc.setTextColor(90);
+      const idOf = (rr, cc) => String.fromCharCode(65 + rr) + (cc + 1);
+      if (c < L.cols - 1) doc.text(`${idOf(r, c + 1)} on top >`, tx + tw - OVERLAP + 0.6, ty + th - 12);
+      if (r < L.rows - 1) doc.text(`${idOf(r + 1, c)} on top`, tx + 2, ty + th - OVERLAP + 3);
+      // 코너 크롭 마크
+      doc.setDrawColor(0); doc.setLineWidth(0.2);
+      [[tx, ty], [tx + tw, ty], [tx, ty + th], [tx + tw, ty + th]].forEach(([x, y]) => {
+        doc.line(x - 3, y, x + 3, y); doc.line(x, y - 3, x, y + 3);
+      });
+    }
+
+    // 하단: 스케일바 + 안내
+    const fy = L.ph - MARGIN - FOOT + 4;
+    doc.setDrawColor(0); doc.setLineWidth(0.3);
+    doc.line(MARGIN, fy + 3, MARGIN + 100, fy + 3);
+    for (let i = 0; i <= 10; i++) doc.line(MARGIN + i * 10, fy + (i % 5 ? 1.5 : 0), MARGIN + i * 10, fy + 3);
+    doc.setFontSize(7); doc.setTextColor(0); doc.setFont('helvetica', 'normal');
+    doc.text('100 mm - measure me', MARGIN + 102, fy + 3);
+    doc.line(MARGIN, fy + 10, MARGIN + 4 * INCH, fy + 10);
+    for (let i = 0; i <= 16; i++) doc.line(MARGIN + i * INCH / 4, fy + (i % 4 ? 8.5 : 7), MARGIN + i * INCH / 4, fy + 10);
+    doc.text('4 in', MARGIN + 4 * INCH + 2, fy + 10);
+    doc.setFontSize(6.5); doc.setTextColor(70);
+    doc.text(['Keep the paper below the CUT LINE. Wrap the straight edge square to the pipe,',
+      'SIDE marks to the header sides, RUN AXIS along the header. OD layout - check fit before welding.',
+      'Free generator: ' + SITE_URL.replace('https://', '')],
+      MARGIN, fy + 16);
+
+    // QR 2개: [문구][QR①]  [문구][QR②]
+    const qs = 24, qy = L.ph - MARGIN - qs, capW = 32;
+    const q2x = L.pw - MARGIN - qs, q1x = q2x - 1.5 - capW - 6 - qs;
+    qrToPdf(doc, APP_URL + 'pdf', q1x, qy, qs);
+    qrToPdf(doc, ISO_URL + 'pdf', q2x, qy, qs);
+    const cap = (lines, xRight) => {
+      doc.setTextColor(0); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5);
+      doc.text(lines[0], xRight, qy + 6, { align: 'right' });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5);
+      doc.text(lines.slice(1), xRight, qy + 10, { align: 'right' });
+    };
+    cap(['DUMMY SUPPORT APP', 'Elbow trunnion, beam dummy,', 'elbow miter, leg lengths', 'from center height'], q1x - 1.5);
+    cap(['PIPE ISO APP', 'ISO sketch to CL/CUT list,', '2D offsets, elbow miter,', 'PDF / DXF export'], q2x - 1.5);
+  });
+  doc.save(`saddle-template_${brLabel.replace(/[^0-9a-z-]/gi, '')}on${runLabel.replace(/[^0-9a-z-]/gi, '')}.pdf`);
+}
+
+// ───────────────────────── UI ─────────────────────────
+const $ = id => document.getElementById(id);
+function fillSelect(sel, defIdx) {
+  const keep = sel.value;
+  sel.innerHTML = PIPES.map(([lbl, od], i) =>
+    `<option value="${i}">${lbl}  (${unit === 'mm' ? od.toFixed(1) + ' mm' : (od / INCH).toFixed(3) + '"'})</option>`).join('')
+    + `<option value="custom">${t('custom')}</option>`;
+  sel.value = keep || String(defIdx);
+}
+function readPipe(sel, input) {
+  if (sel.value === 'custom') {
+    input.hidden = false;
+    const v = parseFloat(input.value);
+    if (!(v > 0)) return null;
+    const mm = unit === 'mm' ? v : v * INCH;
+    return { od: mm, label: unit === 'mm' ? mm.toFixed(1) + 'mm' : v + 'in' };
+  }
+  input.hidden = true;
+  const [label, od] = PIPES[+sel.value];
+  return { od, label };
+}
+
+let state = null;
+function update() {
+  const run = readPipe($('runSel'), $('runOd')), br = readPipe($('brSel'), $('brOd'));
+  $('runOd').placeholder = $('brOd').placeholder = t('odHint') + ' (' + (unit === 'mm' ? 'mm' : 'inch') + ')';
+  $('err').textContent = ''; $('dl').disabled = true; state = null;
+  if (!run || !br) { $('err').textContent = t('errOd'); return; }
+  if (br.od > run.od + 1e-9) { $('err').textContent = t('errBig'); return; }
+  const divisions = +$('divSel').value, paper = $('paperSel').value;
+  const s = saddle(run.od, br.od), L = layout(s, paper);
+  state = { s, L, divisions, paper, runLabel: run.label, brLabel: br.label };
+  $('sDepth').textContent = fmt(s.depth); $('sCirc').textContent = fmt(s.circ);
+  $('sPages').textContent = L.pages.length;
+  renderPreview(s, L, divisions);
+  const rows = [];
+  for (let i = 0; i <= divisions; i++) {
+    const phi = 2 * Math.PI * i / divisions;
+    rows.push(`<tr><td>${angLbl(i, divisions)}</td><td>${fmt(s.circ * i / divisions)}</td><td>${fmt(s.ord(phi))}</td></tr>`);
+  }
+  $('tbl').innerHTML = `<tr><th>${t('angle')}</th><th>${t('arc')}</th><th>${t('ord')}</th></tr>` + rows.join('');
+  $('dl').disabled = false;
+  try {
+    const q = new URLSearchParams({ run: run.label, branch: br.label, div: divisions });
+    history.replaceState(null, '', '?' + q.toString());
+  } catch (e) {}
+}
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  fillSelect($('runSel')); fillSelect($('brSel')); update();
+}
+function applyUnit() {
+  document.querySelectorAll('[data-unit]').forEach(b => b.setAttribute('aria-pressed', b.dataset.unit === unit));
+  fillSelect($('runSel')); fillSelect($('brSel')); update();
+}
+
+document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => {
+  lang = b.dataset.lang; try { localStorage.setItem('st_lang', lang); } catch (e) {} applyLang();
+}));
+document.querySelectorAll('[data-unit]').forEach(b => b.addEventListener('click', () => {
+  unit = b.dataset.unit; try { localStorage.setItem('st_unit', unit); } catch (e) {} applyUnit();
+}));
+['runSel', 'brSel', 'divSel', 'paperSel'].forEach(id => $(id).addEventListener('change', update));
+['runOd', 'brOd'].forEach(id => $(id).addEventListener('input', update));
+$('dl').addEventListener('click', () => {
+  if (!state) return;
+  const label = $('dl').textContent; $('dl').textContent = t('making'); $('dl').disabled = true;
+  setTimeout(() => {
+    try { buildPdf(state); } catch (e) { $('err').textContent = 'PDF error: ' + e.message; console.error(e); }
+    $('dl').textContent = label; $('dl').disabled = false;
+  }, 30);
+});
+
+// 초기값: URL 파라미터(run/branch/div) → 기본 6" × 4"
+fillSelect($('runSel'), 10); fillSelect($('brSel'), 8);
+try {
+  const p = new URLSearchParams(location.search);
+  const idx = lbl => PIPES.findIndex(([l]) => l === lbl);
+  if (idx(p.get('run')) >= 0) $('runSel').value = idx(p.get('run'));
+  if (idx(p.get('branch')) >= 0) $('brSel').value = idx(p.get('branch'));
+  if (['8', '12', '16', '24', '32'].includes(p.get('div'))) $('divSel').value = p.get('div');
+} catch (e) {}
+$('appLink').href = APP_URL + 'page';
+$('storeLink').href = ISO_URL + 'page';
+qrToCanvas('qrApp', APP_URL + 'page');
+qrToCanvas('qrStore', ISO_URL + 'page');
+applyUnit(); applyLang();
+</script>
+</body>
+</html>
