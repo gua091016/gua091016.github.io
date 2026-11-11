@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>배관 ISO 그리는 법 | 아이소 도면 스케치·치수 입력 사용법 | 코리아피터</title>
+  <meta name="description" content="배관 ISO 그리는 법을 현장 배관 ISO 계산기 앱으로 따라 해 보세요. 아이소 도면 선 그리기, CL 치수 입력·수정, 피팅 배치, CUT 절단 결과와 PDF·DXF 출력 순서를 안내합니다.">
+  <link rel="canonical" href="https://gua091016.github.io/pipe-iso/how-to-draw/">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="배관 ISO 그리는 법 | 코리아피터">
+  <meta property="og:description" content="선 그리기부터 치수·피팅 편집과 절단 결과까지, 배관 아이소 도면 앱 사용 순서입니다.">
+  <meta property="og:url" content="https://gua091016.github.io/pipe-iso/how-to-draw/">
+  <meta property="og:image" content="https://gua091016.github.io/pipe-iso/assets/pdf-preview.png">
+  <style>
+    :root { color-scheme: dark; font-family: Arial, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; background: #07111f; color: #e5e7eb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.85; }
+    a { color: #7dd3fc; text-underline-offset: .2em; }
+    a:focus-visible { outline: 2px solid #38bdf8; outline-offset: 5px; }
+    header, main, footer { max-width: 900px; margin: auto; padding: 24px; }
+    header { border-bottom: 1px solid #26364a; }
+    header a { text-decoration: none; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+    .eyebrow { color: #7dd3fc; margin: 24px 0 8px; font-size: .9rem; }
+    h1 { font-size: clamp(2rem, 7vw, 3.2rem); letter-spacing: -.04em; line-height: 1.3; margin: 12px 0 24px; }
+    h2 { font-size: 1.45rem; line-height: 1.5; margin-top: 0; scroll-margin-top: 20px; }
+    h3 { font-size: 1.1rem; }
+    .lead { font-size: 1.1rem; color: #cbd5e1; }
+    .muted, figcaption, footer { color: #a7b5c9; font-size: .9rem; }
+    .panel, section { border: 1px solid #26364a; border-radius: 16px; padding: 26px; margin: 24px 0; background: #0f1b2b; }
+    .button { display: inline-block; color: #04111f; background: #38bdf8; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; }
+    figure { margin: 28px 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 8px; background: white; }
+    figcaption { margin-top: 10px; }
+    li { margin: 8px 0; }
+    ol, ul { padding-left: 24px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { text-align: left; border-bottom: 1px solid #304158; padding: 12px 8px; vertical-align: top; }
+    th:first-child { width: 28%; }
+    footer { border-top: 1px solid #26364a; padding-bottom: 48px; }
+    @media (max-width: 480px) { header, main, footer { padding: 18px; } .panel, section { padding: 20px; } }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "배관 ISO 그리는 법: 아이소 도면 스케치와 치수 입력",
+    "description": "현장 배관 ISO 계산기로 선, 치수, 피팅을 편집하고 절단 결과를 확인하는 사용법",
+    "inLanguage": "ko-KR",
+    "datePublished": "2026-11-11",
+    "dateModified": "2026-11-11",
+    "mainEntityOfPage": "https://gua091016.github.io/pipe-iso/how-to-draw/",
+    "image": "https://gua091016.github.io/pipe-iso/assets/pdf-preview.png",
+    "author": { "@type": "Organization", "name": "코리아피터", "url": "https://gua091016.github.io/" },
+    "publisher": { "@type": "Organization", "name": "코리아피터", "url": "https://gua091016.github.io/" }
+  }
+  </script>
+</head>
+<body>
+  <header>
+    <nav aria-label="사이트 탐색">
+      <a href="../../">코리아피터 개발자 홈</a>
+      <a href="../">현장 배관 ISO 계산기 소개</a>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <p class="eyebrow">배관 아이소 도면 · 앱 사용 가이드</p>
+      <h1>배관 ISO 그리는 법</h1>
+      <p class="lead">배관 아이소 도면, 아이소메트릭 도면 또는 ISO 스케치라고 부르는 배관 그림을 앱에서 작성하는 방법입니다. <strong>현장 배관 ISO 계산기</strong>로 배관 경로를 그리고, 실제 센터 치수(CL)와 피팅을 입력한 다음 절단 길이(CUT)를 확인하는 순서로 진행합니다.</p>
+      <p class="muted">코리아피터 · 2026년 11월 11일 작성. 아래는 선·각도·치수·피팅·이동 도구가 있는 화면 기준입니다. 설치한 앱 버전에 따라 버튼 이름과 위치는 다를 수 있습니다.</p>
+      <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator">Google Play에서 공식 앱 보기</a></p>
+
+      <nav class="panel" aria-label="사용법 목차">
+        <ol>
+          <li><a href="#prepare">배관 규격과 단위 확인</a></li>
+          <li><a href="#draw">ISO 방향으로 배관 선 그리기</a></li>
+          <li><a href="#dimension">실제 CL 치수 입력과 수정</a></li>
+          <li><a href="#fitting">피팅 배치와 변경</a></li>
+          <li><a href="#angle">각도 표시와 화면 이동</a></li>
+          <li><a href="#cut">CUT 절단 결과 확인</a></li>
+          <li><a href="#export">도면 보관과 PDF·DXF 출력</a></li>
+        </ol>
+      </nav>
+
+      <section id="prepare">
+        <h2>1. 배관 규격과 단위를 확인합니다</h2>
+        <p>상단의 배관 규격 선택란에서 사용할 사이즈를 고르고, 단위를 mm 또는 inch로 맞춥니다. 접합 방식은 도면 설정에서 확인합니다. 같은 배관 경로라도 규격, 피팅 종류와 접합 방식에 따라 절단 계산에 쓰는 값이 달라질 수 있습니다.</p>
+        <p>처음에는 직선 두 구간과 엘보 하나처럼 간단한 경로로 시작하면 선과 치수를 수정하는 방법을 익히기 쉽습니다.</p>
+      </section>
+
+      <section id="draw">
+        <h2>2. 선 도구로 배관 ISO 경로를 그립니다</h2>
+        <p>하단의 <strong>선</strong> 도구를 누르고 <strong>직선</strong>을 선택하면 ISO 방향에 맞춰 그릴 수 있습니다. 시작 위치에서 끝 위치로 드래그하거나, 시작점과 끝점을 차례로 눌러 선을 만듭니다. 기존 선에서 이어 그릴 때는 연결할 끝점에서 시작합니다.</p>
+        <p>ISO 방향에 맞추기 어려운 구간은 선 도구의 <strong>자유 그리기</strong>를 사용합니다. 화면에 그린 선의 모양과 실제 배관 치수는 별도로 관리되므로, 경로를 그린 다음 각 구간의 CL을 입력해야 합니다.</p>
+      </section>
+
+      <section id="dimension">
+        <h2>3. 치수 도구로 실제 센터 치수(CL)를 입력합니다</h2>
+        <p><strong>치수</strong> 도구를 선택한 뒤 치수를 입력할 배관 선을 누릅니다. 구간에 사용할 실제 CL을 입력하고 적용합니다. 값이 바뀌면 같은 선을 다시 선택해 수정합니다. 입력할 때 선택한 단위를 함께 확인하세요.</p>
+        <p><strong>화면에서 선을 길게 그렸다고 실제 CL이 길어지는 것은 아닙니다.</strong> 이 앱의 스케치는 실측 축척 도면이 아니므로 화면 길이를 자로 재서 절단 길이로 사용하지 않습니다.</p>
+      </section>
+
+      <section id="fitting">
+        <h2>4. 연결점이나 선을 선택해 피팅을 편집합니다</h2>
+        <p><strong>피팅</strong> 도구를 누르고 배관의 연결점 또는 선을 선택합니다. 연결 위치에 맞는 엘보, 티, 레듀샤, 플랜지 등의 피팅을 선택하고 규격과 각도를 확인합니다. 피팅을 바꿀 때도 해당 위치를 다시 선택해 수정합니다.</p>
+        <p>그림의 꺾임만 보고 계산을 끝내지 말고, 적용된 피팅과 접합 방식이 실제 사용할 자재와 맞는지 확인합니다. 피팅 치수는 CL에서 CUT를 구할 때 영향을 줍니다.</p>
+      </section>
+
+      <section id="angle">
+        <h2>5. 각도 표시를 넣고 화면을 이동합니다</h2>
+        <p><strong>각도</strong> 도구를 선택하고 표시할 선을 누르면 각도 설정 화면을 열 수 있습니다. 수평·수직 기준과 원하는 각도를 확인합니다. 화면을 옮기거나 확대해서 확인하려면 <strong>이동</strong> 도구로 전환합니다.</p>
+        <p>단순한 스케치 편집과 별도로 옵셋 수치를 계산하려는 경우에는 앱의 2D 옵셋 계산 기능을 이용할 수 있습니다. <a href="../#tools">2D 옵셋·엘보 마이타 기능 소개</a>에서 확인하세요.</p>
+      </section>
+
+      <section id="cut">
+        <h2>6. 절단 결과에서 CL과 CUT를 구분합니다</h2>
+        <p>상단의 <strong>절단 결과</strong>를 열어 구간별 값과 수량을 확인합니다. CL 미입력 구간을 먼저 채우고, SIZE·CL·CUT와 피팅 구성을 함께 검토합니다.</p>
+        <table>
+          <caption>배관 스케치에서 확인할 값</caption>
+          <thead><tr><th scope="col">항목</th><th scope="col">확인할 내용</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">SIZE</th><td>해당 구간의 배관 규격</td></tr>
+            <tr><th scope="row">CL</th><td>구간에 입력한 센터 기준 치수</td></tr>
+            <tr><th scope="row">CUT</th><td>피팅 공제와 설정을 반영한 절단 길이</td></tr>
+          </tbody>
+        </table>
+        <p>CL과 CUT를 같은 값으로 보고 작업하지 않도록 주의합니다. 실제 제작 전에는 도면, 자재 치수와 현장 조건을 대조합니다.</p>
+      </section>
+
+      <section id="export">
+        <h2>7. 도면을 보관하고 PDF·DXF로 내보냅니다</h2>
+        <p>편집할 도면은 저장·불러오기 기능으로 관리하고, 공유나 출력이 필요하면 <strong>내보내기</strong>에서 PDF 또는 DXF를 선택합니다. PDF·DXF 출력물과 다시 편집할 작업 도면은 용도가 다르므로 필요한 형식으로 보관하세요.</p>
+        <p>무료 내보내기 횟수와 Pro 이용 범위는 <a href="../#access">앱 소개의 무료 이용·Pro 안내</a>에서 확인할 수 있습니다.</p>
+        <figure>
+          <img src="../assets/pdf-preview.png" width="1305" height="923" loading="lazy" alt="현장 배관 ISO 계산기의 배관 아이소 스케치와 CL·CUT 표가 포함된 PDF 출력 예시">
+          <figcaption>배관 ISO 스케치와 커팅 정보를 정리한 PDF 출력 예시입니다.</figcaption>
+        </figure>
+      </section>
+
+      <section aria-labelledby="questions">
+        <h2 id="questions">배관 아이소 도면을 그릴 때 자주 묻는 질문</h2>
+        <h3>선만 그리면 절단 길이가 나오나요?</h3>
+        <p>실제 CL 치수와 배관 규격, 피팅·접합 설정을 확인해야 합니다. 화면에 보이는 선 길이만으로 실제 절단 길이를 판단할 수 없습니다.</p>
+        <h3>이미 그린 배관의 치수나 피팅을 바꿀 수 있나요?</h3>
+        <p>치수 도구로 선을 선택해 CL을 수정하고, 피팅 도구로 연결점이나 선을 선택해 피팅을 변경할 수 있습니다. 변경 후에는 절단 결과를 다시 확인합니다.</p>
+        <h3>이 페이지에서 바로 배관 도면을 그릴 수 있나요?</h3>
+        <p>이 페이지는 사용법 안내입니다. 배관 ISO 스케치 작성과 편집은 Android용 현장 배관 ISO 계산기 앱에서 진행합니다.</p>
+      </section>
+
+      <div class="panel">
+        <h2>직접 배관 ISO 스케치를 작성해 보세요</h2>
+        <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator">Google Play에서 앱 보기</a></p>
+        <p><a href="../">현장 배관 ISO 계산기 전체 기능</a> · <a href="../../">코리아피터 앱과 현장 계산 도구</a></p>
+      </div>
+    </article>
+  </main>
+  <footer>© 코리아피터 · <a href="../privacy.html">개인정보처리방침</a></footer>
+</body>
+</html>

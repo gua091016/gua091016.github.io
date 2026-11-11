@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>현장 배관 ISO 계산기 | Pipe ISO Calculator</title>
-  <meta name="description" content="배관 ISO 스케치, CL/CUT 커팅 리스트, 2D 옵셋·평행 다관과 엘보 마이타 계산. PDF·DXF 내보내기와 월간·연간 Pro 구독을 지원합니다.">
+  <title>배관 ISO 도면 그리기·커팅 계산 | 현장 배관 ISO 계산기</title>
+  <meta name="description" content="배관 ISO 도면 그리기와 아이소 스케치 편집을 돕는 Android 앱. 그리는 법부터 CL/CUT 커팅 리스트, 2D 옵셋·엘보 마이타 계산과 PDF·DXF 출력까지 확인하세요.">
   <link rel="canonical" href="https://gua091016.github.io/pipe-iso/">
   <link rel="alternate" hreflang="ja" href="https://gua091016.github.io/pipe-iso/ja/">
   <link rel="alternate" hreflang="x-default" href="https://gua091016.github.io/pipe-iso/">
-  <meta property="og:title" content="현장 배관 ISO 계산기 | Pipe ISO Calculator">
-  <meta property="og:description" content="ISO sketches, cutting lists, 2D offsets and elbow miters. Free weekly allowances and monthly/yearly Pro subscriptions.">
+  <meta property="og:title" content="배관 ISO 도면 그리기·커팅 계산 | 현장 배관 ISO 계산기">
+  <meta property="og:description" content="배관 아이소 스케치 작성·편집과 CL/CUT 계산. 배관 ISO 그리는 법과 앱 사용 순서를 확인하세요.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://gua091016.github.io/pipe-iso/">
   <style>
@@ -25,6 +25,8 @@
     }
 
     * { box-sizing: border-box; }
+    .ko-guide { display: none; }
+    html[data-page-lang="ko"] .ko-guide { display: block; }
 
     body {
       margin: 0;
@@ -553,7 +555,7 @@
     <section class="hero">
       <div>
         <div class="badge" data-i18n="heroBadge">ISO 스케치 · 커팅 리스트 · 2D 옵셋 · 엘보 마이타</div>
-        <h1 data-i18n="heroTitle">현장 스케치를<br><span class="accent-text">계산서와 출력물로 정리</span></h1>
+        <h1 data-i18n="heroTitle">배관 ISO 도면 그리기<br><span class="accent-text">스케치부터 커팅 계산까지</span></h1>
         <p class="subtitle" data-i18n="heroSubtitle">배관 ISO 스케치와 구간별 CL/CUT, 피팅 수량, 용접 포인트를 정리하고 2D 옵셋·엘보 마이타를 계산하세요.</p>
 
         <ul class="points">
@@ -655,6 +657,12 @@
     </section>
     <section class="notice"><p data-i18n="quotaDetails">매주 월요일 0시, 기기 현지 시간 기준으로 초기화됩니다. 남은 횟수는 이월되지 않습니다. 스케치 작성·편집과 피팅 치수표 열람은 횟수를 차감하지 않습니다. 무료 PDF에도 워터마크가 없습니다.</p><p data-i18n="legacyBody">기존 영구 구매자는 추가 결제 없이 Pro를 계속 이용할 수 있습니다. 구매한 Google Play 계정으로 구매를 복원하세요. 신규 구독은 자동 갱신되며 Google Play에서 해지할 수 있고, 해지 후에도 결제한 기간까지 이용할 수 있습니다.</p></section>
 
+    <section class="notice ko-guide" aria-labelledby="drawing-guide-title">
+      <h2 id="drawing-guide-title">배관 ISO 그리는 법이 궁금하신가요?</h2>
+      <p>배관 아이소 도면을 앱으로 그리는 순서를 정리했습니다. 선 그리기, 치수와 피팅 편집, CL 입력부터 절단 결과 확인까지 따라 해 보세요.</p>
+      <a class="btn secondary" href="how-to-draw/">배관 ISO 도면 그리기 사용법 →</a>
+    </section>
+
     <section id="purpose" class="notice">
       <h2 data-i18n="purposeTitle">사용 목적</h2>
       <p data-i18n="purposeBody">본 앱은 현장 작업자가 간단한 배관 ISO 스케치를 작성하고, 피팅별 치수와 커팅 길이를 빠르게 확인할 수 있도록 제작되었습니다. 실제 제작 및 시공 전에는 현장 도면, 프로젝트 사양서, 적용 코드, 자재 카탈로그, 감독자 검토 내용을 함께 확인해야 합니다.</p>
@@ -669,7 +677,7 @@
   <script>
     const translations = {
   "ko": {
-    "title": "현장 배관 ISO 계산기 | Pipe ISO Calculator",
+    "title": "배관 ISO 도면 그리기·커팅 계산 | 현장 배관 ISO 계산기",
     "brandName": "현장 배관 ISO 계산기",
     "maker": "by 코리아피터",
     "navFeatures": "주요 기능",
@@ -678,7 +686,7 @@
     "languageLabel": "언어",
     "previewLabel": "PDF 출력 미리보기",
     "heroBadge": "ISO 스케치 · 커팅 리스트 · 2D 옵셋 · 엘보 마이타",
-    "heroTitle": "현장 스케치를<br><span class=\"accent-text\">계산서와 출력물로 정리</span>",
+    "heroTitle": "배관 ISO 도면 그리기<br><span class=\"accent-text\">스케치부터 커팅 계산까지</span>",
     "heroSubtitle": "배관 ISO 스케치와 구간별 CL/CUT, 피팅 수량, 용접 포인트를 정리하고 2D 옵셋·엘보 마이타를 계산하세요.",
     "pointPdf": "PDF·DXF 내보내기 지원 · 무료 PDF도 워터마크 없이",
     "pointMiter": "엘보 마이타 화면에서 배·목 치수와 절단 기준 확인",
@@ -1106,24 +1114,10 @@
       }
     }
 
-    function detectBrowserLanguage() {
-      const browserLanguages = navigator.languages && navigator.languages.length
-        ? navigator.languages
-        : [navigator.language];
-      for (const language of browserLanguages) {
-        const raw = String(language || '').toLowerCase();
-        const normalized = normalizeLanguage(raw);
-        if (normalized !== 'en' || raw === 'en' || raw.startsWith('en-')) {
-          return normalized;
-        }
-      }
-      return 'en';
-    }
-
     const storedLanguage = getStoredLanguage();
     const initialLanguage = supportedLanguages.has(storedLanguage)
       ? storedLanguage
-      : detectBrowserLanguage();
+      : (document.documentElement.dataset.pageLang || 'ko');
 
     function setLanguage(language) {
       const nextLanguage = supportedLanguages.has(language) ? language : 'en';
