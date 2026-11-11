@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>엘보 마이타 계산 방법 | 엘보 절단 각도·배·목 치수 | 코리아피터</title>
+  <meta name="description" content="엘보 마이타·마이터 절단 계산 사용법. 배관 사이즈와 롱·숏엘보, 시작 각도와 목표 각도, 배·목의 남길 쪽과 제거할 쪽을 구분하는 방법을 안내합니다.">
+  <link rel="canonical" href="https://gua091016.github.io/pipe-iso/elbow-miter/">
+  <meta property="og:type" content="article"><meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="엘보 마이타 계산 방법 | 엘보 절단 각도·배·목 치수"><meta property="og:description" content="엘보 마이타·마이터 절단 계산 사용법. 배관 사이즈와 롱·숏엘보, 시작 각도와 목표 각도, 배·목의 남길 쪽과 제거할 쪽을 구분하는 방법을 안내합니다.">
+  <meta property="og:url" content="https://gua091016.github.io/pipe-iso/elbow-miter/"><meta property="og:image" content="https://gua091016.github.io/pipe-iso/assets/elbow-miter.jpg">
+  <style>
+    :root { color-scheme: dark; font-family: Arial, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; background: #07111f; color: #e5e7eb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.85; }
+    a { color: #7dd3fc; text-underline-offset: .2em; }
+    a:focus-visible { outline: 2px solid #38bdf8; outline-offset: 5px; }
+    header, main, footer { max-width: 900px; margin: auto; padding: 24px; }
+    header { border-bottom: 1px solid #26364a; }
+    header a { text-decoration: none; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+    .eyebrow { color: #7dd3fc; margin: 24px 0 8px; font-size: .9rem; }
+    h1 { font-size: clamp(2rem, 7vw, 3.2rem); letter-spacing: -.04em; line-height: 1.3; margin: 12px 0 24px; }
+    h2 { font-size: 1.45rem; line-height: 1.5; margin-top: 0; scroll-margin-top: 20px; }
+    h3 { font-size: 1.1rem; }
+    .lead { font-size: 1.1rem; color: #cbd5e1; }
+    .muted, figcaption, footer { color: #a7b5c9; font-size: .9rem; }
+    .panel, section { border: 1px solid #26364a; border-radius: 16px; padding: 26px; margin: 24px 0; background: #0f1b2b; }
+    .button { display: inline-block; color: #04111f; background: #38bdf8; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; }
+    figure { margin: 28px 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 8px; background: white; }
+    figcaption { margin-top: 10px; }
+    li { margin: 8px 0; }
+    ol, ul { padding-left: 24px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { text-align: left; border-bottom: 1px solid #304158; padding: 12px 8px; vertical-align: top; }
+    th:first-child { width: 28%; }
+    footer { border-top: 1px solid #26364a; padding-bottom: 48px; }
+    @media (max-width: 480px) { header, main, footer { padding: 18px; } .panel, section { padding: 20px; } }
+  </style>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "엘보 마이타 계산 방법",
+  "description": "엘보 마이타·마이터 절단 계산 사용법. 배관 사이즈와 롱·숏엘보, 시작 각도와 목표 각도, 배·목의 남길 쪽과 제거할 쪽을 구분하는 방법을 안내합니다.",
+  "inLanguage": "ko-KR",
+  "datePublished": "2026-11-11",
+  "dateModified": "2026-11-11",
+  "mainEntityOfPage": "https://gua091016.github.io/pipe-iso/elbow-miter/",
+  "image": "https://gua091016.github.io/pipe-iso/assets/elbow-miter.jpg",
+  "author": {
+    "@type": "Organization",
+    "name": "코리아피터",
+    "url": "https://gua091016.github.io/"
+  }
+}</script>
+</head><body>
+  <header><nav aria-label="사이트 탐색"><a href="../../">코리아피터 개발자 홈</a><a href="../">현장 배관 ISO 계산기 소개</a></nav></header>
+  <main><article><p class="eyebrow">배관 계산 · 현장 배관 ISO 계산기 사용법</p>
+    <h1>엘보 마이타 계산 방법</h1><p class="lead">엘보 마이타 또는 마이터 절단을 검토할 때는 목표 각도뿐 아니라 배와 목의 측정 위치, 남길 부분과 제거할 부분을 함께 확인해야 합니다. 현장 배관 ISO 계산기의 엘보 마이타 화면 사용 순서입니다.</p>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator">Google Play에서 공식 앱 보기</a></p>
+    
+      <section><h2>엘보의 배와 목은 어느 쪽인가요?</h2>
+        <p><strong>배</strong>는 엘보 곡선의 외측, <strong>목</strong>은 내측을 뜻합니다. 같은 각도를 기준으로 보더라도 곡선의 반지름이 달라 표면을 따라 잰 길이가 다릅니다. 배에서 확인한 치수를 목에 그대로 적용하지 않습니다.</p>
+        <p>앱은 엘보 형상과 배·목 치수를 함께 보여 줍니다. 계산 결과의 숫자를 보기 전에 화면에서 기준 위치와 선택한 절단 조건을 확인하세요.</p>
+      </section>
+      <section><h2>규격·엘보 종류·목표 각도를 입력하는 순서</h2><ol>
+        <li>앱의 <strong>엘보 마이타</strong> 계산 화면을 엽니다.</li>
+        <li>사용할 배관 사이즈를 선택합니다.</li>
+        <li>롱엘보·숏엘보 등 실제 자재에 맞는 반지름 조건을 선택합니다.</li>
+        <li>시작 엘보 각도와 목표 각도를 확인합니다. 목표 각도는 시작 엘보보다 작아야 합니다.</li>
+        <li>계산을 실행하고 화면의 배(외측)·목(내측) 치수와 가공 기준을 확인합니다.</li>
+      </ol><p>앱에서 숏엘보 치수를 제공하지 않는 작은 규격은 롱엘보 기준만 사용할 수 있습니다. 사용할 수 없는 조합을 임의로 다른 규격으로 대체해 계산하지 마세요.</p></section>
+      <section><h2>남기는 각도와 잘라내는 각도를 구분합니다</h2>
+        <p>90° 엘보에서 60°를 남기는 경우, 제거하는 각도는 30°입니다. 여기서 <strong>목표 각도 60°</strong>와 <strong>제거 각도 30°</strong>를 혼동하면 절단 위치를 잘못 잡을 수 있습니다.</p>
+        <p>배·목 표면의 호길이, 중심선 반지름, 센터에서 끝까지의 치수는 서로 다른 값입니다. 앱 도해에서 무엇을 측정하는 숫자인지 확인하고 자재에 표시합니다.</p>
+      </section>
+      <section><h2>롱엘보와 숏엘보는 같은 계산 결과가 나오나요?</h2>
+        <p>같은 배관 사이즈와 각도라도 엘보의 반지름 조건이 다르면 호길이와 센터 치수가 달라집니다. 먼저 실제 자재의 종류를 확인하고 계산 조건을 맞춥니다.</p>
+        <p>기성 45°·90° 엘보의 치수표를 적용하는 경우와 기존 엘보를 목표 각도로 가공하는 경우도 구분해야 합니다. 가공한 엘보의 값을 기성품 치수와 무조건 같다고 보지 않습니다.</p>
+      </section>
+      <section><h2>엘보 사이의 직관 길이가 필요하다면</h2>
+        <p>엘보 마이타는 엘보 자체의 절단 조건을 확인하는 기능입니다. 두 엘보 사이의 파이프 절단 길이는 센터 거리와 엘보 공제를 반영해 별도로 계산합니다.</p>
+        <p><a href="../offset-calculation/">45도·롤링 옵셋 계산 방법</a>에서 배관 형상에 맞는 화면을 선택하고, <a href="../cut-length/">CL과 CUT의 차이</a>도 함께 확인하세요. 실제 제작 전에는 자재 카탈로그와 현장 가공 기준을 대조합니다.</p>
+      </section>
+    <figure><img src="../assets/elbow-miter.jpg" loading="lazy" alt="배관 엘보 마이타 계산의 절단 각도와 배·목 위치를 확인하는 도해"><figcaption>배관 엘보 마이타 계산의 절단 각도와 배·목 위치를 확인하는 도해</figcaption></figure>
+    <div class="panel"><h2>함께 보는 배관 도면·계산 사용법</h2><ul><li><a href="../how-to-draw/">배관 ISO·아이소 도면 그리는 법</a></li><li><a href="../cut-length/">배관 절단 길이 계산하는 법</a></li><li><a href="../offset-calculation/">배관 옵셋 계산 방법</a></li><li><a href="../elbow-miter/">엘보 마이타 계산 방법</a></li></ul><p><a href="../">앱 기능과 무료 이용 범위 확인</a></p></div>
+  </article></main><footer>© 코리아피터 · <a href="../privacy.html">개인정보처리방침</a></footer>
+</body></html>

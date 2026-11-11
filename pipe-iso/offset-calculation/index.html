@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>배관 옵셋 계산 방법 | 45도 오프셋·롤링 옵셋 공식과 CUT | 코리아피터</title>
+  <meta name="description" content="배관 45도 옵셋과 롤링 옵셋 계산 방법. OFFSET·ADVANCE·TRAVEL CL·CUT의 차이, 1.414 계산 예시와 E-W·N-S·U-D 입력 순서를 안내합니다.">
+  <link rel="canonical" href="https://gua091016.github.io/pipe-iso/offset-calculation/">
+  <meta property="og:type" content="article"><meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="배관 옵셋 계산 방법 | 45도 오프셋·롤링 옵셋 공식과 CUT"><meta property="og:description" content="배관 45도 옵셋과 롤링 옵셋 계산 방법. OFFSET·ADVANCE·TRAVEL CL·CUT의 차이, 1.414 계산 예시와 E-W·N-S·U-D 입력 순서를 안내합니다.">
+  <meta property="og:url" content="https://gua091016.github.io/pipe-iso/offset-calculation/"><meta property="og:image" content="https://gua091016.github.io/pipe-iso/assets/offset45-dimensioned.png">
+  <style>
+    :root { color-scheme: dark; font-family: Arial, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif; background: #07111f; color: #e5e7eb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; line-height: 1.85; }
+    a { color: #7dd3fc; text-underline-offset: .2em; }
+    a:focus-visible { outline: 2px solid #38bdf8; outline-offset: 5px; }
+    header, main, footer { max-width: 900px; margin: auto; padding: 24px; }
+    header { border-bottom: 1px solid #26364a; }
+    header a { text-decoration: none; }
+    nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+    .eyebrow { color: #7dd3fc; margin: 24px 0 8px; font-size: .9rem; }
+    h1 { font-size: clamp(2rem, 7vw, 3.2rem); letter-spacing: -.04em; line-height: 1.3; margin: 12px 0 24px; }
+    h2 { font-size: 1.45rem; line-height: 1.5; margin-top: 0; scroll-margin-top: 20px; }
+    h3 { font-size: 1.1rem; }
+    .lead { font-size: 1.1rem; color: #cbd5e1; }
+    .muted, figcaption, footer { color: #a7b5c9; font-size: .9rem; }
+    .panel, section { border: 1px solid #26364a; border-radius: 16px; padding: 26px; margin: 24px 0; background: #0f1b2b; }
+    .button { display: inline-block; color: #04111f; background: #38bdf8; padding: 10px 20px; border-radius: 8px; font-weight: bold; text-decoration: none; }
+    figure { margin: 28px 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 8px; background: white; }
+    figcaption { margin-top: 10px; }
+    li { margin: 8px 0; }
+    ol, ul { padding-left: 24px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { text-align: left; border-bottom: 1px solid #304158; padding: 12px 8px; vertical-align: top; }
+    th:first-child { width: 28%; }
+    footer { border-top: 1px solid #26364a; padding-bottom: 48px; }
+    @media (max-width: 480px) { header, main, footer { padding: 18px; } .panel, section { padding: 20px; } }
+  </style>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "배관 옵셋 계산 방법",
+  "description": "배관 45도 옵셋과 롤링 옵셋 계산 방법. OFFSET·ADVANCE·TRAVEL CL·CUT의 차이, 1.414 계산 예시와 E-W·N-S·U-D 입력 순서를 안내합니다.",
+  "inLanguage": "ko-KR",
+  "datePublished": "2026-11-11",
+  "dateModified": "2026-11-11",
+  "mainEntityOfPage": "https://gua091016.github.io/pipe-iso/offset-calculation/",
+  "image": "https://gua091016.github.io/pipe-iso/assets/offset45-dimensioned.png",
+  "author": {
+    "@type": "Organization",
+    "name": "코리아피터",
+    "url": "https://gua091016.github.io/"
+  }
+}</script>
+</head><body>
+  <header><nav aria-label="사이트 탐색"><a href="../../">코리아피터 개발자 홈</a><a href="../">현장 배관 ISO 계산기 소개</a></nav></header>
+  <main><article><p class="eyebrow">배관 계산 · 현장 배관 ISO 계산기 사용법</p>
+    <h1>배관 옵셋 계산 방법</h1><p class="lead">배관 오프셋 또는 옵셋을 계산할 때는 떨어진 거리, 진행 거리, 대각선 센터 길이와 실제 절단 길이를 구분해야 합니다. 현장 배관 ISO 계산기의 45도 옵셋과 롤링 옵셋 화면을 기준으로 설명합니다.</p>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator">Google Play에서 공식 앱 보기</a></p>
+    
+      <section><h2>OFFSET·ADVANCE·TRAVEL CL·CUT 구분하기</h2>
+        <table><caption>옵셋 화면의 기본 용어</caption><thead><tr><th scope="col">표시</th><th scope="col">의미</th></tr></thead><tbody>
+        <tr><th scope="row">OFFSET</th><td>평행한 두 배관 센터 사이의 이격 거리</td></tr><tr><th scope="row">ADVANCE</th><td>진행 방향의 센터 거리</td></tr><tr><th scope="row">TRAVEL CL</th><td>옵셋을 잇는 대각선의 센터 길이</td></tr><tr><th scope="row">CUT</th><td>피팅 공제 등을 반영한 실제 파이프 절단 길이</td></tr></tbody></table>
+      </section>
+      <section><h2>45도 옵셋: 1.414를 곱한 값은 센터 길이입니다</h2>
+        <p>45° 옵셋의 기하 관계는 <strong>ADVANCE = |OFFSET|</strong>, <strong>TRAVEL CL = |OFFSET| × √2</strong>입니다. 따라서 OFFSET이 300 mm이면 TRAVEL CL은 약 424.3 mm입니다.</p>
+        <p>424.3 mm를 그대로 파이프 절단 길이로 쓰지는 않습니다. 앱의 45도 옵셋은 선택한 배관 규격의 엘보 공제를 양쪽에 반영해 CUT를 표시합니다. 즉 이 화면에서는 <strong>CUT = TRAVEL CL − 엘보 TAKE-OFF × 2</strong>를 확인합니다.</p>
+        <ol><li>2D 옵셋에서 <strong>45도 옵셋</strong>을 엽니다.</li><li>배관 사이즈와 단위를 고르고 옵셋 거리를 입력합니다.</li><li>계산을 실행한 뒤 OFFSET, TRAVEL CL, 엘보 공제와 CUT를 함께 확인합니다.</li></ol>
+      </section>
+      <section><h2>롤링 옵셋: 세 방향 치수로 계산합니다</h2>
+        <p>롤링 옵셋은 한 평면의 높이 차이만으로 계산하지 않습니다. 앱에서는 <strong>E-W, N-S, U-D</strong> 세 방향의 치수를 입력하고 엘보 각도, 롤 각도, TRAVEL CL과 CUT를 확인합니다.</p>
+        <p>이 화면의 축 배치에서 실제 옵셋은 <strong>√(N-S² + U-D²)</strong>, TRAVEL CL은 <strong>√(E-W² + N-S² + U-D²)</strong>입니다. 각 방향값은 화면 도해의 기준에 맞춰 넣습니다.</p>
+        <p>예를 들어 E-W 500 mm, N-S 300 mm, U-D 400 mm이면 실제 옵셋은 500 mm이고 TRAVEL CL은 약 707.1 mm입니다. 이 역시 센터 길이이므로 CUT는 엘보 공제와 함께 따로 확인합니다.</p>
+      </section>
+      <section><h2>CUT가 음수로 나오면 어떻게 하나요?</h2>
+        <p>센터 사이 거리가 피팅 두 개가 차지하는 치수보다 짧으면 직관을 넣을 여유가 없을 수 있습니다. 음수 결과를 양수로 바꾸거나 임의로 0으로 보고 절단하지 말고 배관 배치와 피팅 구성을 다시 검토합니다.</p>
+        <p>앱에는 짧은 옵셋을 검토하는 <strong>엘보 직결 옵셋</strong> 기능도 있습니다. 기성 45도 엘보 두 개와 직관을 쓰는 경우와 엘보를 가공해 직결하는 경우는 계산 기준이 다릅니다.</p>
+      </section>
+      <section><h2>90도+45도·평행 다관은 해당 형상을 선택합니다</h2>
+        <p>90도와 45도 엘보를 조합하거나 여러 관을 나란히 배치할 때는 단순한 45도 공식을 모든 구간에 적용하지 않습니다. 2D 옵셋의 <strong>90도+45도</strong> 또는 <strong>평행 다관</strong> 기능에서 형상과 필요한 치수를 확인하세요.</p>
+        <p>계산에 쓸 치수는 실제 센터 기준으로 확인하고, 자재 치수와 현장 도면을 대조합니다. 구간별 공제는 <a href="../cut-length/">배관 절단 길이와 CL·CUT 사용법</a>에서 이어서 볼 수 있습니다.</p>
+      </section>
+    <figure><img src="../assets/offset45-dimensioned.png" loading="lazy" alt="45도 배관 옵셋의 OFFSET·ADVANCE·TRAVEL CL·CUT 치수 도해"><figcaption>45도 배관 옵셋의 OFFSET·ADVANCE·TRAVEL CL·CUT 치수 도해</figcaption></figure>
+    <div class="panel"><h2>함께 보는 배관 도면·계산 사용법</h2><ul><li><a href="../how-to-draw/">배관 ISO·아이소 도면 그리는 법</a></li><li><a href="../cut-length/">배관 절단 길이 계산하는 법</a></li><li><a href="../offset-calculation/">배관 옵셋 계산 방법</a></li><li><a href="../elbow-miter/">엘보 마이타 계산 방법</a></li></ul><p><a href="../">앱 기능과 무료 이용 범위 확인</a></p></div>
+  </article></main><footer>© 코리아피터 · <a href="../privacy.html">개인정보처리방침</a></footer>
+</body></html>
