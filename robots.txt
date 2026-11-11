@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://gua091016.github.io/sitemap.xml
+Sitemap: https://gua091016.github.io/sitemap-pages.txt
