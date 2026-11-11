@@ -3,8 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="제관 계산기(Boilermaker Calc)는 콘·레듀샤·사각→원형·가지관·새우등·경판·탱크 등 제관 전개와 마킹 치수를 계산하는 앱입니다.">
-<title>제관 계산기 | Boilermaker Calc</title>
+<meta name="description" content="콘·레듀샤, 사각→원형 각원, 호퍼, 가지관·바지관, 새우등 엘보와 경판·탱크 등 제관 전개 계산 앱. 전개도 그리는 법, PCD·중량·절곡 마킹 사용법을 확인하세요.">
+<title>제관 계산기 | 콘·각원·새우등 전개도·마킹</title>
+<link rel="canonical" href="https://gua091016.github.io/boilermaker/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="제관 계산기 | 콘·각원·새우등 전개도·마킹">
+<meta property="og:description" content="콘·각원·가지관·새우등·경판·탱크와 판재 작업별 전개 계산 사용법">
+<meta property="og:url" content="https://gua091016.github.io/boilermaker/">
+<meta property="og:image" content="https://gua091016.github.io/boilermaker/icon.png">
 <link rel="icon" href="icon.png">
 <style>
   :root {
@@ -72,6 +78,8 @@
   .shots img { border-radius: 16px; border: 1px solid var(--line); background: #fff; }
 
   .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .guide-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; padding: 0; list-style: none; }
+  .guide-links a { display: block; height: 100%; padding: 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; font-weight: 700; }
   .group { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
   .group h3 { margin: 0 0 8px; font-size: 1.02rem; color: var(--blue); }
   .group ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: .95rem; }
@@ -117,6 +125,24 @@
       </div>
     </div>
   </header>
+
+  <section data-l="ko" aria-labelledby="guides-title">
+    <h2 id="guides-title">제관 전개도·마킹 계산 사용법</h2>
+    <p>만들려는 형상의 치수 기준과 입력·수정 순서, 전개 결과를 읽는 방법을 작업별로 정리했습니다.</p>
+    <ul class="guide-links">
+      <li><a href="guides/cone-development/">콘·레듀샤·편심 콘 전개도</a></li>
+      <li><a href="guides/square-to-round/">사각→원형 각원·호퍼 전개</a></li>
+      <li><a href="guides/branch-development/">가지관·Y분기 바지관 전개</a></li>
+      <li><a href="guides/lobster-back-elbow/">새우등 엘보 조각 수·절단각</a></li>
+      <li><a href="guides/head-nozzle/">경판 노즐 위치·호길이</a></li>
+      <li><a href="guides/tank-volume/">가로·세로 탱크 용량</a></li>
+      <li><a href="guides/pcd-marking/">PCD 볼트 구멍 등분·좌표</a></li>
+      <li><a href="guides/weight-calculation/">철판·파이프·형강 중량</a></li>
+      <li><a href="guides/screw-flight/">스크류 플라이트 날개 전개</a></li>
+      <li><a href="guides/plate-bending/">판재 절곡 전개 길이</a></li>
+    </ul>
+    <p><a href="guides/">제관 계산 사용법 전체 보기 →</a></p>
+  </section>
 
   <section>
     <h2><span data-l="ko">화면</span><span data-l="en">Screens</span></h2>
@@ -184,7 +210,7 @@
     buttons.forEach(function (b) { b.addEventListener('click', function () { set(b.dataset.set); }); });
     var saved = null;
     try { saved = localStorage.getItem('bm-lang'); } catch (e) {}
-    set(saved || ((navigator.language || 'ko').slice(0, 2) === 'ko' ? 'ko' : 'en'));
+    set(saved === 'en' ? 'en' : 'ko');
   })();
 </script>
 </body>

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>새우등 엘보 전개도 | 마이터 조각 수·절단 각도 계산 | 코리아피터</title><meta name="description" content="새우등 엘보 전개 계산 방법. 관 외경, 곡률 반경, 전체 각도와 조각 수를 넣어 중간·끝 조각 길이와 한쪽 절단 각도를 확인합니다."><link rel="canonical" href="https://gua091016.github.io/boilermaker/guides/lobster-back-elbow/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/boilermaker/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="새우등 엘보 전개도 | 마이터 조각 수·절단 각도 계산 | 코리아피터"><meta property="og:description" content="새우등 엘보 전개 계산 방법. 관 외경, 곡률 반경, 전체 각도와 조각 수를 넣어 중간·끝 조각 길이와 한쪽 절단 각도를 확인합니다."><meta property="og:url" content="https://gua091016.github.io/boilermaker/guides/lobster-back-elbow/"><meta property="og:image" content="https://gua091016.github.io/boilermaker/guides-assets/lobster.webp">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "새우등 엘보 전개·조각 수 계산 방법",
+      "description": "새우등 엘보 전개 계산 방법. 관 외경, 곡률 반경, 전체 각도와 조각 수를 넣어 중간·끝 조각 길이와 한쪽 절단 각도를 확인합니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/boilermaker/guides/lobster-back-elbow/",
+      "image": "https://gua091016.github.io/boilermaker/guides-assets/lobster.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "제관 계산기",
+          "item": "https://gua091016.github.io/boilermaker/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/boilermaker/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "새우등 엘보 전개·조각 수 계산 방법",
+          "item": "https://gua091016.github.io/boilermaker/guides/lobster-back-elbow/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/boilermaker/">제관 계산기 소개</a><a href="/boilermaker/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">제관 계산기 · 작업별 사용법</p><h1>새우등 엘보 전개·조각 수 계산 방법</h1><p class="lead">직관 조각을 이어 곡선을 만드는 새우등 엘보는 전체 꺾임각과 조각 사이 각도, 한쪽 절단각을 구분해야 합니다. 제관 계산기에서 조각 수와 전개 길이를 확인하는 순서입니다.</p></div>
+    <figure><img src="/boilermaker/guides-assets/lobster.webp" width="400" height="248" alt="새우등 엘보 전개·조각 수 계산 방법에 사용하는 앱의 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.boilermaker">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>새우등 엘보 전개·조각 수 계산 방법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">관 외경 OD</th><td>새우등을 만들 관의 실제 외경입니다.</td></tr>
+<tr><th scope="row">곡률 반경 R</th><td>곡선의 중심선 반경으로 관의 반지름과 다릅니다.</td></tr>
+<tr><th scope="row">전체 각도</th><td>45°·90° 또는 직접 입력으로 완성될 전체 꺾임각을 고릅니다.</td></tr>
+<tr><th scope="row">조각 수</th><td>양 끝 반쪽 조각 두 개를 포함한 전체 조각 수입니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>새우등 엘보 도구를 엽니다.</li>
+<li>관 외경과 곡률 반경을 입력합니다.</li>
+<li>전체 각도와 양 끝 조각을 포함한 조각 수를 선택합니다.</li>
+<li>계산하기로 조각 사이 각도·한쪽 절단각과 안쪽·바깥쪽 길이를 확인합니다.</li>
+<li>중간 조각과 끝 조각을 구분해 전개합니다. 조각 수를 바꾸면 다시 계산합니다.</li></ol></section>
+    <section><h2>조각 수와 이음 수는 다릅니다</h2><p>이 도구의 조각 수에는 양 끝 조각 두 개가 포함됩니다. 따라서 조각 수가 n이면 이음은 n−1개이고, 조각 사이 각도는 전체 각도÷(n−1)입니다.</p><p>예를 들어 90°를 네 조각으로 만들면 이음은 세 곳, 조각 사이 각도는 30°, 한쪽 절단각은 15°입니다. 이 수치는 각도 관계 예시이며 가공 길이는 외경·반경을 함께 넣어 계산합니다.</p></section>
+<section><h2>중간 조각과 끝 조각의 길이</h2><p>앱은 중간 조각의 안쪽·바깥쪽 길이와 끝 조각의 길이를 나눠 보여 줍니다. 양 끝의 반쪽 조각에 중간 조각 길이를 그대로 쓰지 않습니다.</p><p>둘레 전개표는 해당 조각의 표면을 따라 표시하는 길이입니다. 시작 방향과 안쪽·바깥쪽 구분을 확인한 뒤 판이나 관에 옮깁니다.</p></section>
+<section><h2>기성 엘보를 깎는 마이터와 구분하기</h2><p>새우등 제작은 직관 조각의 개수와 이음각을 계산합니다. 기성 90° 엘보를 60°로 줄이는 작업은 이미 있는 곡면의 절단 위치를 확인하는 다른 계산입니다.</p><p>기성 엘보 가공이 필요하면 <a href="/dummy-support/guides/elbow-miter/">엘보 마이터 절단 전개 사용법</a>을 참고하세요.</p></section>
+    <aside class="panel"><h2>함께 보는 제관 계산기 사용법</h2><ul><li><a href="/boilermaker/guides/cone-development/">콘·레듀샤 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/square-to-round/">사각→원형·호퍼 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/branch-development/">가지관·Y분기 바지관 전개 방법</a></li>
+<li><a href="/boilermaker/guides/head-nozzle/">경판 노즐 위치·절단 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/tank-volume/">가로·세로 탱크 용량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/pcd-marking/">PCD 볼트 구멍 등분·좌표 계산 방법</a></li>
+<li><a href="/boilermaker/guides/weight-calculation/">철판·파이프·H빔 중량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/screw-flight/">스크류 플라이트 날개 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/plate-bending/">철판 절곡 전개 길이 계산 방법</a></li></ul><p><a href="/boilermaker/guides/">전체 계산 사용법</a> · <a href="/boilermaker/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/boilermaker/privacy.html">개인정보처리방침</a> · <a href="/boilermaker/terms.html">이용약관</a></footer>
+</body></html>

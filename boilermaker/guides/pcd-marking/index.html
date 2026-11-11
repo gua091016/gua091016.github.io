@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PCD 볼트 구멍 계산 | 피치원 등분·홀 간격·좌표 마킹 | 코리아피터</title><meta name="description" content="PCD 피치원 볼트 구멍 계산 방법. PCD와 홀 수를 입력해 인접 홀 직선거리, 등분 각도와 X·Y 좌표를 확인하고 플랜지 마킹 기준을 맞춥니다."><link rel="canonical" href="https://gua091016.github.io/boilermaker/guides/pcd-marking/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/boilermaker/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="PCD 볼트 구멍 계산 | 피치원 등분·홀 간격·좌표 마킹 | 코리아피터"><meta property="og:description" content="PCD 피치원 볼트 구멍 계산 방법. PCD와 홀 수를 입력해 인접 홀 직선거리, 등분 각도와 X·Y 좌표를 확인하고 플랜지 마킹 기준을 맞춥니다."><meta property="og:url" content="https://gua091016.github.io/boilermaker/guides/pcd-marking/"><meta property="og:image" content="https://gua091016.github.io/boilermaker/guides-assets/pcd.webp">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "PCD 볼트 구멍 등분·좌표 계산 방법",
+      "description": "PCD 피치원 볼트 구멍 계산 방법. PCD와 홀 수를 입력해 인접 홀 직선거리, 등분 각도와 X·Y 좌표를 확인하고 플랜지 마킹 기준을 맞춥니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/boilermaker/guides/pcd-marking/",
+      "image": "https://gua091016.github.io/boilermaker/guides-assets/pcd.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "제관 계산기",
+          "item": "https://gua091016.github.io/boilermaker/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/boilermaker/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "PCD 볼트 구멍 등분·좌표 계산 방법",
+          "item": "https://gua091016.github.io/boilermaker/guides/pcd-marking/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/boilermaker/">제관 계산기 소개</a><a href="/boilermaker/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">제관 계산기 · 작업별 사용법</p><h1>PCD 볼트 구멍 등분·좌표 계산 방법</h1><p class="lead">원 둘레에 볼트 구멍을 등분할 때는 피치원 지름과 플랜지 외경, 인접 홀의 직선거리와 호거리를 구분해야 합니다. 제관 계산기의 PCD 기능 사용법입니다.</p></div>
+    <figure><img src="/boilermaker/guides-assets/pcd.webp" width="400" height="248" alt="PCD 볼트 구멍 등분·좌표 계산 방법에 사용하는 앱의 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.boilermaker">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>PCD 볼트 구멍 등분·좌표 계산 방법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">PCD</th><td>볼트 구멍 중심들이 놓이는 피치원 지름입니다. 플랜지 외경이나 구멍 지름이 아닙니다.</td></tr>
+<tr><th scope="row">홀 수</th><td>등간격으로 배치할 구멍 개수를 입력합니다.</td></tr>
+<tr><th scope="row">단위</th><td>PCD와 좌표를 읽을 mm·inch 기준을 확인합니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>PCD 볼트 구멍 도구를 엽니다.</li>
+<li>피치원 지름과 홀 수를 입력합니다.</li>
+<li>계산하기로 홀 간 피치와 등분 각도를 확인합니다.</li>
+<li>첫 홀 기준과 X·Y 좌표 방향을 도면과 맞춥니다.</li>
+<li>홀 수나 PCD를 바꾸면 다시 계산하고 좌표표도 새로 확인합니다.</li></ol></section>
+    <section><h2>홀 간 피치는 원호 길이가 아닙니다</h2><p>앱의 피치는 인접한 두 홀 중심을 직선으로 잇는 현 길이입니다. 원을 따라 잰 둘레를 홀 수로 나눈 호거리와 다릅니다.</p><p>예를 들어 PCD 600 mm, 홀 8개이면 홀 간 각도는 45°, 직선 피치는 약 229.6 mm입니다. 이 예시는 등분 관계이며 특정 플랜지 규격을 지정하지 않습니다.</p></section>
+<section><h2>첫 홀 방향과 스트래들 배치</h2><p>현재 계산의 첫 홀 좌표는 12시 방향을 기준으로 합니다. 실제 플랜지 도면은 중심선을 비켜 홀을 놓는 스트래들 배치일 수 있으므로 그대로 옮기기 전에 시작 방향을 대조합니다.</p><p>화면의 플랜지 외경·보어 비율은 도해용입니다. 그림을 재서 실제 플랜지 외경이나 홀 크기를 정하지 않습니다.</p></section>
+<section><h2>좌표표를 마킹에 적용하기</h2><p>도면의 중심과 X·Y 축을 현물에 옮긴 뒤 각 홀 중심 좌표를 표시합니다. 피치원 전체 위치와 기준축이 맞는지 먼저 확인하면 홀 번호를 뒤집어 읽는 오류를 줄일 수 있습니다.</p><p>PDF·DXF 출력 기능을 사용할 때도 도면의 단위와 시작 방향을 함께 보관합니다.</p></section>
+    <aside class="panel"><h2>함께 보는 제관 계산기 사용법</h2><ul><li><a href="/boilermaker/guides/cone-development/">콘·레듀샤 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/square-to-round/">사각→원형·호퍼 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/branch-development/">가지관·Y분기 바지관 전개 방법</a></li>
+<li><a href="/boilermaker/guides/lobster-back-elbow/">새우등 엘보 전개·조각 수 계산 방법</a></li>
+<li><a href="/boilermaker/guides/head-nozzle/">경판 노즐 위치·절단 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/tank-volume/">가로·세로 탱크 용량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/weight-calculation/">철판·파이프·H빔 중량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/screw-flight/">스크류 플라이트 날개 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/plate-bending/">철판 절곡 전개 길이 계산 방법</a></li></ul><p><a href="/boilermaker/guides/">전체 계산 사용법</a> · <a href="/boilermaker/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/boilermaker/privacy.html">개인정보처리방침</a> · <a href="/boilermaker/terms.html">이용약관</a></footer>
+</body></html>

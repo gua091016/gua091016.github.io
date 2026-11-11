@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사각 원형 전개도 | 각원·편심 트랜지션·호퍼 전개 계산 | 코리아피터</title><meta name="description" content="사각→원형 각원 전개와 편심 트랜지션·호퍼 전개 방법. A·B·원형 지름·높이, 편심 X·Y를 입력하고 면별 실장·전개 치수를 확인합니다."><link rel="canonical" href="https://gua091016.github.io/boilermaker/guides/square-to-round/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/boilermaker/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="사각 원형 전개도 | 각원·편심 트랜지션·호퍼 전개 계산 | 코리아피터"><meta property="og:description" content="사각→원형 각원 전개와 편심 트랜지션·호퍼 전개 방법. A·B·원형 지름·높이, 편심 X·Y를 입력하고 면별 실장·전개 치수를 확인합니다."><meta property="og:url" content="https://gua091016.github.io/boilermaker/guides/square-to-round/"><meta property="og:image" content="https://gua091016.github.io/boilermaker/guides-assets/s2r.webp">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "사각→원형·호퍼 전개도 그리는 법",
+      "description": "사각→원형 각원 전개와 편심 트랜지션·호퍼 전개 방법. A·B·원형 지름·높이, 편심 X·Y를 입력하고 면별 실장·전개 치수를 확인합니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/boilermaker/guides/square-to-round/",
+      "image": "https://gua091016.github.io/boilermaker/guides-assets/s2r.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "제관 계산기",
+          "item": "https://gua091016.github.io/boilermaker/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/boilermaker/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "사각→원형·호퍼 전개도 그리는 법",
+          "item": "https://gua091016.github.io/boilermaker/guides/square-to-round/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/boilermaker/">제관 계산기 소개</a><a href="/boilermaker/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">제관 계산기 · 작업별 사용법</p><h1>사각→원형·호퍼 전개도 그리는 법</h1><p class="lead">사각에서 원형으로 이어지는 각원과 사각 입구가 좁아지는 호퍼는 필요한 입력과 전개 방식이 다릅니다. 제관 계산기에서 정사각·직사각·편심 형상을 구분해 계산하는 방법입니다.</p></div>
+    <figure><img src="/boilermaker/guides-assets/s2r.webp" width="400" height="248" alt="사각→원형·호퍼 전개도 그리는 법에 사용하는 앱의 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.boilermaker">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>사각→원형·호퍼 전개도 그리는 법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">사각→원형</th><td>사각 변 A·B, 원형 지름과 높이 H를 입력합니다. 정사각 모드에서는 A를 사용합니다.</td></tr>
+<tr><th scope="row">편심 X·Y</th><td>편심을 켰을 때 원 중심의 A·B 방향 이동량을 입력합니다.</td></tr>
+<tr><th scope="row">호퍼</th><td>위 A1·B1, 아래 A2·B2와 높이를 입력합니다.</td></tr>
+<tr><th scope="row">호퍼 편심</th><td>편심 호퍼는 X·Y와 각 면의 결과를 함께 확인합니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>사각→원형, 직사각→원형 또는 편심 사각→원형 중 형상에 맞게 엽니다.</li>
+<li>사각 치수, 원형 지름, 높이를 입력합니다.</li>
+<li>편심 작업이면 편심을 켜고 X·Y를 입력합니다.</li>
+<li>계산하기로 면별 모선·삼각분할 길이와 전개도를 확인합니다.</li>
+<li>사각→사각 호퍼는 별도 호퍼 도구에서 위·아래 치수를 입력합니다. 수정 후 다시 계산합니다.</li></ol></section>
+    <section><h2>사각→원형 전개는 높이와 실장을 구분합니다</h2><p>H는 수직 높이이고 판에 옮기는 모선·대각선은 각 지점을 잇는 실제 길이입니다. 수직 높이만으로 모든 전개 선을 같은 길이로 그리지 않습니다.</p><p>화면의 A·B·C·D 코너와 원형 등분 번호를 맞추고 해당 코너의 실장표를 읽습니다.</p></section>
+<section><h2>편심을 켜면 대칭 조건이 달라집니다</h2><p>원 중심이 이동하면 서로 마주 보는 면도 길이가 달라질 수 있습니다. 중심형 결과를 편심형의 모든 면에 반복 적용하지 말고 평면도와 면별 번호를 확인합니다.</p><p>편심 X는 A 방향, 편심 Y는 B 방향입니다. 실제 도면의 축과 화면의 방향을 먼저 맞춘 다음 수치를 넣습니다.</p></section>
+<section><h2>호퍼는 위·아래 사각 치수를 사용합니다</h2><p>호퍼 도구에는 위 가로·세로와 아래 가로·세로를 각각 넣습니다. 원형 지름이 있는 각원 도구와 구분하세요.</p><p>결과의 A면·B면 경사 높이, 모서리 실장과 판 접는 각도를 확인합니다. 편심 호퍼는 면별 결과가 달라지므로 해당 면의 전개도를 사용합니다.</p></section>
+    <aside class="panel"><h2>함께 보는 제관 계산기 사용법</h2><ul><li><a href="/boilermaker/guides/cone-development/">콘·레듀샤 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/branch-development/">가지관·Y분기 바지관 전개 방법</a></li>
+<li><a href="/boilermaker/guides/lobster-back-elbow/">새우등 엘보 전개·조각 수 계산 방법</a></li>
+<li><a href="/boilermaker/guides/head-nozzle/">경판 노즐 위치·절단 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/tank-volume/">가로·세로 탱크 용량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/pcd-marking/">PCD 볼트 구멍 등분·좌표 계산 방법</a></li>
+<li><a href="/boilermaker/guides/weight-calculation/">철판·파이프·H빔 중량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/screw-flight/">스크류 플라이트 날개 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/plate-bending/">철판 절곡 전개 길이 계산 방법</a></li></ul><p><a href="/boilermaker/guides/">전체 계산 사용법</a> · <a href="/boilermaker/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/boilermaker/privacy.html">개인정보처리방침</a> · <a href="/boilermaker/terms.html">이용약관</a></footer>
+</body></html>

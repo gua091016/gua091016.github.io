@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>스크류 날개 전개도 | 플라이트 도넛판·피치 계산 방법 | 코리아피터</title><meta name="description" content="스크류 플라이트 날개 전개 사용법. 날개 외경·축 외경·피치·판 두께를 입력해 도넛판 바깥·안쪽 지름과 따낼 각도·현 길이를 확인합니다."><link rel="canonical" href="https://gua091016.github.io/boilermaker/guides/screw-flight/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/boilermaker/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="스크류 날개 전개도 | 플라이트 도넛판·피치 계산 방법 | 코리아피터"><meta property="og:description" content="스크류 플라이트 날개 전개 사용법. 날개 외경·축 외경·피치·판 두께를 입력해 도넛판 바깥·안쪽 지름과 따낼 각도·현 길이를 확인합니다."><meta property="og:url" content="https://gua091016.github.io/boilermaker/guides/screw-flight/"><meta property="og:image" content="https://gua091016.github.io/boilermaker/guides-assets/screw.webp">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "스크류 플라이트 날개 전개 계산 방법",
+      "description": "스크류 플라이트 날개 전개 사용법. 날개 외경·축 외경·피치·판 두께를 입력해 도넛판 바깥·안쪽 지름과 따낼 각도·현 길이를 확인합니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/boilermaker/guides/screw-flight/",
+      "image": "https://gua091016.github.io/boilermaker/guides-assets/screw.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "제관 계산기",
+          "item": "https://gua091016.github.io/boilermaker/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/boilermaker/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "스크류 플라이트 날개 전개 계산 방법",
+          "item": "https://gua091016.github.io/boilermaker/guides/screw-flight/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/boilermaker/">제관 계산기 소개</a><a href="/boilermaker/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">제관 계산기 · 작업별 사용법</p><h1>스크류 플라이트 날개 전개 계산 방법</h1><p class="lead">스크류 날개를 만들기 위한 도넛판의 안쪽 구멍은 감은 뒤의 축 외경과 같지 않을 수 있습니다. 제관 계산기의 1회전 스크류 플라이트 전개 기능을 읽는 방법입니다.</p></div>
+    <figure><img src="/boilermaker/guides-assets/screw.webp" width="400" height="248" alt="스크류 플라이트 날개 전개 계산 방법에 사용하는 앱의 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.boilermaker">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>스크류 플라이트 날개 전개 계산 방법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">날개 외경 D</th><td>완성된 스크류 날개의 바깥 지름입니다.</td></tr>
+<tr><th scope="row">축 외경 d</th><td>날개가 감길 축 파이프의 외경입니다.</td></tr>
+<tr><th scope="row">피치 P</th><td>한 회전이 진행하는 축 방향 거리입니다.</td></tr>
+<tr><th scope="row">판 두께</th><td>해당 입력과 결과 도해의 두께 기준을 확인합니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>스크류 플라이트 도구를 엽니다.</li>
+<li>날개 외경·축 외경·피치·두께를 입력합니다.</li>
+<li>계산하기로 도넛판 바깥·안쪽 치수를 확인합니다.</li>
+<li>사용 각도·따낼 각도와 안쪽·바깥 현 길이를 구분해 전개합니다.</li>
+<li>피치나 지름을 바꾸면 다시 계산하고 새 판 치수로 확인합니다.</li></ol></section>
+    <section><h2>이 도구는 1회전 한 장 기준입니다</h2><p>계산은 한 회전의 날개를 도넛판 한 장에서 전개하는 방식입니다. 여러 회전 스크류의 전체 길이와 판 수량을 한 장 결과로 혼동하지 않습니다.</p><p>피치는 날개가 한 바퀴 돌 때 축 방향으로 이동하는 길이입니다. 원둘레 길이나 날개 폭과 다른 값입니다.</p></section>
+<section><h2>도넛판 구멍 지름과 축 지름</h2><p>평판 상태의 안쪽 구멍 지름과 감은 뒤 닿는 축 외경은 다른 계산값입니다. 입력한 축 외경을 그대로 평판 구멍 지름으로 표시하지 말고 결과의 안쪽 지름을 확인합니다.</p><p>날개 외경은 축 외경보다 커야 하고 피치는 양수여야 합니다. 계산이 되지 않으면 입력 조건부터 확인합니다.</p></section>
+<section><h2>따낼 각도와 현 길이의 관계</h2><p>도넛판에서 사용하는 각도와 제거하는 각도를 구분하고, 안쪽·바깥쪽 현 길이를 각각 읽습니다. 현은 원호 양 끝을 잇는 직선 거리입니다.</p><p>성형 후 실물 형상은 작업 조건과 자재에 따라 확인이 필요합니다. 전개 치수를 확정한 뒤 제작 기준과 대조합니다.</p></section>
+    <aside class="panel"><h2>함께 보는 제관 계산기 사용법</h2><ul><li><a href="/boilermaker/guides/cone-development/">콘·레듀샤 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/square-to-round/">사각→원형·호퍼 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/branch-development/">가지관·Y분기 바지관 전개 방법</a></li>
+<li><a href="/boilermaker/guides/lobster-back-elbow/">새우등 엘보 전개·조각 수 계산 방법</a></li>
+<li><a href="/boilermaker/guides/head-nozzle/">경판 노즐 위치·절단 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/tank-volume/">가로·세로 탱크 용량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/pcd-marking/">PCD 볼트 구멍 등분·좌표 계산 방법</a></li>
+<li><a href="/boilermaker/guides/weight-calculation/">철판·파이프·H빔 중량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/plate-bending/">철판 절곡 전개 길이 계산 방법</a></li></ul><p><a href="/boilermaker/guides/">전체 계산 사용법</a> · <a href="/boilermaker/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/boilermaker/privacy.html">개인정보처리방침</a> · <a href="/boilermaker/terms.html">이용약관</a></footer>
+</body></html>

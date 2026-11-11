@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가지관 전개도 | 45도 분기관·Y분기 바지관 전개 계산 | 코리아피터</title><meta name="description" content="90도·45도 가지관과 Y분기 바지관 전개 계산 방법. 주관·분기관 외경, 분기 각도와 등분을 입력하고 동경·이경 Y관을 구분합니다."><link rel="canonical" href="https://gua091016.github.io/boilermaker/guides/branch-development/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/boilermaker/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="가지관 전개도 | 45도 분기관·Y분기 바지관 전개 계산 | 코리아피터"><meta property="og:description" content="90도·45도 가지관과 Y분기 바지관 전개 계산 방법. 주관·분기관 외경, 분기 각도와 등분을 입력하고 동경·이경 Y관을 구분합니다."><meta property="og:url" content="https://gua091016.github.io/boilermaker/guides/branch-development/"><meta property="og:image" content="https://gua091016.github.io/boilermaker/guides-assets/branch.webp">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "가지관·Y분기 바지관 전개 방법",
+      "description": "90도·45도 가지관과 Y분기 바지관 전개 계산 방법. 주관·분기관 외경, 분기 각도와 등분을 입력하고 동경·이경 Y관을 구분합니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/boilermaker/guides/branch-development/",
+      "image": "https://gua091016.github.io/boilermaker/guides-assets/branch.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "제관 계산기",
+          "item": "https://gua091016.github.io/boilermaker/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/boilermaker/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "가지관·Y분기 바지관 전개 방법",
+          "item": "https://gua091016.github.io/boilermaker/guides/branch-development/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/boilermaker/">제관 계산기 소개</a><a href="/boilermaker/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">제관 계산기 · 작업별 사용법</p><h1>가지관·Y분기 바지관 전개 방법</h1><p class="lead">배관 가지관 전개와 Y분기 바지관 전개는 연결 형상과 길이 기준을 먼저 구분해야 합니다. 제관 계산기에서 정각·경사 가지관과 동경·이경 Y분기 작업을 선택하는 방법입니다.</p></div>
+    <figure><img src="/boilermaker/guides-assets/branch.webp" width="400" height="248" alt="가지관·Y분기 바지관 전개 방법에 사용하는 앱의 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.boilermaker">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>가지관·Y분기 바지관 전개 방법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">가지관 외경</th><td>주관 외경과 분기관 외경을 각각 입력하거나 배관 규격에서 고릅니다.</td></tr>
+<tr><th scope="row">분기 각도</th><td>90°·45° 또는 직접 입력을 선택합니다.</td></tr>
+<tr><th scope="row">편심·등분</th><td>해당 화면의 편심 조건과 둘레 등분 수를 입력합니다.</td></tr>
+<tr><th scope="row">Y분기 조건</th><td>동경·이경 모드와 몸통·가지 치수, 길이·각도를 맞춥니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>직각·경사 분기는 가지관, 두 갈래 바지관은 Y분기를 선택합니다.</li>
+<li>실제 외경과 분기 각도, 등분 조건을 입력합니다.</li>
+<li>Y분기는 동경 또는 이경 모드를 먼저 맞춘 뒤 각 입력을 채웁니다.</li>
+<li>계산하기로 둘레 각도·호거리·컷 또는 몸통·가지 전개표를 표시합니다.</li>
+<li>관경·각도·길이를 바꾸면 다시 계산하고 같은 등분 번호로 마킹합니다.</li></ol></section>
+    <section><h2>호칭경과 실제 외경을 구분합니다</h2><p>가지관 계산의 OD는 실제 외경입니다. 호칭경 숫자를 mm 외경 칸에 그대로 넣지 않습니다. 규격 선택을 이용할 때도 적용된 실제 외경과 규격 기준을 확인합니다.</p><p>둘레 호거리는 등분 위치를 관 표면을 따라 잡는 값입니다. 각 지점에서 따낼 양과 혼동하지 않도록 좌표표의 열 이름을 확인합니다.</p></section>
+<section><h2>동경 Y분기와 이경 Y분기</h2><p>동경 Y분기는 몸통과 양쪽 가지의 관경이 같은 조건입니다. 몸통이 크고 두 가지가 작은 이경 형상은 이경 모드를 사용합니다.</p><p>이경 모드에는 몸통 외경 D, 가지 외경 d와 판 두께 등의 입력이 있습니다. 동경 계산에서 외경 하나만 바꿔 이경관 결과로 사용하지 않습니다.</p></section>
+<section><h2>새들·피시마우스와의 연결</h2><p>직관에 맞춰 파이프 끝을 따내는 작업은 새들 또는 피시마우스라고도 부릅니다. 연결 각도와 기준 길이를 먼저 정리한 뒤 해당 도구를 선택합니다.</p><p>서포트 높이나 실치수 감기 템플릿 중심으로 작업하려면 <a href="/dummy-support/guides/saddle-cut/">더미 앱의 새들 컷 사용법</a>도 참고할 수 있습니다.</p></section>
+    <aside class="panel"><h2>함께 보는 제관 계산기 사용법</h2><ul><li><a href="/boilermaker/guides/cone-development/">콘·레듀샤 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/square-to-round/">사각→원형·호퍼 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/lobster-back-elbow/">새우등 엘보 전개·조각 수 계산 방법</a></li>
+<li><a href="/boilermaker/guides/head-nozzle/">경판 노즐 위치·절단 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/tank-volume/">가로·세로 탱크 용량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/pcd-marking/">PCD 볼트 구멍 등분·좌표 계산 방법</a></li>
+<li><a href="/boilermaker/guides/weight-calculation/">철판·파이프·H빔 중량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/screw-flight/">스크류 플라이트 날개 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/plate-bending/">철판 절곡 전개 길이 계산 방법</a></li></ul><p><a href="/boilermaker/guides/">전체 계산 사용법</a> · <a href="/boilermaker/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/boilermaker/privacy.html">개인정보처리방침</a> · <a href="/boilermaker/terms.html">이용약관</a></footer>
+</body></html>

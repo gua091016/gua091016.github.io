@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>엘보 더미 트러니언 전개·길이 계산 방법 | 코리아피터</title><meta name="description" content="엘보 더미·트러니언 서포트 전개 계산 사용법. 엘보와 더미 구경, 롱·숏 반경, 센터높이와 엘보 위치 각도를 입력하고 절단 전개선을 확인합니다."><link rel="canonical" href="https://gua091016.github.io/dummy-support/guides/elbow-trunnion/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/dummy-support/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="엘보 더미 트러니언 전개·길이 계산 방법 | 코리아피터"><meta property="og:description" content="엘보 더미·트러니언 서포트 전개 계산 사용법. 엘보와 더미 구경, 롱·숏 반경, 센터높이와 엘보 위치 각도를 입력하고 절단 전개선을 확인합니다."><meta property="og:url" content="https://gua091016.github.io/dummy-support/guides/elbow-trunnion/"><meta property="og:image" content="https://gua091016.github.io/dummy-support/guides-assets/home_elbow_dummy.png">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "엘보 더미·트러니언 길이 계산 방법",
+      "description": "엘보 더미·트러니언 서포트 전개 계산 사용법. 엘보와 더미 구경, 롱·숏 반경, 센터높이와 엘보 위치 각도를 입력하고 절단 전개선을 확인합니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/dummy-support/guides/elbow-trunnion/",
+      "image": "https://gua091016.github.io/dummy-support/guides-assets/home_elbow_dummy.png",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "더미 서포트 계산기",
+          "item": "https://gua091016.github.io/dummy-support/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/dummy-support/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "엘보 더미·트러니언 길이 계산 방법",
+          "item": "https://gua091016.github.io/dummy-support/guides/elbow-trunnion/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/dummy-support/">더미 서포트 계산기 소개</a><a href="/dummy-support/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">더미 서포트 계산기 · 작업별 사용법</p><h1>엘보 더미·트러니언 길이 계산 방법</h1><p class="lead">엘보 곡면에 붙는 더미 파이프는 직관에 붙는 더미와 접촉 형상이 다릅니다. 엘보 더미 또는 트러니언 서포트의 길이와 절단 전개선을 확인하는 앱 사용법입니다.</p></div>
+    <figure><img src="/dummy-support/guides-assets/home_elbow_dummy.png" width="742" height="530" alt="엘보 곡면을 받치는 더미 트러니언 서포트 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.dummy">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>엘보 더미·트러니언 길이 계산 방법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">엘보·더미 구경</th><td>주관 엘보 규격과 받침 더미 구경을 각각 선택합니다.</td></tr>
+<tr><th scope="row">엘보 반경</th><td>실제 자재에 맞는 롱·숏엘보 조건을 확인합니다.</td></tr>
+<tr><th scope="row">센터높이</th><td>화면에 표시된 주관 C/L 기준 높이를 사용합니다.</td></tr>
+<tr><th scope="row">엘보 위치 각도</th><td>수평 쪽 엘보 끝이 0°, 엘보 가운데가 45°인 기준입니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>홈에서 엘보 더미 작업을 선택합니다.</li>
+<li>KS·ASME 기준과 엘보·더미 구경을 설정합니다.</li>
+<li>엘보 반경, 센터높이, 위치 각도와 둘레 등분을 입력합니다.</li>
+<li>계산 결과 보기로 길이와 절단 전개표를 확정합니다.</li>
+<li>위치나 규격을 변경하면 값을 수정하고 다시 계산한 표로 마킹합니다.</li></ol></section>
+    <section><h2>엘보 위치 45도는 고정 조건이 아닙니다</h2><p>현재 화면에는 엘보 위치 각도 입력이 있습니다. 기본 45°는 엘보 가운데를 뜻하며 다른 위치를 검토할 때는 실제 위치에 맞춰 바꿉니다.</p><p>예시 그림은 45° 기준이므로 그림의 겉모양만 보고 모든 작업이 같은 위치라고 해석하지 않습니다. 입력한 위치 각도를 결과·출력물과 함께 확인합니다.</p></section>
+<section><h2>반경과 실측값을 먼저 맞춥니다</h2><p>엘보의 곡률 반경이 바뀌면 더미가 접촉하는 곡면도 달라집니다. 같은 구경이라는 이유만으로 롱엘보 결과를 숏엘보에 그대로 적용하지 않습니다.</p><p>Pro의 실측값 기능에서는 실제 외경·반경 조건을 입력할 수 있습니다. 두께 보정 조건을 사용하는 경우에도 사용한 접촉 기준을 확인하세요.</p></section>
+<section><h2>직관 더미 전개선을 대신 쓰지 않습니다</h2><p>직관의 원통면과 엘보의 곡면은 형상이 다릅니다. 직관 더미와 엘보 더미를 구분해 작업을 열고, 전개표의 시작 위치와 기준선을 확인합니다.</p><p>출력한 템플릿은 100% 크기와 눈금을 확인한 뒤 사용합니다. 이 기능은 가공 형상과 마킹 치수 계산이며 서포트의 허용 하중을 판정하는 기능은 아닙니다.</p></section>
+    <aside class="panel"><h2>함께 보는 더미 서포트 계산기 사용법</h2><ul><li><a href="/dummy-support/guides/straight-dummy/">직관 더미 서포트 계산 방법</a></li>
+<li><a href="/dummy-support/guides/saddle-cut/">파이프 새들 컷·가지관 전개 방법</a></li>
+<li><a href="/dummy-support/guides/beam-dummy/">H빔 더미 서포트 따내기 계산 방법</a></li>
+<li><a href="/dummy-support/guides/elbow-miter/">엘보 마이터·마이타 절단 전개 방법</a></li></ul><p><a href="/dummy-support/guides/">전체 계산 사용법</a> · <a href="/dummy-support/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/dummy-support/privacy.html">개인정보처리방침</a> · <a href="/dummy-support/terms.html">이용약관</a></footer>
+</body></html>

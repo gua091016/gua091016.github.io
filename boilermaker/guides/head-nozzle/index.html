@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경판 노즐 구멍 위치 계산 | 호길이·탄젠트라인·노즐 마이터 | 코리아피터</title><meta name="description" content="경판 노즐 위치와 마이터 절단 계산 방법. 경판 형상·외경·노즐 편심거리, T.L 기준 높이를 입력하고 표면 호길이와 컷 전개표를 읽습니다."><link rel="canonical" href="https://gua091016.github.io/boilermaker/guides/head-nozzle/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/boilermaker/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="경판 노즐 구멍 위치 계산 | 호길이·탄젠트라인·노즐 마이터 | 코리아피터"><meta property="og:description" content="경판 노즐 위치와 마이터 절단 계산 방법. 경판 형상·외경·노즐 편심거리, T.L 기준 높이를 입력하고 표면 호길이와 컷 전개표를 읽습니다."><meta property="og:url" content="https://gua091016.github.io/boilermaker/guides/head-nozzle/"><meta property="og:image" content="https://gua091016.github.io/boilermaker/guides-assets/head.webp">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "경판 노즐 위치·절단 전개 계산 방법",
+      "description": "경판 노즐 위치와 마이터 절단 계산 방법. 경판 형상·외경·노즐 편심거리, T.L 기준 높이를 입력하고 표면 호길이와 컷 전개표를 읽습니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/boilermaker/guides/head-nozzle/",
+      "image": "https://gua091016.github.io/boilermaker/guides-assets/head.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "제관 계산기",
+          "item": "https://gua091016.github.io/boilermaker/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/boilermaker/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "경판 노즐 위치·절단 전개 계산 방법",
+          "item": "https://gua091016.github.io/boilermaker/guides/head-nozzle/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/boilermaker/">제관 계산기 소개</a><a href="/boilermaker/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">제관 계산기 · 작업별 사용법</p><h1>경판 노즐 위치·절단 전개 계산 방법</h1><p class="lead">경판 위에 노즐 위치를 표시할 때는 수평거리와 곡면을 따라 잰 호길이, 탄젠트라인 기준을 구분해야 합니다. 제관 계산기의 경판 노즐 화면에서 위치와 절단 전개를 확인하는 방법입니다.</p></div>
+    <figure><img src="/boilermaker/guides-assets/head.webp" width="400" height="248" alt="경판 노즐 위치·절단 전개 계산 방법에 사용하는 앱의 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.boilermaker">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>경판 노즐 위치·절단 전개 계산 방법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">경판 형상·외경</th><td>경판 종류와 외경 D를 선택하고 사용자 형상은 깊이·크라운·너클 조건을 입력합니다.</td></tr>
+<tr><th scope="row">노즐 중심 수평거리</th><td>경판 중심에서 노즐 중심까지의 수평거리입니다. 표면 호길이가 아닙니다.</td></tr>
+<tr><th scope="row">노즐 외경</th><td>규격 선택 또는 실제 외경 직접 입력을 사용합니다.</td></tr>
+<tr><th scope="row">T.L~플랜지면 높이</th><td>탄젠트라인에서 플랜지면까지의 높이입니다. 비우면 컷만 계산하는 조건을 확인합니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>경판 노즐 도구를 열어 실제 경판 형상을 선택합니다.</li>
+<li>경판 외경과 필요한 사용자 형상 치수를 입력합니다.</li>
+<li>중심~노즐 수평거리와 노즐 규격을 입력합니다.</li>
+<li>필요하면 T.L 기준 플랜지면 높이와 둘레 등분을 지정합니다.</li>
+<li>계산하기에서 호길이와 마이터 표를 확인합니다. 입력을 수정하면 다시 계산합니다.</li></ol></section>
+    <section><h2>경판 호길이는 표면을 따라 잽니다</h2><p>앱의 호길이는 줄자를 경판 표면에 붙여 재는 길이이며 직선으로 잰 수평거리와 다릅니다. 경판 곡면이 끝나는 T.L(탄젠트라인)과 그 이후의 직선부 S.F도 구분합니다.</p><p>호길이 결과에는 직선부가 포함되지 않는다는 화면 안내를 확인하고 현장 기준선을 맞춥니다.</p></section>
+<section><h2>이 노즐 마이터 계산의 방향 조건</h2><p>현재 경판 노즐 화면의 마이터는 경판 외면과 노즐 외경을 기준으로, 노즐이 경판 축과 평행한 수직 노즐인 경우입니다. 임의로 기울어진 노즐의 결과로 사용하지 않습니다.</p><p>1번 0°는 정점 쪽입니다. 가장 긴 쪽 끝을 기준으로 각 등분선에서 컷만큼 잘라내는 방향을 표와 도해에서 확인합니다.</p></section>
+<section><h2>플랜지면 높이와 파이프 길이</h2><p>높이를 플랜지면까지 입력했다면 실제 파이프 길이를 정할 때 플랜지 길이를 따로 검토해야 합니다. 입력 높이를 곧바로 직관 절단 길이라고 해석하지 않습니다.</p><p>경판 종류나 깊이를 바꾸면 위치 호길이와 접촉 곡선도 달라질 수 있습니다. 확정한 형상으로 결과를 다시 계산해 출력합니다.</p></section>
+    <aside class="panel"><h2>함께 보는 제관 계산기 사용법</h2><ul><li><a href="/boilermaker/guides/cone-development/">콘·레듀샤 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/square-to-round/">사각→원형·호퍼 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/branch-development/">가지관·Y분기 바지관 전개 방법</a></li>
+<li><a href="/boilermaker/guides/lobster-back-elbow/">새우등 엘보 전개·조각 수 계산 방법</a></li>
+<li><a href="/boilermaker/guides/tank-volume/">가로·세로 탱크 용량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/pcd-marking/">PCD 볼트 구멍 등분·좌표 계산 방법</a></li>
+<li><a href="/boilermaker/guides/weight-calculation/">철판·파이프·H빔 중량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/screw-flight/">스크류 플라이트 날개 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/plate-bending/">철판 절곡 전개 길이 계산 방법</a></li></ul><p><a href="/boilermaker/guides/">전체 계산 사용법</a> · <a href="/boilermaker/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/boilermaker/privacy.html">개인정보처리방침</a> · <a href="/boilermaker/terms.html">이용약관</a></footer>
+</body></html>

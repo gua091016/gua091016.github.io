@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>콘 전개도 그리는 법 | 원뿔대·레듀샤·편심 콘 전개 계산 | 코리아피터</title><meta name="description" content="콘·원뿔대·레듀샤 전개 계산 방법. 큰 지름 D1·작은 지름 D2·높이 H를 입력해 부채꼴 반경과 각도를 구하고 편심 콘은 삼각분할 실장표로 확인합니다."><link rel="canonical" href="https://gua091016.github.io/boilermaker/guides/cone-development/">
+<link rel="stylesheet" href="/guides.css"><link rel="icon" href="/boilermaker/icon.png">
+<meta property="og:type" content="article"><meta property="og:locale" content="ko_KR"><meta property="og:title" content="콘 전개도 그리는 법 | 원뿔대·레듀샤·편심 콘 전개 계산 | 코리아피터"><meta property="og:description" content="콘·원뿔대·레듀샤 전개 계산 방법. 큰 지름 D1·작은 지름 D2·높이 H를 입력해 부채꼴 반경과 각도를 구하고 편심 콘은 삼각분할 실장표로 확인합니다."><meta property="og:url" content="https://gua091016.github.io/boilermaker/guides/cone-development/"><meta property="og:image" content="https://gua091016.github.io/boilermaker/guides-assets/cone.webp">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "콘·레듀샤 전개도 그리는 법",
+      "description": "콘·원뿔대·레듀샤 전개 계산 방법. 큰 지름 D1·작은 지름 D2·높이 H를 입력해 부채꼴 반경과 각도를 구하고 편심 콘은 삼각분할 실장표로 확인합니다.",
+      "inLanguage": "ko-KR",
+      "datePublished": "2026-11-11",
+      "dateModified": "2026-11-11",
+      "mainEntityOfPage": "https://gua091016.github.io/boilermaker/guides/cone-development/",
+      "image": "https://gua091016.github.io/boilermaker/guides-assets/cone.webp",
+      "author": {
+        "@type": "Organization",
+        "name": "코리아피터",
+        "url": "https://gua091016.github.io/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "코리아피터",
+          "item": "https://gua091016.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "제관 계산기",
+          "item": "https://gua091016.github.io/boilermaker/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "계산 사용법",
+          "item": "https://gua091016.github.io/boilermaker/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "콘·레듀샤 전개도 그리는 법",
+          "item": "https://gua091016.github.io/boilermaker/guides/cone-development/"
+        }
+      ]
+    }
+  ]
+}</script></head><body>
+<header><nav aria-label="사이트 탐색"><a href="/">코리아피터 개발자 홈</a><a href="/boilermaker/">제관 계산기 소개</a><a href="/boilermaker/guides/">전체 사용법</a></nav></header>
+<main>
+  <article>
+    <div class="article-top"><div><p class="eyebrow">제관 계산기 · 작업별 사용법</p><h1>콘·레듀샤 전개도 그리는 법</h1><p class="lead">동심 콘과 원뿔대 레듀샤는 부채꼴 전개로, 편심 콘은 해당 형상의 실장표로 확인합니다. 제관 계산기에서 형상을 고르고 판에 옮길 전개 치수를 읽는 방법입니다.</p></div>
+    <figure><img src="/boilermaker/guides-assets/cone.webp" width="400" height="248" alt="콘·레듀샤 전개도 그리는 법에 사용하는 앱의 형상 예시"><figcaption>앱의 형상 예시 · 수치는 해당 작업에서 입력합니다.</figcaption></figure></div>
+    <p class="muted">코리아피터 · 2026년 11월 11일 작성. 현재 앱 구현 기준이며 설치 버전에 따라 버튼 위치와 이용 범위는 다를 수 있습니다.</p>
+    <p><a class="button" href="https://play.google.com/store/apps/details?id=com.gua091016.boilermaker">Google Play에서 공식 앱 보기</a></p>
+    <section><h2>입력 전에 확인할 치수 기준</h2><table><caption>콘·레듀샤 전개도 그리는 법 입력 항목</caption><thead><tr><th scope="col">입력</th><th scope="col">확인할 내용</th></tr></thead><tbody><tr><th scope="row">큰 지름 D1</th><td>큰 쪽 지름을 입력합니다. 판 두께 중심경 기준인지 확인합니다.</td></tr>
+<tr><th scope="row">작은 지름 D2</th><td>작은 쪽 지름입니다. 동심 뾰족콘은 0을 사용할 수 있습니다.</td></tr>
+<tr><th scope="row">높이 H</th><td>축 방향 높이이며 경사 길이와 다릅니다.</td></tr>
+<tr><th scope="row">편심 콘 등분</th><td>편심 콘 도구에서는 반원 등분과 실장표를 확인합니다.</td></tr></tbody></table></section>
+    <section><h2>앱에서 계산하고 수정하는 순서</h2><ol><li>동심 콘은 콘 전개, 일자 면이 있는 편심 형상은 편심 콘 도구를 엽니다.</li>
+<li>큰 지름·작은 지름·축 방향 높이를 입력합니다.</li>
+<li>계산하기를 눌러 전개도와 결과 치수를 표시합니다.</li>
+<li>동심은 큰·작은 반경과 부채꼴 각도, 편심은 모선·대각 실장표를 읽습니다.</li>
+<li>입력 치수를 바꾸면 계산하기를 다시 눌러 새 결과를 확인합니다.</li></ol></section>
+    <section><h2>동심 콘의 전개 반경과 실제 지름</h2><p>부채꼴 전개도의 큰 반경·작은 반경은 완성된 콘의 큰 지름·작은 지름과 다른 값입니다. 앱의 D1·D2는 입구 치수이고 결과 R1·R2는 판에 원호를 그리는 전개 반경입니다.</p><p>높이 H 대신 경사 길이를 넣지 않습니다. 앱은 높이와 지름 차이로 경사 길이와 전개 각도를 계산합니다.</p></section>
+<section><h2>편심 콘은 반쪽 전개와 번호를 확인합니다</h2><p>편심 콘 도구는 일자 면에서 반대편까지 반쪽을 삼각분할하는 실장표를 제공합니다. 모선과 대각선 길이, 시작 번호를 맞춰 차례로 전개합니다.</p><p>같은 반쪽 판을 뒤집어 한 장 더 만드는 안내를 확인하세요. 한쪽이 일자로 맞는 편심 형상에 임의 편심량을 입력하는 도구라고 해석하지 않습니다.</p></section>
+<section><h2>판 두께 기준과 출력</h2><p>앱은 판 두께 중심경 기준 입력을 권장합니다. 외경과 중심경을 작업마다 다르게 섞지 말고, 큰 쪽과 작은 쪽을 같은 기준으로 정리합니다.</p><p>결과의 외측 현 길이는 원호 양 끝을 잇는 직선 거리입니다. 원호 길이와 구분해 사용하고, PDF·DXF 내보내기 이용 범위는 앱에서 확인합니다.</p></section>
+    <aside class="panel"><h2>함께 보는 제관 계산기 사용법</h2><ul><li><a href="/boilermaker/guides/square-to-round/">사각→원형·호퍼 전개도 그리는 법</a></li>
+<li><a href="/boilermaker/guides/branch-development/">가지관·Y분기 바지관 전개 방법</a></li>
+<li><a href="/boilermaker/guides/lobster-back-elbow/">새우등 엘보 전개·조각 수 계산 방법</a></li>
+<li><a href="/boilermaker/guides/head-nozzle/">경판 노즐 위치·절단 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/tank-volume/">가로·세로 탱크 용량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/pcd-marking/">PCD 볼트 구멍 등분·좌표 계산 방법</a></li>
+<li><a href="/boilermaker/guides/weight-calculation/">철판·파이프·H빔 중량 계산 방법</a></li>
+<li><a href="/boilermaker/guides/screw-flight/">스크류 플라이트 날개 전개 계산 방법</a></li>
+<li><a href="/boilermaker/guides/plate-bending/">철판 절곡 전개 길이 계산 방법</a></li></ul><p><a href="/boilermaker/guides/">전체 계산 사용법</a> · <a href="/boilermaker/">앱 소개와 기능 확인</a></p></aside>
+  </article></main><footer>© 코리아피터 · <a href="/boilermaker/privacy.html">개인정보처리방침</a> · <a href="/boilermaker/terms.html">이용약관</a></footer>
+</body></html>
