@@ -129,6 +129,10 @@ function sizePage(bN, rN) {
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${url}">
+<meta property="og:image" content="https://gua091016.github.io/pipe-saddle-template/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <style>${CSS}</style>
 <script src="/ga.js" defer></script>
