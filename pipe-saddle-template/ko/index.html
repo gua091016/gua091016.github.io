@@ -115,6 +115,7 @@
   .sizes a:hover { text-decoration: underline; }
   footer { color: var(--muted); font-size: 14px; padding: 26px 0 40px; border-top: 1px solid var(--line); margin-top: 30px; }
 </style>
+<script src="/ga.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -625,7 +626,13 @@ $('dl').addEventListener('click', () => {
   if (!state) return;
   const label = $('dl').textContent; $('dl').textContent = t('making'); $('dl').disabled = true;
   setTimeout(() => {
-    try { buildPdf(state); } catch (e) { $('err').textContent = 'PDF error: ' + e.message; console.error(e); }
+    try {
+      buildPdf(state);
+      if (window.gtag) gtag('event', 'pdf_download', {
+        branch: PIPES[$('brSel').value] ? PIPES[$('brSel').value][0] : 'custom',
+        run: PIPES[$('runSel').value] ? PIPES[$('runSel').value][0] : 'custom',
+        paper: $('paperSel').value });
+    } catch (e) { $('err').textContent = 'PDF error: ' + e.message; console.error(e); }
     $('dl').textContent = label; $('dl').disabled = false;
   }, 30);
 });

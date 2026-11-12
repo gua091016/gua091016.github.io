@@ -131,6 +131,7 @@ function sizePage(bN, rN) {
 <meta property="og:url" content="${url}">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <style>${CSS}</style>
+<script src="/ga.js" defer></script>
 </head>
 <body>
 <div class="wrap">
