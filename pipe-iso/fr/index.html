@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application isométrique tuyauterie | Calcul de coupe et décalage pour tuyauteur</title>
+  <meta name="description" content="Dessinez l’isométrique de tuyauterie sur le téléphone, saisissez les cotes d’axe (CL) et obtenez la longueur de coupe de chaque tube, coudes, tés et brides déduits. Décalage tournant, tubes parallèles, coude à segments, PDF et DXF. mm ou pied-pouce.">
+  <link rel="canonical" href="https://gua091016.github.io/pipe-iso/fr/">
+  <link rel="alternate" hreflang="en" href="https://gua091016.github.io/pipe-iso/en/">
+  <link rel="alternate" hreflang="es" href="https://gua091016.github.io/pipe-iso/es/">
+  <link rel="alternate" hreflang="pt" href="https://gua091016.github.io/pipe-iso/pt/">
+  <link rel="alternate" hreflang="de" href="https://gua091016.github.io/pipe-iso/de/">
+  <link rel="alternate" hreflang="fr" href="https://gua091016.github.io/pipe-iso/fr/">
+  <link rel="alternate" hreflang="id" href="https://gua091016.github.io/pipe-iso/id/">
+  <link rel="alternate" hreflang="ja" href="https://gua091016.github.io/pipe-iso/ja/">
+  <link rel="alternate" hreflang="ko" href="https://gua091016.github.io/pipe-iso/">
+  <link rel="alternate" hreflang="x-default" href="https://gua091016.github.io/pipe-iso/">
+  <meta property="og:title" content="Isométrique tuyauterie et calcul de coupe pour tuyauteurs">
+  <meta property="og:description" content="Dessinez l’isométrique de tuyauterie sur le téléphone, saisissez les cotes d’axe (CL) et obtenez la longueur de coupe de chaque tube, coudes, tés et brides déduits. Décalage tournant, tubes parallèles, coude à segments, PDF et DXF. mm ou pied-pouce.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gua091016.github.io/pipe-iso/fr/">
+  <meta property="og:image" content="https://gua091016.github.io/pipe-iso/assets/app-fr.jpg">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18202b;
+      --muted: #5b6878;
+      --line: #d8e2eb;
+      --panel: #f6f9fc;
+      --blue: #0f7db7;
+      --green: #07946e;
+      --orange: #f39a1f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+      line-height: 1.75;
+    }
+
+    a { color: inherit; }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .nav {
+      max-width: 1080px;
+      margin: 0 auto;
+      min-height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .app-logo {
+      width: min(100%, 240px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 32px;
+      border: 1px solid #c8d9e6;
+      background:
+        linear-gradient(135deg, rgba(15, 125, 183, 0.08) 25%, transparent 25%) 0 0 / 34px 34px,
+        linear-gradient(225deg, rgba(15, 125, 183, 0.08) 25%, transparent 25%) 0 0 / 34px 34px,
+        #f8fbff;
+      box-shadow: 0 18px 38px rgba(24, 32, 43, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-logo:before {
+      content: "ISO";
+      position: absolute;
+      top: 26px;
+      left: 0;
+      right: 0;
+      color: var(--blue);
+      font-size: 54px;
+      line-height: 1;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .app-logo:after {
+      content: "CUT";
+      position: absolute;
+      top: 38px;
+      right: 26px;
+      min-width: 66px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--orange);
+      font-size: 20px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .pipe-line {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      top: 132px;
+      height: 12px;
+      border-radius: 999px;
+      background: #173042;
+      transform: rotate(-28deg);
+    }
+
+    .pipe-label {
+      position: absolute;
+      left: 52px;
+      right: 52px;
+      bottom: 34px;
+      height: 26px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #10a98c;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 54px 20px 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 48px;
+      align-items: center;
+      padding-bottom: 46px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 680px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 8px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 1px solid var(--line);
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .app-visual {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      text-align: center;
+    }
+
+    .app-visual p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    section {
+      padding: 48px 0 0;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      background: #fff;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .article {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .article p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .keyword-box {
+      border-left: 4px solid var(--orange);
+      background: #fff8ed;
+      padding: 18px 20px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .keyword-box p {
+      margin: 0;
+      color: #5e4630;
+      font-weight: 700;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      padding: 24px 20px 40px;
+    }
+
+    footer .inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .article,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-top: 36px;
+      }
+    }
+      .hero > div { min-width: 0; }
+    .app-visual img { max-width: 100%; }
+    h1 { overflow-wrap: anywhere; }
+    footer a { margin: 0 2px; }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Pipe ISO Calculator","operatingSystem":"Android","applicationCategory":"UtilitiesApplication","inLanguage":"fr","description":"Dessinez l’isométrique de tuyauterie sur le téléphone, saisissez les cotes d’axe (CL) et obtenez la longueur de coupe de chaque tube, coudes, tés et brides déduits. Décalage tournant, tubes parallèles, coude à segments, PDF et DXF. mm ou pied-pouce.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://gua091016.github.io/pipe-iso/fr/","downloadUrl":"https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator"}
+  </script>
+  <script src="/ga.js" defer></script>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="brand">
+        <span class="logo-mark">ISO</span>
+        <span>Pipe ISO Calculator</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Fonctions</a>
+        <a href="#use">Fonctionnement</a>
+        <a href="#download">Télécharger</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Pour tuyauteurs, chaudronniers et chefs de chantier tuyauterie</p>
+        <h1>Dessinez l’isométrique de tuyauterie,<br>obtenez chaque coupe</h1>
+        <p class="lead">Pipe ISO Calculator est une application pour tuyauteurs sur chantier et en atelier : tracez la ligne sur une grille isométrique, saisissez les cotes d’axe (CL), et les longueurs des raccords sont déduites pour donner la longueur de coupe (CUT) de chaque tube. Elle calcule aussi les décalages à 45°, tournants, de tubes parallèles et les coudes à segments.</p>
+        <div class="actions" id="download">
+          <a class="button primary" href="https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator&amp;hl=fr&amp;referrer=utm_source%3Dsite_fr">Voir sur Google Play</a>
+          <a class="button" href="../">Page en coréen</a>
+        </div>
+      </div>
+      <div class="app-visual">
+        <img src="../assets/app-fr.jpg" alt="Pipe ISO Calculator app screen" width="540" height="960" style="width:100%;height:auto;border-radius:8px">
+        <p>Isométrique, liste de coupe et calculs de chantier dans une seule app</p>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>Fonctions principales</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Longueur de coupe (CUT)</h3>
+          <p>Saisissez les cotes CL et obtenez les coupes avec déduction des raccords ASME B16.9 bout à bout et B16.11 à emboîter/filetés, jusqu’à 24".</p>
+        </div>
+        <div class="card">
+          <h3>Isométrique de tuyauterie</h3>
+          <p>Tracez sur la grille ISO, ajoutez coudes, tés, réductions, brides, vannes et olets, puis vérifiez soudures et liste de coupe.</p>
+        </div>
+        <div class="card">
+          <h3>Décalages et coudes à segments</h3>
+          <p>Décalage 45°, tournant et 90°+45°, décalage de 2 à 4 tubes parallèles et coupe de coude à segments.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="access">
+      <h2>Gratuit et Pro</h2>
+      <div class="article">
+        <div class="card"><h3>Gratuit</h3><p>Coude à segments, décalages 2D et export PDF/DXF : 5 fois par semaine chacun. Dessiner, modifier un isométrique et consulter le tableau des raccords ne consomment rien.</p></div>
+        <div class="card"><h3>Pro</h3><p>Supprime la limite hebdomadaire. Les offres disponibles et le prix local s’affichent dans Google Play. Sans publicité.</p></div>
+      </div>
+      <p>Les utilisations sont remises à zéro chaque lundi à 00:00, heure locale. Les PDF gratuits sont sans filigrane. Langue de l’app : français.</p>
+    </section>
+
+    <section id="use">
+      <h2>Où elle aide</h2>
+      <div class="article">
+        <div>
+          <p>Calculer les déductions à la main sur chantier prend du temps et provoque des erreurs. Tracez la ligne une fois : toutes les cotes CL et CUT restent ensemble.</p>
+          <p>Partagez l’isométrique et la liste de coupe en PDF avec l’atelier, le chef d’équipe ou le client, ou exportez en DXF pour la CAO. Unités en mm ou pied-pouce avec fractions de 1/16".</p>
+        </div>
+        <div class="keyword-box">
+          <p>Recherches : application isométrique tuyauterie, calcul tuyauterie, calcul longueur de coupe tube, calcul décalage tuyauterie, appli tuyauteur</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Remarque</h2>
+      <div class="card">
+        <p>L’application aide aux vérifications sur chantier. Avant fabrication et soudage, suivez toujours les plans approuvés, spécifications, normes, données fabricant et votre responsable.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="inner">
+      <span>© 2026 Koreafitter. Pipe ISO Calculator.</span>
+      <span><a href="../en/">EN</a> · <a href="../es/">ES</a> · <a href="../pt/">PT</a> · <a href="../de/">DE</a> · <a href="../fr/">FR</a> · <a href="../id/">ID</a> · <a href="../ja/">JA</a> · <a href="../">KO</a></span>
+      <a href="../privacy.html">Politique de confidentialité</a>
+    </div>
+  </footer>
+</body>
+</html>

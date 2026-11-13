@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Isometrik Pipa untuk Fitter | Kalkulator Potong & Offset Pipa</title>
+  <meta name="description" content="Gambar isometrik pipa di HP, masukkan ukuran center (CL), lalu dapatkan panjang potong setiap pipa yang sudah dikurangi elbow, tee dan flange. Rolling offset, offset pipa paralel, elbow miter, PDF dan DXF. mm atau feet-inch.">
+  <link rel="canonical" href="https://gua091016.github.io/pipe-iso/id/">
+  <link rel="alternate" hreflang="en" href="https://gua091016.github.io/pipe-iso/en/">
+  <link rel="alternate" hreflang="es" href="https://gua091016.github.io/pipe-iso/es/">
+  <link rel="alternate" hreflang="pt" href="https://gua091016.github.io/pipe-iso/pt/">
+  <link rel="alternate" hreflang="de" href="https://gua091016.github.io/pipe-iso/de/">
+  <link rel="alternate" hreflang="fr" href="https://gua091016.github.io/pipe-iso/fr/">
+  <link rel="alternate" hreflang="id" href="https://gua091016.github.io/pipe-iso/id/">
+  <link rel="alternate" hreflang="ja" href="https://gua091016.github.io/pipe-iso/ja/">
+  <link rel="alternate" hreflang="ko" href="https://gua091016.github.io/pipe-iso/">
+  <link rel="alternate" hreflang="x-default" href="https://gua091016.github.io/pipe-iso/">
+  <meta property="og:title" content="Isometrik pipa dan kalkulator panjang potong untuk pipe fitter">
+  <meta property="og:description" content="Gambar isometrik pipa di HP, masukkan ukuran center (CL), lalu dapatkan panjang potong setiap pipa yang sudah dikurangi elbow, tee dan flange. Rolling offset, offset pipa paralel, elbow miter, PDF dan DXF. mm atau feet-inch.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gua091016.github.io/pipe-iso/id/">
+  <meta property="og:image" content="https://gua091016.github.io/pipe-iso/assets/app-id.jpg">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #18202b;
+      --muted: #5b6878;
+      --line: #d8e2eb;
+      --panel: #f6f9fc;
+      --blue: #0f7db7;
+      --green: #07946e;
+      --orange: #f39a1f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+      line-height: 1.75;
+    }
+
+    a { color: inherit; }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .nav {
+      max-width: 1080px;
+      margin: 0 auto;
+      min-height: 64px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .app-logo {
+      width: min(100%, 240px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 32px;
+      border: 1px solid #c8d9e6;
+      background:
+        linear-gradient(135deg, rgba(15, 125, 183, 0.08) 25%, transparent 25%) 0 0 / 34px 34px,
+        linear-gradient(225deg, rgba(15, 125, 183, 0.08) 25%, transparent 25%) 0 0 / 34px 34px,
+        #f8fbff;
+      box-shadow: 0 18px 38px rgba(24, 32, 43, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-logo:before {
+      content: "ISO";
+      position: absolute;
+      top: 26px;
+      left: 0;
+      right: 0;
+      color: var(--blue);
+      font-size: 54px;
+      line-height: 1;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .app-logo:after {
+      content: "CUT";
+      position: absolute;
+      top: 38px;
+      right: 26px;
+      min-width: 66px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--orange);
+      font-size: 20px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .pipe-line {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      top: 132px;
+      height: 12px;
+      border-radius: 999px;
+      background: #173042;
+      transform: rotate(-28deg);
+    }
+
+    .pipe-label {
+      position: absolute;
+      left: 52px;
+      right: 52px;
+      bottom: 34px;
+      height: 26px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #10a98c;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 54px 20px 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 48px;
+      align-items: center;
+      padding-bottom: 46px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--blue);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 680px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 8px;
+      font-weight: 800;
+      text-decoration: none;
+      border: 1px solid var(--line);
+    }
+
+    .button.primary {
+      color: #fff;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .app-visual {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      text-align: center;
+    }
+
+    .app-visual p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    section {
+      padding: 48px 0 0;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 28px;
+      line-height: 1.3;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      background: #fff;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .article {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .article p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .keyword-box {
+      border-left: 4px solid var(--orange);
+      background: #fff8ed;
+      padding: 18px 20px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .keyword-box p {
+      margin: 0;
+      color: #5e4630;
+      font-weight: 700;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      padding: 24px 20px 40px;
+    }
+
+    footer .inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .article,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-top: 36px;
+      }
+    }
+      .hero > div { min-width: 0; }
+    .app-visual img { max-width: 100%; }
+    h1 { overflow-wrap: anywhere; }
+    footer a { margin: 0 2px; }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Pipe ISO Calculator","operatingSystem":"Android","applicationCategory":"UtilitiesApplication","inLanguage":"id","description":"Gambar isometrik pipa di HP, masukkan ukuran center (CL), lalu dapatkan panjang potong setiap pipa yang sudah dikurangi elbow, tee dan flange. Rolling offset, offset pipa paralel, elbow miter, PDF dan DXF. mm atau feet-inch.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://gua091016.github.io/pipe-iso/id/","downloadUrl":"https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator"}
+  </script>
+  <script src="/ga.js" defer></script>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <div class="brand">
+        <span class="logo-mark">ISO</span>
+        <span>Pipe ISO Calculator</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Fitur</a>
+        <a href="#use">Cara kerja</a>
+        <a href="#download">Unduh</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Untuk pipe fitter, fabrikasi dan supervisor piping</p>
+        <h1>Gambar isometrik pipa,<br>dapatkan setiap panjang potong</h1>
+        <p class="lead">Pipe ISO Calculator adalah aplikasi untuk pipe fitter di lapangan dan workshop: gambar jalur pada grid isometrik, masukkan ukuran center (CL), dan ukuran fitting dikurangi otomatis sehingga panjang potong (CUT) tiap pipa langsung keluar. Juga menghitung offset 45°, rolling offset, offset pipa paralel dan potongan elbow miter.</p>
+        <div class="actions" id="download">
+          <a class="button primary" href="https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator&amp;hl=id&amp;referrer=utm_source%3Dsite_id">Lihat di Google Play</a>
+          <a class="button" href="../">Halaman Korea</a>
+        </div>
+      </div>
+      <div class="app-visual">
+        <img src="../assets/app-id.jpg" alt="Pipe ISO Calculator app screen" width="540" height="960" style="width:100%;height:auto;border-radius:8px">
+        <p>Isometrik, cut list dan kalkulator lapangan dalam satu aplikasi</p>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>Fitur utama</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Panjang potong (CUT)</h3>
+          <p>Masukkan ukuran CL dan dapatkan panjang potong dengan pengurangan fitting ASME B16.9 butt weld dan B16.11 socket weld/ulir, hingga 24".</p>
+        </div>
+        <div class="card">
+          <h3>Isometrik pipa</h3>
+          <p>Gambar di grid ISO, tambahkan elbow, tee, reducer, flange, valve dan olet, lalu cek titik las dan cut list.</p>
+        </div>
+        <div class="card">
+          <h3>Offset dan miter</h3>
+          <p>Offset 45°, rolling dan 90°+45°, offset 2–4 pipa paralel, dan potongan elbow miter.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="access">
+      <h2>Gratis dan Pro</h2>
+      <div class="article">
+        <div class="card"><h3>Gratis</h3><p>Elbow miter, offset 2D dan ekspor PDF/DXF masing-masing 5 kali per minggu. Menggambar, mengedit isometrik dan melihat tabel fitting tidak mengurangi kuota.</p></div>
+        <div class="card"><h3>Pro</h3><p>Menghapus batas mingguan. Pilihan paket dan harga lokal ditampilkan di Google Play. Tanpa iklan.</p></div>
+      </div>
+      <p>Kuota direset setiap Senin pukul 00:00 waktu setempat. PDF gratis tanpa watermark. Bahasa aplikasi: Bahasa Indonesia.</p>
+    </section>
+
+    <section id="use">
+      <h2>Kapan berguna</h2>
+      <div class="article">
+        <div>
+          <p>Menghitung pengurangan fitting secara manual di lapangan lambat dan rawan salah. Gambar jalurnya sekali, semua ukuran CL dan CUT tersimpan bersama.</p>
+          <p>Bagikan isometrik dan cut list sebagai PDF ke workshop, mandor atau klien, atau ekspor DXF untuk dibuka di CAD. Satuan mm atau feet-inch dengan pecahan 1/16".</p>
+        </div>
+        <div class="keyword-box">
+          <p>Kata kunci: aplikasi isometrik pipa, kalkulator pipa, kalkulator pipe fitter, panjang potong pipa, offset pipa</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Catatan</h2>
+      <div class="card">
+        <p>Aplikasi ini membantu pengecekan di lapangan. Sebelum fabrikasi dan pengelasan, selalu ikuti gambar yang disetujui, spesifikasi, standar, data pabrikan dan supervisor Anda.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="inner">
+      <span>© 2026 Koreafitter. Pipe ISO Calculator.</span>
+      <span><a href="../en/">EN</a> · <a href="../es/">ES</a> · <a href="../pt/">PT</a> · <a href="../de/">DE</a> · <a href="../fr/">FR</a> · <a href="../id/">ID</a> · <a href="../ja/">JA</a> · <a href="../">KO</a></span>
+      <a href="../privacy.html">Kebijakan Privasi</a>
+    </div>
+  </footer>
+</body>
+</html>

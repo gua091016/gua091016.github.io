@@ -152,3 +152,9 @@ https://gua091016.github.io/boilermaker/guides/pcd-marking/
 https://gua091016.github.io/boilermaker/guides/weight-calculation/
 https://gua091016.github.io/boilermaker/guides/screw-flight/
 https://gua091016.github.io/boilermaker/guides/plate-bending/
+https://gua091016.github.io/pipe-iso/en/
+https://gua091016.github.io/pipe-iso/es/
+https://gua091016.github.io/pipe-iso/pt/
+https://gua091016.github.io/pipe-iso/de/
+https://gua091016.github.io/pipe-iso/fr/
+https://gua091016.github.io/pipe-iso/id/
