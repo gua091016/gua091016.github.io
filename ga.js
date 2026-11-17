@@ -1,6 +1,8 @@
 // 사이트 공통 방문 집계 (GA4 속성 "gua091016.github.io 웹사이트")
 // 페이지 조회 + Play 링크 클릭(play_click). PDF 다운로드는 생성기에서 pdf_download 이벤트를 직접 보냄.
 (function () {
+  if (window.__koreafitterAnalyticsLoaded) return;
+  window.__koreafitterAnalyticsLoaded = true;
   var ID = 'G-MB5S3903VW';
   var s = document.createElement('script');
   s.async = true;
@@ -14,7 +16,14 @@
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href*="play.google.com"]') : null;
     if (!a) return;
-    var m = a.href.match(/[?&]id=([\w.]+)/);
-    gtag('event', 'play_click', { app_id: m ? m[1] : '', page_path: location.pathname });
+    var target = new URL(a.href, location.href);
+    if (target.hostname !== 'play.google.com' || target.pathname !== '/store/apps/details') return;
+    var appId = target.searchParams.get('id');
+    if (!appId) return;
+    gtag('event', 'play_click', {
+      app_id: appId,
+      page_path: location.pathname,
+      transport_type: 'beacon'
+    });
   }, true);
 })();
