@@ -13,6 +13,19 @@
   window.gtag = gtag;
   gtag('js', new Date());
   gtag('config', ID);
+  // Preserve existing source tags while identifying the page behind an install.
+  document.querySelectorAll('a[href*="play.google.com/store/apps/details"]').forEach(function (a) {
+    var target = new URL(a.href, location.href);
+    if (target.hostname !== 'play.google.com' || target.pathname !== '/store/apps/details' ||
+        target.searchParams.get('id') !== 'com.gua091016.pipecuttingcalculator') return;
+    var referrer = new URLSearchParams(target.searchParams.get('referrer') || '');
+    if (!referrer.has('utm_source')) referrer.set('utm_source', 'koreafitter_website');
+    if (!referrer.has('utm_medium')) referrer.set('utm_medium', 'referral');
+    if (!referrer.has('utm_campaign')) referrer.set('utm_campaign', 'pipe_iso_website');
+    if (!referrer.has('utm_content')) referrer.set('utm_content', location.pathname);
+    target.searchParams.set('referrer', referrer.toString());
+    a.href = target.href;
+  });
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href*="play.google.com"]') : null;
     if (!a) return;
