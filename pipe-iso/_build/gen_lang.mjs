@@ -2,6 +2,9 @@
 // Style is copied from pipe-iso/ja/index.html so the design stays identical.
 // Run from repo root: node pipe-iso/_build/gen_lang.mjs
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
+
+const analyticsVersion = createHash('sha256').update(fs.readFileSync('ga.js')).digest('hex').slice(0, 12);
 
 const ROOT = 'https://gua091016.github.io/pipe-iso/';
 const PKG = 'com.gua091016.pipecuttingcalculator';
@@ -241,7 +244,7 @@ ${alt()}
   <script type="application/ld+json">
   ${JSON.stringify({ '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'Pipe ISO Calculator', operatingSystem: 'Android', applicationCategory: 'UtilitiesApplication', inLanguage: l, description: t.desc, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, url, downloadUrl: `https://play.google.com/store/apps/details?id=${PKG}` })}
   </script>
-  <script src="/ga.js" defer></script>
+  <script src="/ga.js?v=${analyticsVersion}" defer></script>
 </head>
 <body>
   <header>
