@@ -1,0 +1,24 @@
+{
+  "id": "2026-12-field-apps",
+  "active": true,
+  "until": "2027-02-28",
+  "title": "현장 계산 앱도 써 보세요",
+  "body": "공수달력을 만든 개발자가 만든 현장용 계산 앱이에요.\n배관·제관 하시는 분께 추천합니다.",
+  "links": [
+    {
+      "label": "현장배관 ISO 계산기",
+      "sub": "배관 아이소 스케치 · 커팅 리스트",
+      "url": "https://play.google.com/store/apps/details?id=com.gua091016.pipecuttingcalculator&referrer=utm_source%3Dgongsu_notice%26utm_medium%3Din_app"
+    },
+    {
+      "label": "더미 서포트 계산기",
+      "sub": "새들 컷 · 트러니언 · 마이터 전개",
+      "url": "https://play.google.com/store/apps/details?id=com.gua091016.dummy&referrer=utm_source%3Dgongsu_notice%26utm_medium%3Din_app"
+    },
+    {
+      "label": "제관 계산기",
+      "sub": "콘·레듀샤·사각→원형 등 전개 도구 33가지",
+      "url": "https://play.google.com/store/apps/details?id=com.gua091016.boilermaker&referrer=utm_source%3Dgongsu_notice%26utm_medium%3Din_app"
+    }
+  ]
+}
