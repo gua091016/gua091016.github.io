@@ -1,0 +1,76 @@
+{
+  "id": "2026-12-cross",
+  "active": true,
+  "until": "2027-03-31",
+  "minUses": 3,
+  "minAgeHours": 24,
+  "text": {
+    "ko": { "title": "현장 계산 앱도 써 보세요", "body": "같은 개발자가 만든 배관·제관 앱이에요.", "close": "닫기" },
+    "en": { "title": "More tools for the job", "body": "Field calculators from the same developer, made for pipe fitters and fabricators.", "close": "Close" },
+    "ja": { "title": "現場で使える計算アプリ", "body": "同じ開発者が作った配管・製缶の現場向けアプリです。", "close": "閉じる" },
+    "zh": { "title": "更多现场计算工具", "body": "同一开发者为管道工和钣金工制作的现场计算应用。", "close": "关闭" },
+    "es": { "title": "Más herramientas para la obra", "body": "Calculadoras de campo del mismo desarrollador, para tuberos y caldereros.", "close": "Cerrar" },
+    "pt": { "title": "Mais ferramentas para a obra", "body": "Calculadoras de campo do mesmo desenvolvedor, para encanadores industriais e caldeireiros.", "close": "Fechar" },
+    "de": { "title": "Mehr Werkzeuge für die Baustelle", "body": "Rechner vom selben Entwickler – für Rohrleitungs- und Behälterbauer.", "close": "Schließen" },
+    "fr": { "title": "D'autres outils pour le chantier", "body": "Des calculateurs du même développeur, pour tuyauteurs et chaudronniers.", "close": "Fermer" },
+    "hi": { "title": "काम के लिए और टूल", "body": "उसी डेवलपर के फ़ील्ड कैलकुलेटर — पाइप फ़िटर और फ़ैब्रिकेटर के लिए।", "close": "बंद करें" },
+    "id": { "title": "Alat lain untuk di lapangan", "body": "Kalkulator lapangan dari pengembang yang sama, untuk pipe fitter dan fabricator.", "close": "Tutup" },
+    "vi": { "title": "Thêm công cụ cho công trường", "body": "Ứng dụng tính toán hiện trường của cùng nhà phát triển, dành cho thợ ống và thợ gò hàn.", "close": "Đóng" },
+    "ru": { "title": "Другие инструменты для работы", "body": "Калькуляторы от того же разработчика — для трубопроводчиков и котельщиков.", "close": "Закрыть" },
+    "tr": { "title": "Sahada işinize yarayacak diğer araçlar", "body": "Aynı geliştiriciden borucular ve kazancılar için saha hesaplayıcıları.", "close": "Kapat" }
+  },
+  "apps": [
+    {
+      "key": "iso",
+      "package": "com.gua091016.pipecuttingcalculator",
+      "langs": ["ko", "en", "ja", "zh", "es", "pt", "de", "fr", "hi", "id", "vi", "ru", "tr"],
+      "icon": "https://gua091016.github.io/promo/iso.png",
+      "name": { "ko": "현장배관 ISO 계산기", "en": "Pipe Fitter Calc: ISO & Offset" },
+      "sub": {
+        "ko": "아이소 스케치 · 커팅 리스트 · 옵셋",
+        "en": "Piping ISO sketch, cut lengths, offsets",
+        "ja": "配管ISOスケッチ・切断長・オフセット",
+        "zh": "管道ISO草图、切割长度、偏移",
+        "es": "Croquis ISO, cortes y desvíos de tubería",
+        "pt": "Esboço ISO, cortes e desvios de tubulação",
+        "de": "Rohr-ISO-Skizze, Schnittlängen, Versätze",
+        "fr": "Croquis ISO, longueurs de coupe, dévoiements",
+        "hi": "पाइपिंग ISO स्केच, कट लंबाई, ऑफ़सेट",
+        "id": "Sketsa ISO pipa, panjang potong, offset",
+        "vi": "Phác thảo ISO đường ống, chiều dài cắt, offset",
+        "ru": "ISO-эскиз трубопровода, длины резки, смещения",
+        "tr": "Boru ISO çizimi, kesim boyları, ofsetler"
+      }
+    },
+    {
+      "key": "dummy",
+      "package": "com.gua091016.dummy",
+      "langs": ["ko", "en", "ja", "zh", "es", "pt"],
+      "icon": "https://gua091016.github.io/promo/dummy.png",
+      "name": { "ko": "더미 서포트 계산기", "en": "Pipe Saddle Cut: Dummy Support" },
+      "sub": {
+        "ko": "새들 컷 · 트러니언 · 마이터 전개",
+        "en": "Saddle cut, trunnion & miter templates",
+        "ja": "サドルカット・トラニオン・マイター展開",
+        "zh": "鞍形切割、耳轴、斜接展开样板",
+        "es": "Plantillas de silla, muñón e inglete",
+        "pt": "Gabaritos de sela, munhão e meia-esquadria"
+      }
+    },
+    {
+      "key": "boilermaker",
+      "package": "com.gua091016.boilermaker",
+      "langs": ["ko", "en", "ja", "zh", "es", "pt"],
+      "icon": "https://gua091016.github.io/promo/boilermaker.png",
+      "name": { "ko": "제관 계산기", "en": "Boilermaker Calc: Layouts" },
+      "sub": {
+        "ko": "콘 · 레듀샤 · 사각→원형 전개",
+        "en": "Cone, reducer & square-to-round layouts",
+        "ja": "コーン・レジューサー・角丸ダクト展開",
+        "zh": "锥体、异径管、天圆地方展开",
+        "es": "Desarrollos de cono, reducción y cuadrado a redondo",
+        "pt": "Planificação de cone, redução e quadrado para redondo"
+      }
+    }
+  ]
+}
